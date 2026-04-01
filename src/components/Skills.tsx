@@ -7,8 +7,8 @@ export default function Skills() {
       title: "Core Backend",
       icon: <Server size={20} />,
       colorClass: "ic-blue",
-      tags: ["Java 8+", "Java 17", "Spring Boot", "Spring MVC", "Spring Data JPA", "Hibernate", "REST APIs", "Webhooks", "WebSocket (STOMP)"],
-      accentTags: ["Java 17", "Spring Boot", "REST APIs"]
+      tags: ["Java 8", "Java 17", "Java 21", "Spring Boot", "Spring MVC", "Spring Data JPA", "Hibernate", "REST APIs", "Webhooks", "WebSocket (STOMP)"],
+      accentTags: ["Java 17", "Java 21", "Spring Boot", "REST APIs"]
     },
     {
       title: "Security & Auth",
