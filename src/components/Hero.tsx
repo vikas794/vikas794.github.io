@@ -44,7 +44,7 @@ export default function Hero() {
       <div className="hero-orb hero-orb-2"></div>
 
       <div className="hero-content">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0 }}
@@ -54,7 +54,7 @@ export default function Hero() {
           Available for opportunities · Mumbai, India
         </motion.div>
 
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.1 }}
@@ -64,19 +64,21 @@ export default function Hero() {
           <span className="name-line outline">Jaiswal</span>
         </motion.h1>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.2 }}
           className="hero-role"
         >
           <span className="role-prefix">&lt;</span>
-          <span className="typed-text">{phrases[phraseIdx].slice(0, charIdx)}</span>
+          <span className="typed-text">
+            {phrases[phraseIdx].slice(0, charIdx)}
+          </span>
           <span className="type-cursor">|</span>
           <span className="role-suffix">/&gt;</span>
         </motion.div>
 
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.3 }}
@@ -87,13 +89,18 @@ export default function Hero() {
           Java 17 · Spring Boot · JWT · REST APIs · AWS.
         </motion.p>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.4 }}
           className="hero-actions"
         >
-          <a href="https://www.linkedin.com/in/vikasjaiswall/" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+          <a
+            href="https://www.linkedin.com/in/vikasjaiswall/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+          >
             <Linkedin size={16} />
             LinkedIn
           </a>
@@ -101,40 +108,50 @@ export default function Hero() {
             <Mail size={16} />
             Get in Touch
           </a>
-          <a href="https://github.com/vikas794" target="_blank" rel="noopener noreferrer" className="btn btn-icon" title="GitHub">
+          <a
+            href="https://github.com/vikas794"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-icon"
+            title="GitHub"
+          >
             <Github size={18} />
           </a>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.5 }}
           className="hero-metrics"
         >
           <div className="metric">
-            <span className="metric-num">4</span><span className="metric-unit">+</span>
+            <span className="metric-num">4</span>
+            <span className="metric-unit">+</span>
             <span className="metric-label">Years Exp</span>
           </div>
           <div className="metric-divider"></div>
           <div className="metric">
-            <span className="metric-num">15</span><span className="metric-unit">+</span>
+            <span className="metric-num">15</span>
+            <span className="metric-unit">+</span>
             <span className="metric-label">REST APIs</span>
           </div>
           <div className="metric-divider"></div>
           <div className="metric">
-            <span className="metric-num">40</span><span className="metric-unit">%</span>
+            <span className="metric-num">40</span>
+            <span className="metric-unit">%</span>
             <span className="metric-label">Integration Cut</span>
           </div>
           <div className="metric-divider"></div>
           <div className="metric">
-            <span className="metric-num">80</span><span className="metric-unit">%</span>
+            <span className="metric-num">80</span>
+            <span className="metric-unit">%</span>
             <span className="metric-label">Manual Effort Cut</span>
           </div>
         </motion.div>
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: 28 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.65, delay: 0.3 }}
@@ -150,27 +167,95 @@ export default function Hero() {
             <span className="code-filename">VikasJaiswal.java</span>
           </div>
           <div className="code-body">
-            <div className="code-line"><span className="c-comment">// Java 17 + Spring Boot 3.x</span></div>
-            <div className="code-line"><span className="c-kw">@RestController</span></div>
-            <div className="code-line"><span className="c-kw">@RequestMapping</span>(<span className="c-str">"/api/v1/dev"</span>)</div>
-            <div className="code-line"><span className="c-kw">public class</span> <span className="c-cls">VikasJaiswal</span> {"{"}</div>
-            <div className="code-line"></div>
-            <div className="code-line">  <span className="c-comment">// Professional Profile</span></div>
-            <div className="code-line">  <span className="c-kw">private final</span> <span className="c-cls">String</span> role <span className="c-op">=</span> <span className="c-str">"Backend Engineer"</span>;</div>
-            <div className="code-line">  <span className="c-kw">private final</span> <span className="c-cls">int</span>    exp  <span className="c-op">=</span> <span className="c-num">4</span>;</div>
-            <div className="code-line">  <span className="c-kw">private final</span> <span className="c-cls">String</span> loc  <span className="c-op">=</span> <span className="c-str">"Mumbai, IN 🇮🇳"</span>;</div>
-            <div className="code-line"></div>
-            <div className="code-line">  <span className="c-comment">// Technical Stack</span></div>
-            <div className="code-line">  <span className="c-kw">private final</span> <span className="c-cls">List</span>&lt;<span className="c-cls">String</span>&gt; stack <span className="c-op">=</span> <span className="c-cls">List</span>.of(</div>
-            <div className="code-line">    <span className="c-str">"Java"</span>, <span className="c-str">"Spring Boot"</span>, <span className="c-str">"SQL"</span>,</div>
-            <div className="code-line">    <span className="c-str">"JWT"</span>, <span className="c-str">"OAuth2"</span>, <span className="c-str">"AWS"</span></div>
-            <div className="code-line">  );</div>
-            <div className="code-line"></div>
-            <div className="code-line">  <span className="c-kw">@GetMapping</span>(<span className="c-str">"/status"</span>)</div>
-            <div className="code-line">  <span className="c-kw">public</span> <span className="c-cls">ResponseEntity</span>&lt;<span className="c-cls">String</span>&gt; getStatus() {"{"}</div>
-            <div className="code-line">    <span className="c-kw">return</span> <span className="c-cls">ResponseEntity</span>.ok()</div>
-            <div className="code-line">      .body(<span className="c-str">"Open to new challenges! ✅"</span>);</div>
-            <div className="code-line">  {"}"}</div>
+            <div className="code-line">
+              <span className="c-comment">// Java 17 + Spring Boot 3.x</span>
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">@RestController</span>
+            </div>
+            <div className="code-line">
+              <span className="c-kw">@RequestMapping</span>(
+              <span className="c-str">"/api/v1/dev"</span>)
+            </div>
+            <div className="code-line">
+              <span className="c-kw">public class</span>{" "}
+              <span className="c-cls">VikasJaiswal</span> {"{"}
+            </div>
+
+            <div className="code-line">
+              {" "}
+              <span className="c-comment">// Professional Profile</span>
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">private final</span>{" "}
+              <span className="c-cls">String</span> role{" "}
+              <span className="c-op">=</span>{" "}
+              <span className="c-str">"Backend Engineer"</span>;
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">private final</span>{" "}
+              <span className="c-cls">int</span> exp{" "}
+              <span className="c-op">=</span> <span className="c-num">4</span>;
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">private final</span>{" "}
+              <span className="c-cls">String</span> loc{" "}
+              <span className="c-op">=</span>{" "}
+              <span className="c-str">"Mumbai, IN 🇮🇳"</span>;
+            </div>
+
+            <div className="code-line">
+              {" "}
+              <span className="c-comment">// Technical Stack</span>
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">private final</span>{" "}
+              <span className="c-cls">List</span>&lt;
+              <span className="c-cls">String</span>&gt; stack{" "}
+              <span className="c-op">=</span>{" "}
+              <span className="c-cls">List</span>.of(
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-str">"Java"</span>,{" "}
+              <span className="c-str">"Spring Boot"</span>,{" "}
+              <span className="c-str">"SQL"</span>,
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-str">"JWT"</span>,{" "}
+              <span className="c-str">"OAuth2"</span>,{" "}
+              <span className="c-str">"AWS"</span>
+            </div>
+            <div className="code-line"> );</div>
+
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">@GetMapping</span>(
+              <span className="c-str">"/status"</span>)
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">public</span>{" "}
+              <span className="c-cls">ResponseEntity</span>&lt;
+              <span className="c-cls">String</span>&gt; getStatus() {"{"}
+            </div>
+            <div className="code-line">
+              {" "}
+              <span className="c-kw">return</span>{" "}
+              <span className="c-cls">ResponseEntity</span>.ok()
+            </div>
+            <div className="code-line">
+              {" "}
+              .body(<span className="c-str">"Open to new challenges! ✅"</span>
+              );
+            </div>
+            <div className="code-line"> {"}"}</div>
             <div className="code-line">{"}"}</div>
           </div>
         </div>
