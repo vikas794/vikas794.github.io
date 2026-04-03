@@ -40,7 +40,7 @@ export default function App() {
     <>
       <Cursor />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <main>
+      <main role="main" aria-label="Vikas Jaiswal Portfolio - Java Spring Boot Developer">
         <Hero />
         <Suspense fallback={<div className="h-20" />}>
           <About />

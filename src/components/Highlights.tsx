@@ -57,7 +57,7 @@ export default function Highlights() {
           className="section-header"
         >
           <div className="section-eyebrow">// notable work</div>
-          <h2 className="section-title">Key Highlights</h2>
+          <h2 className="section-title">Key Projects &amp; Highlights</h2>
         </motion.div>
 
         <div className="highlights-grid">

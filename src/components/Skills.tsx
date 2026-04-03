@@ -58,7 +58,7 @@ export default function Skills() {
           className="section-header"
         >
           <div className="section-eyebrow">// toolbox</div>
-          <h2 className="section-title">Technical Skills</h2>
+          <h2 className="section-title">Technical Skills — Java, Spring Boot &amp; Cloud</h2>
         </motion.div>
 
         <div className="skills-grid">

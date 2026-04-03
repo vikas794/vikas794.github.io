@@ -31,6 +31,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
             <a href="#skills" className="nav-link">skills</a>
             <a href="#experience" className="nav-link">exp</a>
             <a href="#highlights" className="nav-link">work</a>
+            <a href="#certifications" className="nav-link">certs</a>
             <a href="#contact" className="nav-link">contact</a>
             <button 
               onClick={toggleTheme} 
@@ -66,6 +67,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
         <a href="#skills" className="mobile-link" onClick={() => setMenuOpen(false)}>skills</a>
         <a href="#experience" className="mobile-link" onClick={() => setMenuOpen(false)}>experience</a>
         <a href="#highlights" className="mobile-link" onClick={() => setMenuOpen(false)}>highlights</a>
+        <a href="#certifications" className="mobile-link" onClick={() => setMenuOpen(false)}>certs</a>
         <a href="#contact" className="mobile-link" onClick={() => setMenuOpen(false)}>contact</a>
       </div>
     </>

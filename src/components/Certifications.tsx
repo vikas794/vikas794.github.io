@@ -1,58 +1,152 @@
-import { motion } from "motion/react";
+import { useState, useEffect, useCallback } from "react";
+import { ExternalLink, X, Award, Eye } from "lucide-react";
+
+interface Certificate {
+  id: string;
+  name: string;
+  issuer: string;
+  url: string;
+  canEmbed: boolean;
+  type: "google" | "microsoft";
+}
 
 export default function Certifications() {
-  const certs = [
+  const certs: Certificate[] = [
     {
-      logo: "MS",
-      logoClass: "ms",
-      name: "Azure Fundamentals",
-      issuer: "Microsoft · AZ-900"
+      id: "google-skill-1",
+      name: "Introduction to Generative AI, Google Cloud",
+      issuer: "Google Cloud",
+      url: "https://www.skills.google/public_profiles/473f841d-c7bd-493d-a580-34e95d39d039/badges/4599767",
+      canEmbed: false, // Force false because Google blocks iframe embedding
+      type: "google",
     },
     {
-      logo: "MS",
-      logoClass: "ms",
-      name: "Azure Data Fundamentals",
-      issuer: "Microsoft · DP-900"
+      id: "credly-1",
+      name: "Microsoft Certified: Azure Data Fundamentals (DP-900)",
+      issuer: "Microsoft",
+      url: "https://www.credly.com/badges/e78e744f-b633-47b2-b53d-06b6b03f3099",
+      canEmbed: false, // Credly blocks iframes
+      type: "microsoft",
     },
     {
-      logo: "G",
-      logoClass: "ggl",
-      name: "Introduction to Generative AI",
-      issuer: "Google Cloud"
+      id: "credly-2",
+      name: "Microsoft Certified: Azure Fundamentals (AZ-900)",
+      issuer: "Microsoft",
+      url: "https://www.credly.com/badges/976dd21a-0f47-4552-9afb-29bf515857c1",
+      canEmbed: false, // Credly blocks iframes
+      type: "microsoft",
     }
   ];
+
+  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
+
+  const closePortal = useCallback(() => {
+    setSelectedCert(null);
+  }, []);
+
+  // Handle ESC
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closePortal();
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [closePortal]);
 
   return (
     <section id="certifications" className="section certs-section">
       <div className="container">
-        <motion.div 
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.65 }}
-          className="section-header"
-        >
+        <div className="section-header">
           <div className="section-eyebrow">// credentials</div>
-          <h2 className="section-title">Certifications</h2>
-        </motion.div>
+          <h2 className="section-title">Certification Registry</h2>
+        </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.65, delay: 0.1 }}
-          className="certs-row"
-        >
-          {certs.map((cert, i) => (
-            <div key={i} className="cert-card">
-              <div className={`cert-logo ${cert.logoClass}`}>{cert.logo}</div>
-              <div>
+        <div className="certs-row">
+          {certs.map((cert) => (
+            <div 
+              key={cert.id} 
+              className="cert-card" 
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelectedCert(cert)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedCert(cert); }}
+            >
+              <div className={`cert-logo ${cert.type === 'google' ? 'ggl' : 'ms'}`}>
+                <Award size={22} />
+              </div>
+              <div className="flex-1">
                 <div className="cert-name">{cert.name}</div>
                 <div className="cert-issuer">{cert.issuer}</div>
               </div>
+              <div className="text-text-dim">
+                <Eye size={18} />
+              </div>
             </div>
           ))}
-        </motion.div>
+        </div>
+      </div>
+
+      {/* Modal - Following MapSection Pattern */}
+      <div 
+        className={`cert-modal-overlay ${selectedCert ? "active" : ""}`} 
+        onClick={closePortal}
+      ></div>
+      
+      <div className={`cert-modal ${selectedCert ? "active" : ""}`} role="dialog">
+        <div className="cert-modal-header">
+          <div>
+            <div className="cert-modal-title">{selectedCert?.name}</div>
+            <div className="cert-modal-subtitle">Direct Verification Pathway</div>
+          </div>
+          <button className="cert-close" onClick={closePortal} aria-label="Close">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="cert-modal-body">
+          {selectedCert && (
+            <div className="cert-preview-fallback">
+              <div className="fallback-badge-preview">
+                < Award size={80} className="text-accent opacity-50" />
+              </div>
+              <h3 className="cert-preview-title">{selectedCert.issuer} Secured Badge</h3>
+              <p className="fallback-text">
+                For security and authenticity, this credential is hosted on its respective 
+                official secure platform. Direct embedding is restricted to maintain record integrity.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-2">
+                <a 
+                  href={selectedCert.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn btn-primary"
+                >
+                  <ExternalLink size={16} />
+                  Validate Authenticity
+                </a>
+                <button className="btn btn-ghost" onClick={closePortal}>Return to Site</button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="cert-modal-footer">
+          <div className="text-xs text-text-dim mr-auto hidden sm:block">
+            Verified via {selectedCert?.issuer} official registry.
+          </div>
+          <button className="btn btn-ghost" onClick={closePortal}>Close</button>
+          {selectedCert && (
+            <a 
+              href={selectedCert.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn btn-primary"
+            >
+              <ExternalLink size={16} />
+              Open Registry Page
+            </a>
+          )}
+        </div>
       </div>
     </section>
   );

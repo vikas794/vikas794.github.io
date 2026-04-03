@@ -38,7 +38,7 @@ export default function Hero() {
   }, [charIdx, deleting, phraseIdx]);
 
   return (
-    <section id="hero" className="hero">
+    <section id="hero" className="hero" aria-label="Vikas Jaiswal — Java Spring Boot Backend Developer Portfolio">
       <div className="hero-bg-grid"></div>
       <div className="hero-orb hero-orb-1"></div>
       <div className="hero-orb hero-orb-2"></div>
@@ -62,6 +62,7 @@ export default function Hero() {
         >
           <span className="name-line">Vikas</span>
           <span className="name-line outline">Jaiswal</span>
+          <span className="sr-only"> — Java Spring Boot Developer | Backend Engineer | Full Stack Developer</span>
         </motion.h1>
 
         <motion.div
@@ -84,9 +85,11 @@ export default function Hero() {
           transition={{ duration: 0.65, delay: 0.3 }}
           className="hero-desc"
         >
-          Backend Developer with <strong>4+ years</strong> crafting secure, scalable enterprise systems 
-          across <em>FinTech, Healthcare, EdTech &amp; Logistics</em>. I specialize in 
-          Java 17 · Spring Boot · JWT · REST APIs · AWS.
+          Vikas Jaiswal is a <strong>Java Spring Boot Backend Developer</strong> with <strong>4+ years</strong> of 
+          professional experience building secure, scalable enterprise systems 
+          across <em>FinTech, Healthcare, EdTech &amp; Logistics</em>. 
+          He builds high-performance REST APIs with Spring Security, JWT authentication, and AWS cloud — 
+          delivering full stack solutions with Java and React.
         </motion.p>
 
         <motion.div
@@ -128,19 +131,19 @@ export default function Hero() {
           <div className="metric">
             <span className="metric-num">4</span>
             <span className="metric-unit">+</span>
-            <span className="metric-label">Years Exp</span>
+            <span className="metric-label">Years Experience</span>
           </div>
           <div className="metric-divider"></div>
           <div className="metric">
             <span className="metric-num">15</span>
             <span className="metric-unit">+</span>
-            <span className="metric-label">REST APIs</span>
+            <span className="metric-label">REST APIs Built</span>
           </div>
           <div className="metric-divider"></div>
           <div className="metric">
             <span className="metric-num">40</span>
             <span className="metric-unit">%</span>
-            <span className="metric-label">Integration Cut</span>
+            <span className="metric-label">Integration Time Cut</span>
           </div>
           <div className="metric-divider"></div>
           <div className="metric">

@@ -57,7 +57,7 @@ export default function Experience() {
           className="section-header"
         >
           <div className="section-eyebrow">// career</div>
-          <h2 className="section-title">Experience</h2>
+          <h2 className="section-title">Professional Experience</h2>
         </motion.div>
 
         <div className="exp-timeline">

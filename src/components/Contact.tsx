@@ -19,7 +19,7 @@ export default function Contact({ theme }: ContactProps) {
 
   return (
     <>
-      <section id="contact" className="section contact-section">
+      <section id="contact" className="section contact-section" aria-label="Contact Vikas Jaiswal — Java Spring Boot Developer">
         <div className="container">
           <div className="contact-grid">
             <motion.div 

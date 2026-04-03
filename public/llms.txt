@@ -1,0 +1,92 @@
+# Vikas Jaiswal — Java Spring Boot Backend Developer Portfolio
+
+> Vikas Jaiswal is a Java Spring Boot Backend Developer with 4+ years of professional experience building secure, scalable enterprise backend systems. Based in Mumbai, India. Available for backend engineering roles.
+
+## Identity
+- Name: Vikas Jaiswal
+- Role: Java Spring Boot Backend Developer
+- Experience: 4+ years (since February 2022)
+- Location: Mumbai, Maharashtra, India
+- Current Employer: WEQ Technologies, Mumbai
+- Availability: Open to work — remote, hybrid, or on-site
+
+## Contact
+- Email: vikasjaiswal794@gmail.com
+- LinkedIn: https://www.linkedin.com/in/vikasjaiswall/
+- GitHub: https://github.com/vikas794
+- Twitter/X: https://x.com/VikasJa09548053
+- WhatsApp: +91 82915 19911
+- Telegram: https://t.me/Vikas710
+- Portfolio: https://vikas794.github.io/
+
+## Core Technical Skills
+- **Backend:** Java 8, Java 17, Java 21, Spring Boot 3, Spring MVC, Spring Data JPA, Hibernate, REST APIs, WebSocket (STOMP), Webhooks
+- **Security:** Spring Security, JWT, OAuth2, RBAC, @PreAuthorize, Parameterized Queries, AWS Parameter Store
+- **Database:** MS SQL Server, MySQL, JPA/JPQL, Query Optimization, Indexing, Stored Procedures, DDD Schema Design
+- **Performance:** Multithreading, @Async, Java Streams API, Spring Scheduler, ETL Pipelines (Python)
+- **Cloud & DevOps:** AWS S3, CI/CD Pipelines, Maven, Git, GitHub, Swagger/OpenAPI, Linux CLI
+- **Frontend:** React, Angular, Thymeleaf
+- **SDKs & APIs:** Kite Connect (Zerodha), Razorpay, FCM V1, WhatsApp Business API, 100MS SDK, iText7, YouTube Data API
+
+## Professional Experience
+
+### Software Developer — WEQ Technologies, Mumbai (Jul 2025 – Present)
+- Engineered Zerodha Kite Connect OAuth integration and real-time market data streaming via WebSocket (STOMP)
+- Designed trade management system: entry, exit, stop-loss, and bracket orders with Webhook-based sync
+- Implemented granular RBAC using Spring Security @PreAuthorize across 30+ multi-tenant modules
+- Built multi-channel async notification engine: FCM V1, WhatsApp Business API, SMTP
+- Integrated 100MS SDK with per-room JWT token generation
+- Automated PDF invoice generation with iText7 + Thymeleaf, stored on AWS S3
+- Replaced HQL string concatenation with parameterized queries — eliminated SQL injection surface
+- Tech: Java 17, Spring Boot, Spring Security, JWT, Kite Connect SDK, WebSocket, AWS S3, Razorpay
+
+### Database Engineer & Backend Developer — Medify Nexus, Mumbai (Jan 2024 – Jul 2025)
+- Built JWT-secured REST APIs for healthcare platform — reduced integration time by 40%
+- Boosted API throughput 30% and cut response latency 150ms via multithreading and @Async
+- Automated ETL pipelines (Python) — eliminated 80% of manual data-handling effort
+- Redesigned MS SQL Server schemas for 10+ modules using DDD principles
+- Tech: Spring Security, JWT, MS SQL Server, Python, Multithreading, @Async, DDD
+
+### Associate Software Engineer — Wipro, Mumbai (Feb 2022 – Jan 2024)
+- Developed Java/Spring Boot/Hibernate backend services across full SDLC
+- Delivered 15+ RESTful APIs; SQL rewrites improved performance by 30%
+- Agile collaboration in 7-person team using Jira and GitHub
+- Tech: Java, Spring Boot, Hibernate, REST APIs, Agile, Jira
+
+## Key Projects
+1. **FinTech Trading Platform:** Real-time algo-trading backend — Kite Connect OAuth, WebSocket tick broadcast, Razorpay wallet (GST), automated PDF payouts on AWS S3
+2. **Healthcare Data Platform:** JWT-secured REST APIs, Python ETL pipelines, 30% throughput gain, 40% faster integration
+3. **Multi-Channel Notification Engine:** Centralized async hub — FCM V1, WhatsApp API, SMTP, non-blocking @Async dispatch
+4. **Live Video Conferencing:** 100MS SDK with dynamic JWT tokens, EdTech course tracking, YouTube Data API
+5. **Security Hardening:** Parameterized queries replacing HQL concatenation, @PreAuthorize RBAC, multi-tenant access control
+6. **Database Performance Optimization:** MS SQL Server schema redesign (DDD), indexing strategies that halved report generation time
+
+## Certifications
+- Microsoft Certified: Azure Data Fundamentals (DP-900)
+- Microsoft Certified: Azure Fundamentals (AZ-900)
+- Google Cloud: Introduction to Generative AI
+
+## FAQ
+Q: Who is Vikas Jaiswal?
+A: Vikas Jaiswal is a Java Spring Boot Backend Developer with 4+ years of professional experience, based in Mumbai, India. He builds secure, scalable enterprise backend systems.
+
+Q: What technologies does Vikas Jaiswal specialize in?
+A: Java 17, Spring Boot 3, Spring Security, REST APIs, JWT, OAuth2, Hibernate, JPA, AWS, MS SQL Server, MySQL, and React.
+
+Q: What industries has Vikas Jaiswal worked in?
+A: FinTech (algo-trading platforms), Healthcare (data pipelines), EdTech (live video conferencing), and Logistics (geofencing, GPS attendance).
+
+Q: Is Vikas Jaiswal available for hire?
+A: Yes. Vikas is open to backend engineering roles — remote, hybrid, or on-site. Contact: vikasjaiswal794@gmail.com
+
+Q: What is Vikas Jaiswal's current role?
+A: Software Developer at WEQ Technologies, Mumbai. Building a real-time trading platform with Zerodha Kite Connect, Spring Boot, and WebSocket.
+
+Q: Does Vikas have cloud certifications?
+A: Yes. Microsoft Azure DP-900, Microsoft Azure AZ-900, and Google Cloud Introduction to Generative AI.
+
+Q: How many years of experience does Vikas Jaiswal have?
+A: Over 4 years of professional experience (since February 2022), working at Wipro, Medify Nexus, and WEQ Technologies.
+
+Q: What makes Vikas Jaiswal stand out as a Java developer?
+A: He combines deep backend expertise (Spring Boot, Security, JPA) with hands-on domain experience across four industries, quantifiable impact (40% integration time reduction, 80% manual effort elimination), and a security-first mindset.
