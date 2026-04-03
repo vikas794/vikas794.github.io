@@ -108,15 +108,18 @@ export default function Contact({ theme }: ContactProps) {
             >
               <div className="github-stats-card">
                 <div className="gs-title">GitHub Activity</div>
-                <img 
-                  src={`https://github-readme-stats.vercel.app/api?username=vikas794&hide_title=true&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&theme=transparent&locale=en&hide_border=true&text_color=${textColor}&icon_color=${iconColor}&title_color=${titleColor}`} 
+                {/* GitHub Stats Card */}
+                <img
+                  src={`https://ghstats.dev/api/card?username=vikas794&theme=${theme === 'dark' ? 'dark' : 'gruvbox'}&hide_title=true&border_radius=14`}
                   alt="Vikas GitHub stats"
                   className="gh-stats-img"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
-                <img 
-                  src={`https://github-readme-stats.vercel.app/api/top-langs?username=vikas794&locale=en&hide_title=true&layout=compact&card_width=320&langs_count=5&theme=transparent&hide_border=true&text_color=${textColor}&title_color=${titleColor}`} 
+
+                {/* Top Languages */}
+                <img
+                  src={`https://ghstats.dev/api/langs?username=vikas794&theme=${theme === 'dark' ? 'dark' : 'gruvbox'}&hide_border=true&hide_title=true&border_radius=14`}
                   alt="Top languages"
                   className="gh-stats-img"
                   loading="lazy"
