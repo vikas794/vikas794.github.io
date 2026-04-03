@@ -91,7 +91,9 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.65;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Prevent horizontal scrolling at the body level */
+  width: 100%; /* Ensure body doesn't expand beyond viewport */
+  max-width: 100%;
   -webkit-font-smoothing: antialiased;
   transition: background var(--transition), color var(--transition);
 }
@@ -489,7 +491,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   font-size: 0.68rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
-  white-space: nowrap;
+  /* Removed white-space: nowrap to avoid overflow on very small devices */
 }
 
 /* Code panel */
@@ -508,6 +510,8 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   width: 100%;
   max-width: 480px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--border);
+  display: flex;
+  flex-direction: column;
 }
 
 .code-titlebar {
@@ -534,6 +538,8 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   padding: 1.2rem 0;
   overflow-x: auto;
   counter-reset: line;
+  max-width: 100%; /* Stay within bounds */
+  scrollbar-width: thin; /* Modern scrollbar styling */
 }
 
 .code-line {
@@ -542,7 +548,8 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   line-height: 1.6;
   font-family: var(--font-mono);
   font-size: 0.82rem;
-  white-space: pre;
+  white-space: pre; /* Keep formatting */
+  min-width: min-content; /* Ensure background spans full width of content when scrolling */
 }
 
 .code-line::before {
@@ -998,7 +1005,12 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   text-transform: uppercase;
   margin-bottom: 0.15rem;
 }
-.cl-value { font-size: 0.88rem; color: var(--text-muted); transition: color var(--transition); }
+.cl-value { 
+  font-size: 0.88rem; 
+  color: var(--text-muted); 
+  transition: color var(--transition);
+  word-break: break-all; /* Fixed: Prevent overflow from long emails/links */
+}
 .contact-link:hover .cl-value { color: var(--text); }
 
 .map-hint {
@@ -1169,7 +1181,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 /* ============================================================
    RESPONSIVE
 ============================================================ */
-@media (max-width: 960px) {
+@media (max-width: 767px) {
   .hero {
     grid-template-columns: 1fr;
     padding-top: 7rem;
@@ -1193,8 +1205,16 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
     margin-right: 0; 
     border-right: 1px solid var(--border);
     flex: 1 1 120px;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
   }
-  .metric:nth-child(even) { border-right: none; }
+  .metric:last-child { border-right: none; }
+  /* Remove border if it's the right-most in a 2-col layout on mobile */
+  .hero-metrics { display: flex; flex-wrap: wrap; }
+  @media (max-width: 480px) {
+    .metric:nth-child(odd) { border-right: 1px solid var(--border); }
+    .metric:nth-child(even) { border-right: none; }
+  }
   .skills-grid { grid-template-columns: 1fr; }
   .highlights-grid { grid-template-columns: 1fr; }
   .certs-row { flex-direction: column; }
@@ -1207,9 +1227,19 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 }
 
 @media (max-width: 480px) {
-  .hero-name { font-size: 2.5rem; }
-  .hero-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .metric { padding: 0; margin: 0; border: none; }
-  .metric-num { font-size: 1.6rem; }
-  .nav { padding: 0 1.25rem; }
+  .hero-name { font-size: 2.2rem; } /* Slightly smaller for very narrow screens */
+  .hero-metrics { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 1rem; 
+  }
+  .metric { 
+    padding: 0; 
+    margin: 0; 
+    border: none; 
+    text-align: center; /* Center metrics on mobile for better look */
+  }
+  .metric-num { font-size: 1.5rem; }
+  .nav { padding: 0 1rem; }
+  .section { padding: 3.5rem 1rem; } /* Reduce padding on smallest screens */
 }
