@@ -3,21 +3,38 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { lazy, Suspense, useEffect } from "react";
 import { useTheme } from "./hooks/useTheme";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import Experience from "./components/Experience";
-import Highlights from "./components/Highlights";
-import Certifications from "./components/Certifications";
-import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Cursor from "./components/Cursor";
 import BackToTop from "./components/BackToTop";
 
+const About = lazy(() => import("./components/About"));
+const Skills = lazy(() => import("./components/Skills"));
+const Experience = lazy(() => import("./components/Experience"));
+const Highlights = lazy(() => import("./components/Highlights"));
+const Certifications = lazy(() => import("./components/Certifications"));
+const Contact = lazy(() => import("./components/Contact"));
+
 export default function App() {
   const { theme, toggleTheme } = useTheme();
+
+  // Optimized: Prefetch non-critical components after initial load
+  useEffect(() => {
+    const prefetch = () => {
+      import("./components/About");
+      import("./components/Skills");
+      import("./components/Experience");
+      import("./components/Highlights");
+      import("./components/Certifications");
+      import("./components/Contact");
+    };
+    // Idle time prefetch
+    const timer = setTimeout(prefetch, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -25,12 +42,14 @@ export default function App() {
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero />
-        <About />
-        <Skills />
-        <Experience />
-        <Highlights />
-        <Certifications />
-        <Contact theme={theme} />
+        <Suspense fallback={<div className="h-20" />}>
+          <About />
+          <Skills />
+          <Experience />
+          <Highlights />
+          <Certifications />
+          <Contact theme={theme} />
+        </Suspense>
       </main>
       <Footer />
       <BackToTop />
