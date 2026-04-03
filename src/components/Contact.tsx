@@ -80,7 +80,7 @@ export default function Contact({ theme }: ContactProps) {
                   </div>
                   <div>
                     <div className="cl-label">Telegram</div>
-                    <div className="cl-value">t.me/Vikas710</div>
+                    <div className="cl-value">t.me/Vikas7</div>
                   </div>
                 </a>
 
