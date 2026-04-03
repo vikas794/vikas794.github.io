@@ -126,7 +126,7 @@ export default function Contact({ theme }: ContactProps) {
                   referrerPolicy="no-referrer-when-downgrade"
                 />
                 <img 
-                  src={`https://streak-stats.demolab.com?user=vikas794&locale=en&mode=daily&theme=${theme === 'dark' ? 'dark' : 'default'}&hide_border=true&border_radius=8&date_format=j%20M%5B%20Y%5D&background=transparent&stroke=${titleColor}&ring=${titleColor}&fire=00d4aa&currStreakLabel=${textColor}&sideLabels=${textColor}&dates=606080&currStreakNum=${textColor}&sideNums=${textColor}`} 
+                  src={`https://streak-stats.demolab.com?user=vikas794&locale=en&mode=daily&theme=${theme === 'dark' ? 'transparent' : 'gruvbox'}`} 
                   alt="GitHub streak"
                   className="gh-stats-img"
                   loading="lazy"
