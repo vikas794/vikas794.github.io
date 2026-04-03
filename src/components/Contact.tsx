@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Mail, Linkedin, Github, Twitter, MessageCircle, MapPin } from "lucide-react";
-import MapSection from "./MapSection";
+import { lazy, Suspense } from "react";
+
+const MapSection = lazy(() => import("./MapSection"));
 
 interface ContactProps {
   theme: "light" | "dark";
@@ -138,7 +140,9 @@ export default function Contact({ theme }: ContactProps) {
         </div>
       </section>
 
-      <MapSection isOpen={isMapOpen} onClose={() => setIsMapOpen(false)} />
+      <Suspense fallback={null}>
+        <MapSection isOpen={isMapOpen} onClose={() => setIsMapOpen(false)} />
+      </Suspense>
     </>
   );
 }
