@@ -3,10 +3,10 @@ import { motion } from "motion/react";
 import { Github, Linkedin, Mail } from "lucide-react";
 
 const metrics = [
-  { num: "4",  unit: "+", label: "Years Experience"     },
-  { num: "15", unit: "+", label: "REST APIs Built"       },
-  { num: "40", unit: "%", label: "Integration Time Cut"  },
-  { num: "80", unit: "%", label: "Manual Effort Cut"     },
+  { num: "4", unit: "+", label: "Years Experience" },
+  { num: "15", unit: "+", label: "REST APIs Built" },
+  { num: "40", unit: "%", label: "Integration Time Cut" },
+  { num: "80", unit: "%", label: "Manual Effort Cut" },
 ];
 
 export default function Hero() {
@@ -92,11 +92,11 @@ export default function Hero() {
           transition={{ duration: 0.65, delay: 0.3 }}
           className="hero-desc"
         >
-          Vikas Jaiswal is a <strong>Java Spring Boot Backend Developer</strong> with <strong>4+ years</strong> of 
-          professional experience building secure, scalable enterprise systems 
-          across <em>FinTech, Healthcare, EdTech &amp; Logistics</em>. 
-          He builds high-performance REST APIs with Spring Security, JWT authentication, and AWS cloud — 
-          delivering full stack solutions with Java and React.
+          Vikas Jaiswal is a <strong>Java Spring Boot Backend Developer</strong> with <strong>4+ years</strong> of
+          professional experience building secure, scalable enterprise systems
+          across <em>FinTech, Healthcare, EdTech &amp; Logistics</em>.
+          He builds high-performance REST APIs with Spring Security, JWT authentication, and AWS cloud —
+          delivering full stack solutions with Java.
         </motion.p>
 
         <motion.div
