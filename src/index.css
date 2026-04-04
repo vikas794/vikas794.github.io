@@ -90,7 +90,7 @@
    RESET & BASE
 ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
 body {
   font-family: var(--font-display);
   background: var(--bg);
@@ -331,6 +331,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
 }
 
 /* Grid background */
@@ -564,13 +565,12 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 }
 
 .code-line {
-  display: flex;
+  display: block;
   padding: 0 1.2rem;
   line-height: 1.6;
   font-family: var(--font-mono);
   font-size: 0.82rem;
-  white-space: pre; /* Keep formatting */
-  min-width: min-content; /* Ensure background spans full width of content when scrolling */
+  white-space: pre;
 }
 
 .code-line::before {
