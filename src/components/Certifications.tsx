@@ -10,34 +10,34 @@ interface Certificate {
   type: "google" | "microsoft";
 }
 
-export default function Certifications() {
-  const certs: Certificate[] = [
-    {
-      id: "google-skill-1",
-      name: "Introduction to Generative AI, Google Cloud",
-      issuer: "Google Cloud",
-      url: "https://www.skills.google/public_profiles/473f841d-c7bd-493d-a580-34e95d39d039/badges/4599767",
-      canEmbed: false, // Force false because Google blocks iframe embedding
-      type: "google",
-    },
-    {
-      id: "credly-1",
-      name: "Microsoft Certified: Azure Data Fundamentals (DP-900)",
-      issuer: "Microsoft",
-      url: "https://www.credly.com/badges/e78e744f-b633-47b2-b53d-06b6b03f3099",
-      canEmbed: false, // Credly blocks iframes
-      type: "microsoft",
-    },
-    {
-      id: "credly-2",
-      name: "Microsoft Certified: Azure Fundamentals (AZ-900)",
-      issuer: "Microsoft",
-      url: "https://www.credly.com/badges/976dd21a-0f47-4552-9afb-29bf515857c1",
-      canEmbed: false, // Credly blocks iframes
-      type: "microsoft",
-    }
-  ];
+const CERTS: Certificate[] = [
+  {
+    id: "google-skill-1",
+    name: "Introduction to Generative AI, Google Cloud",
+    issuer: "Google Cloud",
+    url: "https://www.skills.google/public_profiles/473f841d-c7bd-493d-a580-34e95d39d039/badges/4599767",
+    canEmbed: false, // Force false because Google blocks iframe embedding
+    type: "google",
+  },
+  {
+    id: "credly-1",
+    name: "Microsoft Certified: Azure Data Fundamentals (DP-900)",
+    issuer: "Microsoft",
+    url: "https://www.credly.com/badges/e78e744f-b633-47b2-b53d-06b6b03f3099",
+    canEmbed: false, // Credly blocks iframes
+    type: "microsoft",
+  },
+  {
+    id: "credly-2",
+    name: "Microsoft Certified: Azure Fundamentals (AZ-900)",
+    issuer: "Microsoft",
+    url: "https://www.credly.com/badges/976dd21a-0f47-4552-9afb-29bf515857c1",
+    canEmbed: false, // Credly blocks iframes
+    type: "microsoft",
+  },
+];
 
+export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
 
   const closePortal = useCallback(() => {
@@ -62,7 +62,7 @@ export default function Certifications() {
         </div>
 
         <div className="certs-row">
-          {certs.map((cert) => (
+          {CERTS.map((cert) => (
             <div 
               key={cert.id} 
               className="cert-card" 
