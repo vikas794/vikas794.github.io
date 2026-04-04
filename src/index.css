@@ -1174,7 +1174,14 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   font-size: 0.88rem; 
   color: var(--text-muted); 
   transition: color var(--transition);
-  word-break: break-all; /* Fixed: Prevent overflow from long emails/links */
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* Ensure the text container can shrink within the flexbox layout */
+.contact-link > div:not(.cl-icon) {
+  min-width: 0;
+  flex: 1;
 }
 .contact-link:hover .cl-value { color: var(--text); }
 
