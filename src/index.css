@@ -1325,6 +1325,9 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
     grid-template-columns: 1fr;
     padding-top: 7rem;
     gap: 3rem;
+    min-height: unset;
+    align-items: start;
+    align-content: start;
   }
   .hero-code-panel { justify-content: flex-start; }
   .code-window { max-width: 100%; }
