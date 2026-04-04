@@ -280,7 +280,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
    SECTIONS + CONTAINER
 ============================================================ */
 .section {
-  padding: 7rem 2rem;
+  padding: 7rem clamp(1rem, 4vw, 2rem);
   position: relative;
 }
 .section + .section { border-top: 1px solid var(--border); }
@@ -327,11 +327,10 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 4rem;
-  padding: 7rem 2rem 4rem;
+  padding: 7rem clamp(1rem, 4vw, 2rem) 4rem;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
 }
 
 /* Grid background */
@@ -928,7 +927,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 }
 .cert-card {
   flex: 1;
-  min-width: 300px;
+  min-width: min(300px, 100%);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
