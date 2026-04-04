@@ -63,15 +63,9 @@ export default function Certifications() {
 
         <div className="certs-row">
           {CERTS.map((cert) => (
-<<<<<<< HEAD
             <div
               key={cert.id}
               className="cert-card"
-=======
-            <div 
-              key={cert.id} 
-              className="cert-card" 
->>>>>>> 87bf78323779ded380c1eb8c691c0789ddca3cc4
               role="button"
               tabIndex={0}
               onClick={() => setSelectedCert(cert)}
