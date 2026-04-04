@@ -46,6 +46,25 @@
   --radius:      10px;
   --radius-lg:   16px;
   --transition:  0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Fluid spacing scale (min → preferred → max) ──────────── */
+  --sp-h:   clamp(1rem, 4vw, 2rem);      /* horizontal page gutter       */
+  --sp-xs:  clamp(0.3rem, 0.8vw, 0.5rem);
+  --sp-sm:  clamp(0.5rem, 1.5vw, 0.9rem);
+  --sp-md:  clamp(0.9rem, 2vw, 1.4rem);
+  --sp-lg:  clamp(1.4rem, 3vw, 2rem);
+  --sp-xl:  clamp(2rem, 4.5vw, 3rem);
+  --sp-2xl: clamp(3rem, 6vw, 5rem);
+  --sp-3xl: clamp(3.5rem, 9vw, 7rem);    /* section vertical padding      */
+
+  /* ── Fluid type scale ─────────────────────────────────────── */
+  --fs-xs:    clamp(0.68rem, 1.4vw, 0.78rem);
+  --fs-sm:    clamp(0.78rem, 1.8vw, 0.9rem);
+  --fs-base:  clamp(0.88rem, 2vw, 1rem);
+  --fs-lg:    clamp(0.92rem, 2.2vw, 1.1rem);
+  --fs-xl:    clamp(1.4rem, 3vw, 1.9rem);
+  --fs-2xl:   clamp(1.8rem, 4vw, 2.8rem);
+  --fs-hero:  clamp(2.8rem, 8vw, 6.5rem);
 }
 
 :root.light {
@@ -175,7 +194,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 500;
-  padding: 0 2rem;
+  padding: 0 var(--sp-h);
   background: rgba(8, 8, 16, 0.8);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -280,13 +299,13 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
    SECTIONS + CONTAINER
 ============================================================ */
 .section {
-  padding: 7rem clamp(1rem, 4vw, 2rem);
+  padding: var(--sp-3xl) var(--sp-h);
   position: relative;
 }
 .section + .section { border-top: 1px solid var(--border); }
 .container { max-width: 1100px; margin: 0 auto; }
 
-.section-header { margin-bottom: 3.5rem; }
+.section-header { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
 .section-eyebrow {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -296,7 +315,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   margin-bottom: 0.6rem;
 }
 .section-title {
-  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-size: var(--fs-2xl);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -326,8 +345,8 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 4rem;
-  padding: 7rem clamp(1rem, 4vw, 2rem) 4rem;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding: clamp(5rem, 14vh, 7rem) var(--sp-h) clamp(2.5rem, 7vh, 4rem);
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
@@ -353,14 +372,14 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   z-index: 0;
 }
 .hero-orb-1 {
-  width: 500px; height: 500px;
+  width: clamp(200px, 40vw, 500px); height: clamp(200px, 40vw, 500px);
   top: -10%; left: -15%;
   background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
   animation: orb-float 10s ease-in-out infinite;
   opacity: 0.3;
 }
 .hero-orb-2 {
-  width: 400px; height: 400px;
+  width: clamp(150px, 30vw, 400px); height: clamp(150px, 30vw, 400px);
   bottom: 0; right: -10%;
   background: radial-gradient(circle, var(--green-dim) 0%, transparent 70%);
   animation: orb-float 14s ease-in-out infinite reverse;
@@ -371,13 +390,13 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 
 .hero-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
   color: var(--green);
   letter-spacing: 0.1em;
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
 }
 
 .dot-pulse {
@@ -390,11 +409,11 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 
 .hero-name {
   display: block;
-  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  font-size: var(--fs-hero);
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 0.92;
-  margin-bottom: 1.2rem;
+  margin-bottom: clamp(0.8rem, 1.5vw, 1.2rem);
 }
 .name-line { display: block; }
 .name-line.outline {
@@ -404,9 +423,9 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 
 .hero-role {
   font-family: var(--font-mono);
-  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-size: var(--fs-base);
   color: var(--text-muted);
-  margin-bottom: 1.6rem;
+  margin-bottom: clamp(1rem, 2vw, 1.6rem);
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -421,11 +440,11 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 }
 
 .hero-desc {
-  font-size: 1rem;
+  font-size: var(--fs-base);
   color: var(--text-muted);
-  max-width: 520px;
-  margin-bottom: 2.2rem;
-  line-height: 1.8;
+  max-width: min(520px, 100%);
+  margin-bottom: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.75;
 }
 
 .hero-actions {
@@ -433,7 +452,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 /* Buttons */
@@ -484,15 +503,15 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 0 1.6rem 0 0;
-  margin-right: 1.6rem;
+  padding: 0 clamp(1rem, 2.5vw, 1.6rem) 0 0;
+  margin-right: clamp(1rem, 2.5vw, 1.6rem);
   border-right: 1px solid var(--border);
 }
 .metric:last-child { border-right: none; padding-right: 0; margin-right: 0; }
 .metric-divider { display: none; }
 
 .metric-num {
-  font-size: 1.9rem;
+  font-size: var(--fs-xl);
   font-weight: 800;
   color: var(--accent);
   line-height: 1;
@@ -602,7 +621,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5rem;
+  gap: clamp(2rem, 5vw, 5rem);
   align-items: start;
 }
 
@@ -634,10 +653,10 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1.8rem;
+  padding: clamp(1.2rem, 2.5vw, 1.8rem);
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: clamp(1rem, 2vw, 1.4rem);
 }
 .domains-title {
   font-family: var(--font-mono);
@@ -670,7 +689,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1.6rem;
+  padding: clamp(1rem, 2.5vw, 1.6rem);
   transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
   position: relative;
   overflow: hidden;
@@ -1320,68 +1339,55 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 /* ============================================================
    RESPONSIVE
 ============================================================ */
+/* ── Tablet / large phone: switch hero + about + contact to single column ── */
 @media (max-width: 767px) {
   .hero {
     grid-template-columns: 1fr;
-    padding-top: 7rem;
-    gap: 3rem;
     min-height: unset;
     align-items: start;
     align-content: start;
   }
   .hero-code-panel { justify-content: flex-start; }
   .code-window { max-width: 100%; }
-  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .about-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .hamburger { display: flex; }
 }
 
+/* ── Small phone: collapse grid cards + wrap metrics ───────────────────── */
 @media (max-width: 640px) {
-  .section { padding: 4rem 1.25rem; }
-  .hero { padding: 6rem 1.25rem 3rem; }
-  .hero-name { font-size: clamp(2.8rem, 12vw, 4rem); }
-  .hero-metrics { gap: 1rem; }
-  .metric { 
-    padding-right: 1rem; 
-    margin-right: 0; 
+  .skills-grid     { grid-template-columns: 1fr; }
+  .highlights-grid { grid-template-columns: 1fr; }
+  .certs-row       { flex-direction: column; }
+  .back-to-top     { bottom: 1rem; right: 1rem; }
+  .hero-metrics    { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .metric {
+    flex: 1 1 110px;
+    padding-right: clamp(0.75rem, 2vw, 1rem);
+    margin-right: 0;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.4rem;
     border-right: 1px solid var(--border);
-    flex: 1 1 120px;
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.5rem;
   }
   .metric:last-child { border-right: none; }
-  /* Remove border if it's the right-most in a 2-col layout on mobile */
-  .hero-metrics { display: flex; flex-wrap: wrap; }
-  @media (max-width: 480px) {
-    .metric:nth-child(odd) { border-right: 1px solid var(--border); }
-    .metric:nth-child(even) { border-right: none; }
-  }
-  .skills-grid { grid-template-columns: 1fr; }
-  .highlights-grid { grid-template-columns: 1fr; }
-  .certs-row { flex-direction: column; }
-  .back-to-top { bottom: 1rem; right: 1rem; }
-  .exp-card { padding: 1.5rem; }
-  .skill-card { padding: 1.25rem; }
-  .highlight-card { padding: 1.5rem; }
-  .code-body { padding: 1rem; }
-  .code-body code { font-size: 0.75rem; white-space: pre-wrap; word-break: break-all; }
+  .code-body code { white-space: pre-wrap; word-break: break-all; }
 }
 
+/* ── Very narrow phone: 2-col metric grid, tiny hero name ──────────────── */
 @media (max-width: 480px) {
-  .hero-name { font-size: 2.2rem; } /* Slightly smaller for very narrow screens */
-  .hero-metrics { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 1rem; 
+  .hero-name { font-size: clamp(2rem, 10vw, 2.8rem); }
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
-  .metric { 
-    padding: 0; 
-    margin: 0; 
-    border: none; 
-    text-align: center; /* Center metrics on mobile for better look */
+  .metric {
+    padding: 0;
+    margin: 0;
+    border: none;
+    text-align: center;
   }
-  .metric-num { font-size: 1.5rem; }
-  .nav { padding: 0 1rem; }
-  .section { padding: 3.5rem 1rem; } /* Reduce padding on smallest screens */
+  .metric:nth-child(odd)  { border-right: 1px solid var(--border); padding-right: 1rem; }
+  .metric:nth-child(even) { border-right: none; }
 }
