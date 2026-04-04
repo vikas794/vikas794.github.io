@@ -15,6 +15,7 @@ const About = lazy(() => import("./components/About"));
 const Skills = lazy(() => import("./components/Skills"));
 const Experience = lazy(() => import("./components/Experience"));
 const Highlights = lazy(() => import("./components/Highlights"));
+const OtherProjects = lazy(() => import("./components/OtherProjects"));
 const Certifications = lazy(() => import("./components/Certifications"));
 const Contact = lazy(() => import("./components/Contact"));
 
@@ -28,6 +29,7 @@ export default function App() {
       import("./components/Skills");
       import("./components/Experience");
       import("./components/Highlights");
+      import("./components/OtherProjects");
       import("./components/Certifications");
       import("./components/Contact");
     };
@@ -47,6 +49,7 @@ export default function App() {
           <Skills />
           <Experience />
           <Highlights />
+          <OtherProjects />
           <Certifications />
           <Contact theme={theme} />
         </Suspense>
