@@ -350,6 +350,8 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Grid background */
@@ -386,7 +388,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   opacity: 0.6;
 }
 
-.hero-content { position: relative; z-index: 1; }
+.hero-content { position: relative; z-index: 1; min-width: 0; max-width: 100%; }
 
 .hero-eyebrow {
   font-family: var(--font-mono);
@@ -443,6 +445,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   font-size: var(--fs-base);
   color: var(--text-muted);
   max-width: min(520px, 100%);
+  width: 100%;
   margin-bottom: clamp(1.5rem, 3vw, 2.2rem);
   line-height: 1.75;
 }
@@ -542,6 +545,9 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   z-index: 1;
   display: flex;
   justify-content: flex-end;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 .code-window {
@@ -1174,7 +1180,14 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   font-size: 0.88rem; 
   color: var(--text-muted); 
   transition: color var(--transition);
-  word-break: break-all; /* Fixed: Prevent overflow from long emails/links */
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* Ensure the text container can shrink within the flexbox layout */
+.contact-link > div:not(.cl-icon) {
+  min-width: 0;
+  flex: 1;
 }
 .contact-link:hover .cl-value { color: var(--text); }
 
@@ -1373,5 +1386,5 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 
 /* ── Very narrow phone: shrink hero name ───────────────────────────────── */
 @media (max-width: 480px) {
-  .hero-name { font-size: clamp(2rem, 10vw, 2.8rem); }
+  .hero-name { font-size: clamp(2rem, 10vw, 2.8rem); max-width: 100%; word-break: break-word; }
 }
