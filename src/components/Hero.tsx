@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Github, Linkedin, Mail } from "lucide-react";
 
+const metrics = [
+  { num: "4",  unit: "+", label: "Years Experience"     },
+  { num: "15", unit: "+", label: "REST APIs Built"       },
+  { num: "40", unit: "%", label: "Integration Time Cut"  },
+  { num: "80", unit: "%", label: "Manual Effort Cut"     },
+];
+
 export default function Hero() {
   const phrases = [
     "Java Backend Developer",
@@ -128,29 +135,15 @@ export default function Hero() {
           transition={{ duration: 0.65, delay: 0.5 }}
           className="hero-metrics"
         >
-          <div className="metric">
-            <span className="metric-num">4</span>
-            <span className="metric-unit">+</span>
-            <span className="metric-label">Years Experience</span>
-          </div>
-          <div className="metric-divider"></div>
-          <div className="metric">
-            <span className="metric-num">15</span>
-            <span className="metric-unit">+</span>
-            <span className="metric-label">REST APIs Built</span>
-          </div>
-          <div className="metric-divider"></div>
-          <div className="metric">
-            <span className="metric-num">40</span>
-            <span className="metric-unit">%</span>
-            <span className="metric-label">Integration Time Cut</span>
-          </div>
-          <div className="metric-divider"></div>
-          <div className="metric">
-            <span className="metric-num">80</span>
-            <span className="metric-unit">%</span>
-            <span className="metric-label">Manual Effort Cut</span>
-          </div>
+          {metrics.map((m, i) => (
+            <div className="metric" key={i}>
+              <div className="metric-value">
+                <span className="metric-num">{m.num}</span>
+                <span className="metric-unit">{m.unit}</span>
+              </div>
+              <span className="metric-label">{m.label}</span>
+            </div>
+          ))}
         </motion.div>
       </div>
 
