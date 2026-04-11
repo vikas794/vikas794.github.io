@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vitest/config';
+import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
@@ -17,11 +17,6 @@ export default defineConfig(() => {
       port: 5000,
       hmr: process.env.DISABLE_HMR !== 'true',
       allowedHosts: true as const,
-    },
-    test: {
-      environment: 'jsdom',
-      setupFiles: ['./src/setupTests.ts'],
-      globals: true,
     },
   };
 });
