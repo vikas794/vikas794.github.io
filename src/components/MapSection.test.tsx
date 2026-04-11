@@ -1,70 +1,68 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { vi, describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import MapSection from './MapSection';
 
 describe('MapSection', () => {
-  it('renders default state without active class when isOpen is false', () => {
-    const { container } = render(<MapSection isOpen={false} onClose={vi.fn()} />);
+  it('renders correctly when isOpen is false', () => {
+    const mockOnClose = vi.fn();
+    render(<MapSection isOpen={false} onClose={mockOnClose} />);
 
-    // Check elements are present but don't have active class
-    const overlay = container.querySelector('.map-overlay');
+    // Verify overlay
+    const overlay = document.getElementById('mapOverlay');
+    expect(overlay).toBeInTheDocument();
     expect(overlay).not.toHaveClass('active');
 
-    const modal = container.querySelector('.map-modal');
+    // Verify modal
+    const modal = screen.getByRole('dialog', { hidden: true });
+    expect(modal).toBeInTheDocument();
     expect(modal).not.toHaveClass('active');
-
-    // Check aria attributes
     expect(modal).toHaveAttribute('aria-hidden', 'true');
 
-    // Check iframe is not rendered
-    const iframe = container.querySelector('.map-frame');
+    // Verify iframe is not rendered
+    const iframe = document.getElementById('mapFrame');
     expect(iframe).not.toBeInTheDocument();
   });
 
-  it('renders active state with iframe when isOpen is true', () => {
-    const { container } = render(<MapSection isOpen={true} onClose={vi.fn()} />);
+  it('renders correctly when isOpen is true', () => {
+    const mockOnClose = vi.fn();
+    render(<MapSection isOpen={true} onClose={mockOnClose} />);
 
-    // Check elements have active class
-    const overlay = container.querySelector('.map-overlay');
+    // Verify overlay
+    const overlay = document.getElementById('mapOverlay');
     expect(overlay).toHaveClass('active');
 
-    const modal = container.querySelector('.map-modal');
+    // Verify modal
+    const modal = screen.getByRole('dialog');
     expect(modal).toHaveClass('active');
-
-    // Check aria attributes
     expect(modal).toHaveAttribute('aria-hidden', 'false');
 
-    // Check iframe is rendered
-    const iframe = container.querySelector('.map-frame');
+    // Verify iframe is rendered
+    const iframe = document.getElementById('mapFrame');
     expect(iframe).toBeInTheDocument();
+    expect(iframe).toHaveAttribute('title', 'Santacruz Mumbai map');
     expect(iframe).toHaveAttribute('src', 'https://www.google.com/maps?q=Santacruz+East+Mumbai&z=14&output=embed');
   });
 
   it('calls onClose when clicking the overlay', () => {
-    const handleClose = vi.fn();
-    const { container } = render(<MapSection isOpen={true} onClose={handleClose} />);
+    const mockOnClose = vi.fn();
+    render(<MapSection isOpen={true} onClose={mockOnClose} />);
 
-    const overlay = container.querySelector('.map-overlay');
-    expect(overlay).toBeInTheDocument();
-
+    const overlay = document.getElementById('mapOverlay');
     if (overlay) {
       fireEvent.click(overlay);
     }
 
-    expect(handleClose).toHaveBeenCalledTimes(1);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
   it('calls onClose when clicking the close button', () => {
-    const handleClose = vi.fn();
-    const { container } = render(<MapSection isOpen={true} onClose={handleClose} />);
+    const mockOnClose = vi.fn();
+    render(<MapSection isOpen={true} onClose={mockOnClose} />);
 
-    const closeBtn = container.querySelector('.map-close');
-    expect(closeBtn).toBeInTheDocument();
+    const closeButton = screen.getByRole('button', { name: /close map/i });
+    fireEvent.click(closeButton);
 
-    if (closeBtn) {
-      fireEvent.click(closeBtn);
-    }
-
-    expect(handleClose).toHaveBeenCalledTimes(1);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 });

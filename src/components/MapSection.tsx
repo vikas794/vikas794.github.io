@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 import { X } from "lucide-react";
 
 interface MapSectionProps {
