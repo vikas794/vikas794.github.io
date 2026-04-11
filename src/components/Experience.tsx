@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 
-export default function Experience() {
-  const experiences = [
+const experiences = [
     {
       period: "Jul 2025 — Present",
       role: "Software Developer",
@@ -44,8 +43,9 @@ export default function Experience() {
       ],
       tech: ["Java", "Spring Boot", "Hibernate", "REST APIs", "Agile", "Jira"]
     }
-  ];
+];
 
+export default function Experience() {
   return (
     <section id="experience" className="section exp-section">
       <div className="container">
