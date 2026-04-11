@@ -12,11 +12,6 @@ interface ContactProps {
 export default function Contact({ theme }: ContactProps) {
   const [isMapOpen, setIsMapOpen] = useState(false);
 
-  const textColor = theme === "dark" ? "a0a0c0" : "495057";
-  const titleColor = theme === "dark" ? "6c63ff" : "5c53df";
-  const iconColor = theme === "dark" ? "6c63ff" : "5c53df";
-  const bgTheme = theme === "dark" ? "transparent" : "transparent";
-
   return (
     <>
       <section id="contact" className="section contact-section" aria-label="Contact Vikas Jaiswal — Java Spring Boot Developer">

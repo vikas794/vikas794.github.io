@@ -9,15 +9,15 @@ const metrics = [
   { num: "80", unit: "%", label: "Manual Effort Cut"     },
 ];
 
-export default function Hero() {
-  const phrases = [
-    "Java Backend Developer",
-    "Spring Boot Specialist",
-    "REST API Engineer",
-    "JWT & OAuth2 Expert",
-    "AWS Certified Builder",
-  ];
+const phrases = [
+  "Java Backend Developer",
+  "Spring Boot Specialist",
+  "REST API Engineer",
+  "JWT & OAuth2 Expert",
+  "AWS Certified Builder",
+];
 
+export default function Hero() {
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
