@@ -14,10 +14,25 @@ export default function OtherProjects() {
   const [githubProjects, setGithubProjects] = useState<GithubRepo[]>([]);
 
   useEffect(() => {
+    const cachedData = sessionStorage.getItem('github_repos_cache');
+    if (cachedData) {
+      try {
+        setGithubProjects(JSON.parse(cachedData));
+        return;
+      } catch (e) {
+        console.error('Error parsing cached github repos:', e);
+      }
+    }
+
     fetch('https://api.github.com/users/vikas794/repos')
       .then(response => response.json())
       .then((repos: GithubRepo[]) => {
         const filteredRepos = repos.filter(repo => repo.has_pages && repo.name !== 'vikas794.github.io');
+        try {
+          sessionStorage.setItem('github_repos_cache', JSON.stringify(filteredRepos));
+        } catch (e) {
+          console.warn('Could not save to sessionStorage:', e);
+        }
         setGithubProjects(filteredRepos);
       })
       .catch(error => console.error('Error fetching github repos:', error));
