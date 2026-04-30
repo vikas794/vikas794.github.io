@@ -34,8 +34,23 @@ export default function App() {
       import("./components/Contact");
     };
     // Idle time prefetch
-    const timer = setTimeout(prefetch, 1000);
-    return () => clearTimeout(timer);
+    let idleCallbackId: number | undefined;
+    let fallbackTimeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    if ("requestIdleCallback" in window) {
+      idleCallbackId = window.requestIdleCallback(prefetch);
+    } else {
+      fallbackTimeoutId = setTimeout(prefetch, 1000);
+    }
+
+    return () => {
+      if (idleCallbackId !== undefined && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+      if (fallbackTimeoutId !== undefined) {
+        clearTimeout(fallbackTimeoutId);
+      }
+    };
   }, []);
 
   return (
