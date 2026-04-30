@@ -10,17 +10,37 @@ interface GithubRepo {
   language: string;
 }
 
+let cachedRepos: GithubRepo[] | null = null;
+let fetchPromise: Promise<GithubRepo[]> | null = null;
+
 export default function OtherProjects() {
-  const [githubProjects, setGithubProjects] = useState<GithubRepo[]>([]);
+  const [githubProjects, setGithubProjects] = useState<GithubRepo[]>(cachedRepos || []);
 
   useEffect(() => {
-    fetch('https://api.github.com/users/vikas794/repos')
-      .then(response => response.json())
-      .then((repos: GithubRepo[]) => {
-        const filteredRepos = repos.filter(repo => repo.has_pages && repo.name !== 'vikas794.github.io');
-        setGithubProjects(filteredRepos);
-      })
-      .catch(error => console.error('Error fetching github repos:', error));
+    if (cachedRepos) {
+      return;
+    }
+
+    if (!fetchPromise) {
+      fetchPromise = fetch('https://api.github.com/users/vikas794/repos')
+        .then(response => response.json())
+        .then((repos: GithubRepo[]) => {
+          const filteredRepos = repos.filter(repo => repo.has_pages && repo.name !== 'vikas794.github.io');
+          cachedRepos = filteredRepos;
+          return filteredRepos;
+        })
+        .catch(error => {
+          console.error('Error fetching github repos:', error);
+          fetchPromise = null;
+          return [];
+        });
+    }
+
+    fetchPromise.then(repos => {
+      if (repos.length > 0) {
+        setGithubProjects(repos);
+      }
+    });
   }, []);
 
   if (githubProjects.length === 0) {
