@@ -981,28 +981,27 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 }
 .cert-card:hover::before { opacity: 1; }
 
-/* Cert Modal */
-/* Cert Modal - Matching MapSection Pattern */
-.cert-modal-overlay {
+/* Modal (Base) */
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.85);
   backdrop-filter: blur(8px);
-  z-index: 800; /* Matching MapSection overlay z-index */
+  z-index: 800;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
-.cert-modal-overlay.active { 
+.modal-overlay.active {
   opacity: 1; 
   pointer-events: all; 
 }
 
-.cert-modal {
+.modal {
   position: fixed;
   top: 50%; left: 50%;
   transform: translate(-50%, -48%);
-  z-index: 900; /* Matching MapSection modal z-index */
+  z-index: 900;
   width: 90%;
   max-width: 800px;
   background: var(--surface);
@@ -1015,11 +1014,13 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   display: flex;
   flex-direction: column;
 }
-.cert-modal.active {
+.modal.active {
   opacity: 1;
   pointer-events: all;
   transform: translate(-50%, -50%);
 }
+
+/* Cert Modal Specifics */
 
 .cert-modal-header {
   padding: 1.25rem 1.8rem;
