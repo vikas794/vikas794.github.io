@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import Modal from "./Modal";
 
 interface MapSectionProps {
   isOpen: boolean;
@@ -7,20 +8,13 @@ interface MapSectionProps {
 
 export default function MapSection({ isOpen, onClose }: MapSectionProps) {
   return (
-    <>
-      <div 
-        className={`map-overlay ${isOpen ? "active" : ""}`} 
-        id="mapOverlay"
-        onClick={onClose}
-      ></div>
-      <div 
-        className={`map-modal ${isOpen ? "active" : ""}`} 
-        id="mapModal" 
-        role="dialog" 
-        aria-label="Location map" 
-        aria-hidden={!isOpen}
-      >
-        <div className="map-modal-inner relative">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="map-modal"
+      ariaLabel="Location map"
+    >
+      <div className="map-modal-inner relative">
           <button 
             className="map-close absolute top-3 right-4 z-10 p-2 bg-surface2 rounded-md hover:bg-surface transition-colors" 
             id="mapClose" 
@@ -41,8 +35,7 @@ export default function MapSection({ isOpen, onClose }: MapSectionProps) {
               title="Santacruz Mumbai map"
             ></iframe>
           )}
-        </div>
       </div>
-    </>
+    </Modal>
   );
 }

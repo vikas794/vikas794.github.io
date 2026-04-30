@@ -983,28 +983,27 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 
 /* Cert Modal */
 /* Cert Modal - Matching MapSection Pattern */
-.cert-modal-overlay {
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.85);
   backdrop-filter: blur(8px);
-  z-index: 800; /* Matching MapSection overlay z-index */
+  z-index: 800;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
-.cert-modal-overlay.active { 
+.modal-overlay.active {
   opacity: 1; 
   pointer-events: all; 
 }
 
-.cert-modal {
+.modal {
   position: fixed;
   top: 50%; left: 50%;
   transform: translate(-50%, -48%);
-  z-index: 900; /* Matching MapSection modal z-index */
+  z-index: 900;
   width: 90%;
-  max-width: 800px;
   background: var(--surface);
   border: 1px solid var(--border2);
   border-radius: var(--radius-lg);
@@ -1015,10 +1014,14 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   display: flex;
   flex-direction: column;
 }
-.cert-modal.active {
+.modal.active {
   opacity: 1;
   pointer-events: all;
   transform: translate(-50%, -50%);
+}
+
+.cert-modal {
+  max-width: 800px;
 }
 
 .cert-modal-header {
@@ -1220,37 +1223,8 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 /* ============================================================
    MAP MODAL
 ============================================================ */
-.map-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(6px);
-  z-index: 800;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.map-overlay.active { opacity: 1; pointer-events: all; }
-
 .map-modal {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -48%);
-  z-index: 900;
-  width: 90%;
   max-width: 680px;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s, transform 0.3s;
-}
-.map-modal.active {
-  opacity: 1;
-  pointer-events: all;
-  transform: translate(-50%, -50%);
 }
 .map-label {
   padding: 1rem 1.5rem;
