@@ -178,7 +178,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
     pointer-events: none;
     z-index: 9998;
     transform: translate(-50%, -50%);
-    transition: transform 0.08s ease-out, width 0.2s, height 0.2s;
+    transition: width 0.2s, height 0.2s, border-color 0.2s;
   }
   .cursor.hovered { width: 14px; height: 14px; background: var(--green); }
   .cursor-follower.hovered { width: 40px; height: 40px; border-color: var(--green); }
