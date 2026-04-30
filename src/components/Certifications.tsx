@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { ExternalLink, X, Award, Eye } from "lucide-react";
+import Modal from "./Modal";
 
 interface Certificate {
   id: string;
@@ -44,15 +45,6 @@ export default function Certifications() {
     setSelectedCert(null);
   }, []);
 
-  // Handle ESC
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closePortal();
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, [closePortal]);
-
   return (
     <section id="certifications" className="section certs-section">
       <div className="container">
@@ -87,12 +79,7 @@ export default function Certifications() {
       </div>
 
       {/* Modal - Following MapSection Pattern */}
-      <div
-        className={`cert-modal-overlay ${selectedCert ? "active" : ""}`}
-        onClick={closePortal}
-      ></div>
-
-      <div className={`cert-modal ${selectedCert ? "active" : ""}`} role="dialog">
+      <Modal isOpen={!!selectedCert} onClose={closePortal}>
         <div className="cert-modal-header">
           <div>
             <div className="cert-modal-title">{selectedCert?.name}</div>
@@ -147,7 +134,7 @@ export default function Certifications() {
             </a>
           )}
         </div>
-      </div>
+      </Modal>
     </section>
   );
 }
