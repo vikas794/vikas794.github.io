@@ -9,7 +9,7 @@ describe('MapSection', () => {
     render(<MapSection isOpen={false} onClose={mockOnClose} />);
 
     // Verify overlay
-    const overlay = document.getElementById('mapOverlay');
+    const overlay = document.querySelector('.modal-overlay');
     expect(overlay).toBeInTheDocument();
     expect(overlay).not.toHaveClass('active');
 
@@ -29,7 +29,7 @@ describe('MapSection', () => {
     render(<MapSection isOpen={true} onClose={mockOnClose} />);
 
     // Verify overlay
-    const overlay = document.getElementById('mapOverlay');
+    const overlay = document.querySelector('.modal-overlay');
     expect(overlay).toHaveClass('active');
 
     // Verify modal
@@ -48,7 +48,7 @@ describe('MapSection', () => {
     const mockOnClose = vi.fn();
     render(<MapSection isOpen={true} onClose={mockOnClose} />);
 
-    const overlay = document.getElementById('mapOverlay');
+    const overlay = document.querySelector('.modal-overlay');
     if (overlay) {
       fireEvent.click(overlay);
     }
