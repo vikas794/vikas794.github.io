@@ -4,6 +4,7 @@ import { Mail, Linkedin, Github, Twitter, MessageCircle, MapPin } from "lucide-r
 import { lazy, Suspense } from "react";
 
 const MapSection = lazy(() => import("./MapSection"));
+import MapLoadingFallback from "./MapLoadingFallback";
 
 interface ContactProps {
   theme: "light" | "dark";
@@ -135,7 +136,7 @@ export default function Contact({ theme }: ContactProps) {
         </div>
       </section>
 
-      <Suspense fallback={null}>
+      <Suspense fallback={<MapLoadingFallback isOpen={isMapOpen} />}>
         <MapSection isOpen={isMapOpen} onClose={() => setIsMapOpen(false)} />
       </Suspense>
     </>
