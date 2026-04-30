@@ -1,16 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Cursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [followerPos, setFollowerPos] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const followerRef = useRef<HTMLDivElement>(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const followerPos = useRef({ x: 0, y: 0 });
+
   const [isHovered, setIsHovered] = useState(false);
   const [isFinePointer, setIsFinePointer] = useState(false);
 
   useEffect(() => {
-    setIsFinePointer(window.matchMedia("(pointer: fine)").matches);
+    const mediaQuery = window.matchMedia("(pointer: fine)");
+    const updateFinePointer = () => setIsFinePointer(mediaQuery.matches);
+
+    updateFinePointer();
+    mediaQuery.addEventListener("change", updateFinePointer);
 
     const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      if (cursorRef.current) {
+        cursorRef.current.style.left = `${e.clientX}px`;
+        cursorRef.current.style.top = `${e.clientY}px`;
+      }
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -27,46 +38,44 @@ export default function Cursor() {
       }
     };
 
+    let animationFrameId: number;
+    const animateFollower = () => {
+      followerPos.current.x += (mousePos.current.x - followerPos.current.x) * 0.12;
+      followerPos.current.y += (mousePos.current.y - followerPos.current.y) * 0.12;
+
+      if (followerRef.current) {
+        followerRef.current.style.left = `${followerPos.current.x}px`;
+        followerRef.current.style.top = `${followerPos.current.y}px`;
+      }
+
+      animationFrameId = requestAnimationFrame(animateFollower);
+    };
+
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseover", handleMouseOver);
     document.addEventListener("mouseout", handleMouseOut);
+    animationFrameId = requestAnimationFrame(animateFollower);
 
     return () => {
+      mediaQuery.removeEventListener("change", updateFinePointer);
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseout", handleMouseOut);
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
-
-  useEffect(() => {
-    if (!isFinePointer) return;
-    
-    let animationFrameId: number;
-    
-    const animateFollower = () => {
-      setFollowerPos(prev => ({
-        x: prev.x + (position.x - prev.x) * 0.12,
-        y: prev.y + (position.y - prev.y) * 0.12
-      }));
-      animationFrameId = requestAnimationFrame(animateFollower);
-    };
-    
-    animationFrameId = requestAnimationFrame(animateFollower);
-    
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [position, isFinePointer]);
 
   if (!isFinePointer) return null;
 
   return (
     <>
       <div 
+        ref={cursorRef}
         className={`cursor ${isHovered ? "hovered" : ""}`} 
-        style={{ left: `${position.x}px`, top: `${position.y}px` }}
       ></div>
       <div 
+        ref={followerRef}
         className={`cursor-follower ${isHovered ? "hovered" : ""}`} 
-        style={{ left: `${followerPos.x}px`, top: `${followerPos.y}px` }}
       ></div>
     </>
   );
