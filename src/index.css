@@ -1162,6 +1162,10 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
 }
 .contact-link:hover .cl-icon { background: var(--accent-dim); border-color: var(--accent); }
 
+.cl-content {
+  min-width: 0;
+}
+
 .cl-label {
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -1174,7 +1178,7 @@ button { font-family: var(--font-display); cursor: pointer; border: none; backgr
   font-size: 0.88rem; 
   color: var(--text-muted); 
   transition: color var(--transition);
-  word-break: break-all; /* Fixed: Prevent overflow from long emails/links */
+  overflow-wrap: anywhere; /* Fixed: Prevent overflow from long emails/links */
 }
 .contact-link:hover .cl-value { color: var(--text); }
 
