@@ -1,5 +1,57 @@
 import { motion } from "motion/react";
 
+interface DomainItem {
+  icon: string;
+  name: string;
+  desc: string;
+}
+
+const DOMAINS: DomainItem[] = [
+  {
+    icon: "📈",
+    name: "FinTech / Algo Trading",
+    desc: "Zerodha Kite Connect integration, real-time market data streaming, trade management with WebSocket"
+  },
+  {
+    icon: "🏥",
+    name: "Healthcare",
+    desc: "HIPAA-sensitive data handling, Python ETL pipelines, SQL performance optimization"
+  },
+  {
+    icon: "📚",
+    name: "EdTech",
+    desc: "Course management platform, YouTube Data API integration, live video via 100MS SDK"
+  },
+  {
+    icon: "🚛",
+    name: "Logistics",
+    desc: "GPS-based attendance, geofencing, dynamic reporting dashboards"
+  }
+];
+
+const QUICK_FACTS: DomainItem[] = [
+  {
+    icon: "👤",
+    name: "Vikas Jaiswal",
+    desc: "Java Spring Boot Backend Developer · 4+ years experience"
+  },
+  {
+    icon: "📍",
+    name: "Mumbai, Maharashtra, India",
+    desc: "Open to remote, hybrid, or on-site roles"
+  },
+  {
+    icon: "🛠️",
+    name: "Core Stack",
+    desc: "Java 17, Spring Boot 3, Spring Security, JWT, REST APIs, AWS, Hibernate"
+  },
+  {
+    icon: "🏢",
+    name: "Currently at WEQ Technologies",
+    desc: "Building real-time trading platform with Kite Connect & WebSocket"
+  }
+];
+
 export default function About() {
   return (
     <section id="about" className="section about-section" aria-label="About Vikas Jaiswal — Java Spring Boot Developer">
@@ -46,67 +98,29 @@ export default function About() {
           >
             <div className="domains-card">
               <div className="domains-title">Domains worked in</div>
-              <div className="domain-item">
-                <span className="domain-icon">📈</span>
-                <div>
-                  <div className="domain-name">FinTech / Algo Trading</div>
-                  <div className="domain-desc">Zerodha Kite Connect integration, real-time market data streaming, trade management with WebSocket</div>
+              {DOMAINS.map((domain) => (
+                <div key={domain.name} className="domain-item">
+                  <span className="domain-icon">{domain.icon}</span>
+                  <div>
+                    <div className="domain-name">{domain.name}</div>
+                    <div className="domain-desc">{domain.desc}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="domain-item">
-                <span className="domain-icon">🏥</span>
-                <div>
-                  <div className="domain-name">Healthcare</div>
-                  <div className="domain-desc">HIPAA-sensitive data handling, Python ETL pipelines, SQL performance optimization</div>
-                </div>
-              </div>
-              <div className="domain-item">
-                <span className="domain-icon">📚</span>
-                <div>
-                  <div className="domain-name">EdTech</div>
-                  <div className="domain-desc">Course management platform, YouTube Data API integration, live video via 100MS SDK</div>
-                </div>
-              </div>
-              <div className="domain-item">
-                <span className="domain-icon">🚛</span>
-                <div>
-                  <div className="domain-name">Logistics</div>
-                  <div className="domain-desc">GPS-based attendance, geofencing, dynamic reporting dashboards</div>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* LLM-Friendly: Structured Quick Facts card */}
             <div className="domains-card" style={{ marginTop: '1.25rem' }}>
               <div className="domains-title">Quick Facts</div>
-              <div className="domain-item">
-                <span className="domain-icon">👤</span>
-                <div>
-                  <div className="domain-name">Vikas Jaiswal</div>
-                  <div className="domain-desc">Java Spring Boot Backend Developer · 4+ years experience</div>
+              {QUICK_FACTS.map((fact) => (
+                <div key={fact.name} className="domain-item">
+                  <span className="domain-icon">{fact.icon}</span>
+                  <div>
+                    <div className="domain-name">{fact.name}</div>
+                    <div className="domain-desc">{fact.desc}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="domain-item">
-                <span className="domain-icon">📍</span>
-                <div>
-                  <div className="domain-name">Mumbai, Maharashtra, India</div>
-                  <div className="domain-desc">Open to remote, hybrid, or on-site roles</div>
-                </div>
-              </div>
-              <div className="domain-item">
-                <span className="domain-icon">🛠️</span>
-                <div>
-                  <div className="domain-name">Core Stack</div>
-                  <div className="domain-desc">Java 17, Spring Boot 3, Spring Security, JWT, REST APIs, AWS, Hibernate</div>
-                </div>
-              </div>
-              <div className="domain-item">
-                <span className="domain-icon">🏢</span>
-                <div>
-                  <div className="domain-name">Currently at WEQ Technologies</div>
-                  <div className="domain-desc">Building real-time trading platform with Kite Connect & WebSocket</div>
-                </div>
-              </div>
+              ))}
             </div>
           </motion.div>
         </div>
