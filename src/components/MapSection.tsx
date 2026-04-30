@@ -38,6 +38,7 @@ export default function MapSection({ isOpen, onClose }: MapSectionProps) {
               allowFullScreen={false}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              sandbox="allow-scripts allow-same-origin allow-popups"
               title="Santacruz Mumbai map"
             ></iframe>
           )}
