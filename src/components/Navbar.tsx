@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 
+const NAV_LINKS = [
+  { href: "#about", desktopLabel: "about", mobileLabel: "about" },
+  { href: "#skills", desktopLabel: "skills", mobileLabel: "skills" },
+  { href: "#experience", desktopLabel: "exp", mobileLabel: "experience" },
+  { href: "#highlights", desktopLabel: "work", mobileLabel: "highlights" },
+  { href: "#certifications", desktopLabel: "certs", mobileLabel: "certs" },
+  { href: "#contact", desktopLabel: "contact", mobileLabel: "contact" },
+];
+
 interface NavbarProps {
   theme: "light" | "dark";
   toggleTheme: () => void;
@@ -27,12 +36,9 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
             <span className="logo-bracket">[</span>VJ<span className="logo-bracket">]</span>
           </a>
           <nav className="nav-links" id="navLinks">
-            <a href="#about" className="nav-link">about</a>
-            <a href="#skills" className="nav-link">skills</a>
-            <a href="#experience" className="nav-link">exp</a>
-            <a href="#highlights" className="nav-link">work</a>
-            <a href="#certifications" className="nav-link">certs</a>
-            <a href="#contact" className="nav-link">contact</a>
+            {NAV_LINKS.map(link => (
+              <a key={link.href} href={link.href} className="nav-link">{link.desktopLabel}</a>
+            ))}
             <button 
               onClick={toggleTheme} 
               className="ml-4 p-2 rounded-full hover:bg-surface2 transition-colors"
@@ -63,12 +69,11 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`} id="mobileMenu">
-        <a href="#about" className="mobile-link" onClick={() => setMenuOpen(false)}>about</a>
-        <a href="#skills" className="mobile-link" onClick={() => setMenuOpen(false)}>skills</a>
-        <a href="#experience" className="mobile-link" onClick={() => setMenuOpen(false)}>experience</a>
-        <a href="#highlights" className="mobile-link" onClick={() => setMenuOpen(false)}>highlights</a>
-        <a href="#certifications" className="mobile-link" onClick={() => setMenuOpen(false)}>certs</a>
-        <a href="#contact" className="mobile-link" onClick={() => setMenuOpen(false)}>contact</a>
+        {NAV_LINKS.map(link => (
+          <a key={link.href} href={link.href} className="mobile-link" onClick={() => setMenuOpen(false)}>
+            {link.mobileLabel}
+          </a>
+        ))}
       </div>
     </>
   );
