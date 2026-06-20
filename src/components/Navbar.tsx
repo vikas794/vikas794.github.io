@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Moon, Sun } from "lucide-react";
+import { useScroll } from "../hooks/useScroll";
 
 interface NavbarProps {
   theme: "light" | "dark";
@@ -7,17 +8,8 @@ interface NavbarProps {
 }
 
 export default function Navbar({ theme, toggleTheme }: NavbarProps) {
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useScroll(40);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <>
