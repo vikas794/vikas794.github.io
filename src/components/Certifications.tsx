@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ExternalLink, X, Award, Eye } from "lucide-react";
+import Modal from "./Modal";
 
 interface Certificate {
   id: string;
@@ -87,12 +88,11 @@ export default function Certifications() {
       </div>
 
       {/* Modal - Following MapSection Pattern */}
-      <div
-        className={`cert-modal-overlay ${selectedCert ? "active" : ""}`}
-        onClick={closePortal}
-      ></div>
-
-      <div className={`cert-modal ${selectedCert ? "active" : ""}`} role="dialog">
+      <Modal
+        isOpen={!!selectedCert}
+        onClose={closePortal}
+        className="cert-modal"
+      >
         <div className="cert-modal-header">
           <div>
             <div className="cert-modal-title">{selectedCert?.name}</div>
@@ -147,7 +147,7 @@ export default function Certifications() {
             </a>
           )}
         </div>
-      </div>
+      </Modal>
     </section>
   );
 }
