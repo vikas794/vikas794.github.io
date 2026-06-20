@@ -58,8 +58,7 @@ export default function OtherProjects() {
               <div style={{ marginTop: '1.2rem', display: 'flex', gap: '0.8rem' }}>
                 <a
                   href={`https://vikas794.github.io/${repo.name}/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
                   className="btn btn-primary"
                   style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
                 >
@@ -67,8 +66,7 @@ export default function OtherProjects() {
                 </a>
                 <a
                   href={repo.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
                   className="btn btn-ghost"
                   style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
                 >

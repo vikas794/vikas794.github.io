@@ -107,8 +107,7 @@ export default function Hero() {
         >
           <a
             href="https://www.linkedin.com/in/vikasjaiswall/"
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className="btn btn-primary"
           >
             <Linkedin size={16} />
@@ -120,8 +119,7 @@ export default function Hero() {
           </a>
           <a
             href="https://github.com/vikas794"
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className="btn btn-icon"
             title="GitHub"
           >
