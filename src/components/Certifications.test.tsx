@@ -115,7 +115,7 @@ describe('Certifications', () => {
 
     // The overlay is the div before the dialog. It doesn't have a role,
     // but we can find it by class
-    const overlay = document.querySelector('.cert-modal-overlay');
+    const overlay = document.querySelector('.modal-overlay');
     expect(overlay).not.toBeNull();
     if (overlay) {
       await user.click(overlay);
