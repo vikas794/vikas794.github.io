@@ -117,8 +117,7 @@ export default function Certifications() {
               <div className="flex flex-col sm:flex-row gap-4 mt-2">
                 <a
                   href={selectedCert.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
                   className="btn btn-primary"
                 >
                   <ExternalLink size={16} />
@@ -138,8 +137,7 @@ export default function Certifications() {
           {selectedCert && (
             <a
               href={selectedCert.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              target="_blank" rel="noopener noreferrer"
               className="btn btn-primary"
             >
               <ExternalLink size={16} />
