@@ -135,8 +135,8 @@ export default function Hero() {
           transition={{ duration: 0.65, delay: 0.5 }}
           className="hero-metrics"
         >
-          {metrics.map((m, i) => (
-            <div className="metric" key={i}>
+          {metrics.map((m) => (
+            <div className="metric" key={m.label}>
               <div className="metric-value">
                 <span className="metric-num">{m.num}</span>
                 <span className="metric-unit">{m.unit}</span>
