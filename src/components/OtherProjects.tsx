@@ -10,15 +10,35 @@ interface GithubRepo {
   language: string;
 }
 
+const GITHUB_CACHE_KEY = 'github_projects_cache';
+
 export default function OtherProjects() {
   const [githubProjects, setGithubProjects] = useState<GithubRepo[]>([]);
 
   useEffect(() => {
+    const cachedData = sessionStorage.getItem(GITHUB_CACHE_KEY);
+    if (cachedData) {
+      try {
+        setGithubProjects(JSON.parse(cachedData));
+        return;
+      } catch (error) {
+        console.error('Error parsing cached github repos:', error);
+        sessionStorage.removeItem(GITHUB_CACHE_KEY);
+      }
+    }
+
     fetch('https://api.github.com/users/vikas794/repos')
       .then(response => response.json())
       .then((repos: GithubRepo[]) => {
-        const filteredRepos = repos.filter(repo => repo.has_pages && repo.name !== 'vikas794.github.io');
-        setGithubProjects(filteredRepos);
+        if (Array.isArray(repos)) {
+          const filteredRepos = repos.filter(repo => repo.has_pages && repo.name !== 'vikas794.github.io');
+          setGithubProjects(filteredRepos);
+          try {
+            sessionStorage.setItem(GITHUB_CACHE_KEY, JSON.stringify(filteredRepos));
+          } catch (error) {
+            console.error('Error caching github repos:', error);
+          }
+        }
       })
       .catch(error => console.error('Error fetching github repos:', error));
   }, []);
