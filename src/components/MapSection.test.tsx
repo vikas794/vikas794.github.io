@@ -42,6 +42,7 @@ describe('MapSection', () => {
     expect(iframe).toBeInTheDocument();
     expect(iframe).toHaveAttribute('title', 'Santacruz Mumbai map');
     expect(iframe).toHaveAttribute('src', 'https://www.google.com/maps?q=Santacruz+East+Mumbai&z=14&output=embed');
+    expect(iframe).toHaveAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups');
   });
 
   it('calls onClose when clicking the overlay', () => {
