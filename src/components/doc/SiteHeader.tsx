@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
+import { flushSync } from "react-dom";
 import { Link, NavLink } from "react-router";
 import { Menu, Moon, Sun, X } from "lucide-react";
 
@@ -19,6 +20,26 @@ export default function SiteHeader({
   toggleTheme: () => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Circular reveal from the button, via the View Transitions API. Falls
+  // back to an instant swap when the API is unsupported or the user has
+  // asked for reduced motion — toggleTheme() itself never changes.
+  function handleThemeToggle(event: MouseEvent<HTMLButtonElement>) {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced || !document.startViewTransition) {
+      toggleTheme();
+      return;
+    }
+    const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
+    const x = left + width / 2;
+    const y = top + height / 2;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const root = document.documentElement;
+    root.style.setProperty("--theme-x", `${x}px`);
+    root.style.setProperty("--theme-y", `${y}px`);
+    root.style.setProperty("--theme-r", `${radius}px`);
+    document.startViewTransition(() => flushSync(() => toggleTheme()));
+  }
 
   return (
     <header className="border-b border-rule bg-paper">
@@ -42,7 +63,7 @@ export default function SiteHeader({
             </NavLink>
           ))}
           <button
-            onClick={toggleTheme}
+            onClick={handleThemeToggle}
             className="theme-toggle"
             aria-label="Toggle theme"
             data-theme={theme}
@@ -57,7 +78,7 @@ export default function SiteHeader({
         </nav>
         <div className="flex items-center gap-2 md:hidden">
           <button
-            onClick={toggleTheme}
+            onClick={handleThemeToggle}
             className="theme-toggle"
             aria-label="Toggle theme"
             data-theme={theme}

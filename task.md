@@ -193,3 +193,23 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 03:21:28
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿feat(ui): add error boundary and reusable error page components
+
+- add ErrorBoundary class component in src/components/ErrorBoundary.tsx using getDerivedStateFromError and componentDidCatch to catch render-time crashes under <Outlet> and render a 500-flavored error page
+- add reusable ErrorPage component in src/components/doc/ErrorPage.tsx with code, eyebrow, title, message, and detail props, using Reveal/RevealItem animation, lucide-react icons, and consistent document typography
+- wrap <Outlet /> with <ErrorBoundary key={location.pathname}> in AppShell.tsx to isolate and catch render errors per route
+- refactor NotFoundPage.tsx to use the shared ErrorPage component with code="404", passing pathname as detail via useLocation instead of inline markup
+- update entry-server.test.ts assertion to match the new NotFoundPage error message ("This page doesn't exist.")
+- add task.md documentation entry for the hero flow diagram and case row metrics changes
+
+```
+

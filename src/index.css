@@ -467,6 +467,47 @@ li a:hover {
   display: none;
 }
 
+/* Theme toggle: a circular reveal expanding from the button, driven by
+   --theme-x/--theme-y/--theme-r set in SiteHeader. Progressive enhancement —
+   browsers without View Transitions, or with reduced motion, just swap
+   classes instantly. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: none;
+  }
+
+  ::view-transition-new(root) {
+    animation: theme-reveal 560ms var(--ease-out);
+  }
+
+  @keyframes theme-reveal {
+    from {
+      clip-path: circle(0px at var(--theme-x, 50%) var(--theme-y, 50%));
+    }
+    to {
+      clip-path: circle(var(--theme-r, 150%) at var(--theme-x, 50%) var(--theme-y, 50%));
+    }
+  }
+
+  /* Route changes: a plain CSS animation, not JS-driven — it replays for
+     free every time AppShell gives the wrapper a new `key`, and it isn't
+     subject to rAF throttling the way a JS animation loop would be. */
+  .page-enter {
+    animation: page-enter 420ms var(--ease-out);
+  }
+
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 /* ---------------- editorial rail ---------------- */
 
 .rail {

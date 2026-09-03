@@ -13,6 +13,11 @@ export default function AppShell() {
   const location = useLocation();
   const mainRef = useRef<HTMLElement>(null);
   const liveRef = useRef<HTMLDivElement>(null);
+  // The very first paint (SSR + hydration) already looks right — only the
+  // navigations that follow should play the entrance animation. A plain
+  // CSS animation (not JS-driven) so it isn't at the mercy of rAF
+  // throttling and replays for free whenever `key` forces a remount.
+  const skipEntrance = useRef(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -23,6 +28,7 @@ export default function AppShell() {
     if (liveRef.current) {
       liveRef.current.textContent = `Navigated to ${path}`;
     }
+    skipEntrance.current = false;
   }, [location.pathname]);
 
   return (
@@ -32,9 +38,11 @@ export default function AppShell() {
       </a>
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main id="main" tabIndex={-1} ref={mainRef}>
-        <ErrorBoundary key={location.pathname}>
-          <Outlet />
-        </ErrorBoundary>
+        <div key={location.pathname} className={skipEntrance.current ? undefined : "page-enter"}>
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
+        </div>
       </main>
       <Footer />
       <BackToTop />
