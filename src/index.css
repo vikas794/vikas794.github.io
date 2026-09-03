@@ -33,6 +33,8 @@
 
   --shadow-overlay: 0 8px 32px rgb(21 23 26 / 0.16);
   --shadow-dialog: 0 24px 64px rgb(21 23 26 / 0.24);
+  /* Light-tuned shadow color nearly disappears against a near-black dark
+     surface — dark mode needs a darker, more opaque shadow to read at all. */
 }
 
 /* Semantic colors resolve at runtime so utilities (bg-paper, text-ink …)
@@ -67,18 +69,22 @@
   color-scheme: light;
 }
 
-/* Warm-neutral dark — never pure black */
+/* Warm-neutral dark — never pure black. Every surface/rule token here is
+   R ≥ G ≥ B (a warm cast), matching the light theme's warm paper instead
+   of reading as a generic cool-gray UI with the lights off. */
 html.dark {
-  --paper: #121316;
-  --paper-2: #1a1c20;
+  --paper: #161310;
+  --paper-2: #201c1a;
   --ink: #edeae4;
   --ink-2: #b6bac0;
   --ink-3: #949aa2;
-  --rule: #2c3037;
-  --rule-interactive: #61666e;
+  --rule: #37302c;
+  --rule-interactive: #6e6661;
   --accent: #f0784b;
   --positive: #4ade80;
   --negative: #f87171;
+  --shadow-overlay: 0 8px 32px rgb(0 0 0 / 0.45);
+  --shadow-dialog: 0 24px 64px rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
 
@@ -266,6 +272,13 @@ li a:hover {
   font-variant-ligatures: none;
 }
 
+/* Compact variant: the headline number pulled onto a case-study row,
+   not buried in the summary paragraph — scannable at a glance. */
+.metric-sm .metric-num {
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  color: var(--accent);
+}
+
 /* The hero's one flagship stat — a bigger, second beat after the H1 so
    proof lands in the first viewport, not the second section. */
 .hero-stat {
@@ -291,6 +304,25 @@ li a:hover {
   letter-spacing: 0.04em;
   color: var(--ink-2);
   font-variant-ligatures: none;
+}
+
+/* The hero's grounded visual — real architecture, not decoration.
+   Surface + rule only, no shadow, per the "cards never get a shadow" rule;
+   hover shifts the rule the same way a card row does. */
+.hero-diagram {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--paper-2);
+  padding: 1.25rem;
+  transition: border-color var(--dur-1, 120ms) var(--ease-out);
+}
+
+.hero-diagram:hover {
+  border-color: var(--rule-interactive);
+}
+
+.hero-diagram figure {
+  margin: 0;
 }
 
 /* ---------------- buttons / touch targets ---------------- */

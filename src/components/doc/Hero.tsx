@@ -3,13 +3,15 @@ import { Link } from "react-router";
 import { profile } from "../../content/profile";
 import { proofStrip } from "../../content/projects";
 import Reveal, { RevealItem } from "../Reveal";
+import HeroFlowDiagram from "../../diagrams/HeroFlowDiagram";
 
 // The flagship proof point, promoted out of ProofStrip into the hero itself
 // so a number lands in the first viewport, not the second section.
 const heroStat = proofStrip[0];
 
-// Two CTAs only. Right column is a ledger complete on its own —
-// a photo later replaces it and pushes the ledger below.
+// Right column: a real diagram grounding the headline in actual work,
+// then a ledger complete on its own — a photo later replaces the diagram
+// and pushes the ledger below.
 export default function Hero() {
   return (
     <section aria-labelledby="home-hero" className="border-b border-rule">
@@ -59,7 +61,26 @@ export default function Hero() {
           </Reveal>
         </div>
         <aside aria-label="At a glance">
-          <dl className="ledger">
+          <Reveal>
+            <RevealItem>
+              <Link
+                to={`/projects/${heroStat.slug}/`}
+                className="hero-diagram group block no-underline"
+                aria-label="How the fan-out works — read the case study"
+              >
+                <HeroFlowDiagram />
+                <span className="mt-3 flex items-center gap-1 text-small text-ink-2 group-hover:text-accent">
+                  How this works
+                  <ArrowRight
+                    size={14}
+                    aria-hidden="true"
+                    className="transition-transform duration-150 group-hover:translate-x-1"
+                  />
+                </span>
+              </Link>
+            </RevealItem>
+          </Reveal>
+          <dl className="ledger mt-6">
             {profile.ledger.map((row) => (
               <div key={row.label}>
                 <dt>{row.label}</dt>

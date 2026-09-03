@@ -46,6 +46,10 @@ export default function CaseRows() {
                     <p className="mt-3 max-w-prose text-small leading-relaxed text-ink-2">
                       {c.summary}
                     </p>
+                    <p className="metric metric-sm mt-4">
+                      <span className="metric-num">{c.outcomes[0].after}</span>
+                      <span className="metric-label">{c.outcomes[0].metric}</span>
+                    </p>
                   </div>
                   <p className="font-mono text-xs leading-relaxed text-ink-3 lg:text-right">
                     {c.stack}

@@ -153,3 +153,22 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 02:49:50
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿feat(portfolio): add reveal animations and enhance UI with icons and navigation updates
+
+- Update Reveal component animations (stagger timing, transitions)
+- Add ArrowRight and Mail icons from lucide-react to links and buttons
+- Refactor navigation to use NavLink with active state styling
+- Implement mobile menu with Menu/X icons and responsive design
+- Enhance hover effects and transitions across CaseRows, ClosingCta, Hero, SiteHeader, WorkHistory, and ProjectsPage components
+
+```
+
