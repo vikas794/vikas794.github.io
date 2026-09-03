@@ -1,0 +1,31 @@
+# Netlify mirror config. This file is read ONLY by Netlify — GitHub Pages
+# ignores it, which is exactly what keeps the two hosts' behavior aligned.
+#
+# Deliberately ABSENT: a `/* → /index.html 200` rewrite. It would soft-404
+# every mistyped URL as the homepage (HTTP 200), get junk indexed, prevent
+# 404.html from serving, and diverge the two hosts. Directory output
+# (dist/<route>/index.html) + root 404.html work natively on both.
+[build]
+  command = "pnpm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Hashed build assets — safe to cache forever.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Mirror hygiene + hardening. X-Robots-Tag keeps the Netlify mirror out of
+# the index; canonical tags point at https://vikas794.github.io/.
+# (No Cache-Control here: HTML keeps Netlify's default revalidation.
+# No CSP: it would need an allow-list for embedded third parties first.)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    X-Robots-Tag = "noindex"

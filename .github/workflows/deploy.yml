@@ -42,8 +42,27 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm run lint
+      - name: Test
+        run: pnpm run test
       - name: Build
         run: pnpm run build
+      - name: Assert prerendered routes
+        run: |
+          for r in about experience projects resume contact projects/market-ticks-fanout projects/healthcare-backend-trust projects/sql-injection-surface; do
+            f="dist/$r/index.html"
+            test -f "$f" || (echo "missing $f" && exit 1)
+            grep -q "<title>" "$f" || (echo "no <title> in $f" && exit 1)
+          done
+          test -f dist/404.html || (echo "missing dist/404.html" && exit 1)
+          if grep -r "data-msg=" dist; then echo "client-render fallback in dist" && exit 1; fi
+          test -f dist/sitemap.xml || (echo "missing dist/sitemap.xml" && exit 1)
+          test "$(grep -c '<loc>' dist/sitemap.xml)" = "9" || (echo "sitemap should list 9 URLs" && exit 1)
+          grep -q "https://vikas794.github.io/sitemap.xml" dist/robots.txt || (echo "robots missing sitemap ref" && exit 1)
+          test -f dist/llms.txt || (echo "missing dist/llms.txt" && exit 1)
+          test -f dist/google55cf3945321b0fe5.html || (echo "search-console file missing" && exit 1)
+          echo "prerender assertions passed"
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

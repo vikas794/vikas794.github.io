@@ -11,9 +11,9 @@ const handleScroll = () => {
 };
 
 export function useScroll(threshold: number): boolean {
-  const [isScrolled, setIsScrolled] = useState(
-    typeof window !== "undefined" ? window.scrollY > threshold : false
-  );
+  // Unconditional false init: a restored deep-link scroll offset would
+  // otherwise mismatch the server snapshot on the hydration render.
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
