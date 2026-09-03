@@ -467,17 +467,22 @@ li a:hover {
   display: none;
 }
 
-/* Theme toggle: a circular reveal expanding from the button, driven by
-   --theme-x/--theme-y/--theme-r set in SiteHeader. Progressive enhancement —
-   browsers without View Transitions, or with reduced motion, just swap
-   classes instantly. */
+/* Both animated transitions on the site (theme toggle, route change) run
+   through the View Transitions API — see src/lib/viewTransition.ts. Each
+   call tags <html> with vt-theme or vt-route for the duration, so the two
+   get distinct animations on the same ::view-transition-*(root) pseudos
+   instead of colliding. Progressive enhancement — browsers without View
+   Transitions, or with reduced motion, just swap instantly, no pseudo
+   elements involved at all. */
 @media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root) {
+  /* Theme toggle: a circular reveal expanding from the clicked button,
+     driven by --theme-x/--theme-y/--theme-r (set in SiteHeader). */
+  html.vt-theme::view-transition-old(root) {
     animation: none;
   }
 
-  ::view-transition-new(root) {
-    animation: theme-reveal 560ms var(--ease-out);
+  html.vt-theme::view-transition-new(root) {
+    animation: theme-reveal 900ms var(--ease-out);
   }
 
   @keyframes theme-reveal {
@@ -489,21 +494,27 @@ li a:hover {
     }
   }
 
-  /* Route changes: a plain CSS animation, not JS-driven — it replays for
-     free every time AppShell gives the wrapper a new `key`, and it isn't
-     subject to rAF throttling the way a JS animation loop would be. */
-  .page-enter {
-    animation: page-enter 420ms var(--ease-out);
+  /* Route change: the old page slides up and out while the new page
+     slides up and in underneath it — a soft page-turn, not a hard cut. */
+  html.vt-route::view-transition-old(root) {
+    animation: route-old-out 520ms var(--ease-out) both;
   }
 
-  @keyframes page-enter {
+  html.vt-route::view-transition-new(root) {
+    animation: route-new-in 520ms var(--ease-out) both;
+  }
+
+  @keyframes route-old-out {
+    to {
+      opacity: 0;
+      transform: translateY(-14px);
+    }
+  }
+
+  @keyframes route-new-in {
     from {
       opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+      transform: translateY(14px);
     }
   }
 }

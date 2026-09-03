@@ -1,7 +1,7 @@
 import { useState, type MouseEvent } from "react";
-import { flushSync } from "react-dom";
 import { Link, NavLink } from "react-router";
 import { Menu, Moon, Sun, X } from "lucide-react";
+import { runViewTransition } from "../../lib/viewTransition";
 
 const NAV_LINKS = [
   { to: "/", label: "Home" },
@@ -25,20 +25,21 @@ export default function SiteHeader({
   // back to an instant swap when the API is unsupported or the user has
   // asked for reduced motion — toggleTheme() itself never changes.
   function handleThemeToggle(event: MouseEvent<HTMLButtonElement>) {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced || !document.startViewTransition) {
-      toggleTheme();
-      return;
-    }
     const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
     const x = left + width / 2;
     const y = top + height / 2;
-    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-    const root = document.documentElement;
-    root.style.setProperty("--theme-x", `${x}px`);
-    root.style.setProperty("--theme-y", `${y}px`);
-    root.style.setProperty("--theme-r", `${radius}px`);
-    document.startViewTransition(() => flushSync(() => toggleTheme()));
+    // Full document extent, not just the viewport — the reveal has to
+    // cover the whole scrollable page the transition snapshots, not just
+    // whatever's on screen at click time.
+    const doc = document.documentElement;
+    const radius = Math.hypot(
+      Math.max(x, doc.scrollWidth - x),
+      Math.max(y, doc.scrollHeight - y)
+    );
+    doc.style.setProperty("--theme-x", `${x}px`);
+    doc.style.setProperty("--theme-y", `${y}px`);
+    doc.style.setProperty("--theme-r", `${radius}px`);
+    runViewTransition("theme", toggleTheme);
   }
 
   return (

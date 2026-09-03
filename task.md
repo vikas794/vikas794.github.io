@@ -213,3 +213,48 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 03:50:46
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿feat(ui): add view-transition theme reveal and page-enter animation
+
+- implement handleThemeToggle in SiteHeader.tsx using the View
+  Transitions API to play a circular clip-path reveal expanding from
+  the clicked button
+- expose --theme-x, --theme-y, and --theme-r CSS variables on
+  document.documentElement derived from the button's bounding rect
+- wrap toggleTheme() in flushSync() inside document.startViewTransition
+  so the class swap is committed before the new frame is snapshotted
+- fall back to a plain toggleTheme() when prefers-reduced-motion is
+  set or document.startViewTransition is unavailable
+- replace onClick={toggleTheme} with onClick={handleThemeToggle} on
+  both the desktop and mobile theme-toggle buttons
+- switch the theme application in useTheme from useEffect to
+  useLayoutEffect so the classList / data-theme write lands before
+  the view-transition snapshot
+- add isFirstRun ref in useTheme to skip the initial mount-time write
+  and avoid clobbering the value set by the pre-paint blocking script
+- add ::view-transition-old(root) and ::view-transition-new(root)
+  rules plus the theme-reveal keyframes in index.css for the
+  clip-path expansion
+- wrap <Outlet /> / <ErrorBoundary /> in AppShell.tsx with a div
+  keyed by location.pathname that carries the page-enter class on
+  subsequent navigations only
+- add skipEntrance ref in AppShell.tsx to suppress the entrance
+  animation on the very first paint (SSR + hydration) and flip it off
+  after the first navigation
+- add .page-enter class with page-enter keyframes (opacity +
+  translateY) in index.css for route transitions
+- gate both new animations behind @media (prefers-reduced-motion:
+  no-preference) so reduced-motion users see instant swaps
+- append a task.md journal entry documenting the prior error-boundary
+  and reusable ErrorPage commit
+
+```
+
