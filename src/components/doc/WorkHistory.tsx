@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { experiences } from "../../content/experience";
+import Reveal, { RevealItem } from "../Reveal";
 
 export default function WorkHistory() {
   return (
@@ -13,24 +14,26 @@ export default function WorkHistory() {
             Full history
           </Link>
         </div>
-        <ul className="mt-2 divide-y divide-rule">
+        <Reveal className="mt-2 divide-y divide-rule">
           {experiences.map((e) => (
-            <li key={e.company} className="history-grid py-6">
-              <p className="font-mono text-xs leading-relaxed text-ink-3">{e.period}</p>
-              <div>
-                <p className="font-serif text-xl tracking-tight">
-                  {e.role} — {e.company}
-                  {e.current && (
-                    <span className="ml-3 inline-block h-2 w-2 rounded-full bg-accent align-middle" aria-label="Current role" role="img" />
-                  )}
-                </p>
-                <p className="mt-2 max-w-prose text-small leading-relaxed text-ink-2">
-                  {e.productContext}
-                </p>
+            <RevealItem key={e.company}>
+              <div className="history-grid py-6">
+                <p className="font-mono text-xs leading-relaxed text-ink-3">{e.period}</p>
+                <div>
+                  <p className="font-serif text-xl tracking-tight">
+                    {e.role} — {e.company}
+                    {e.current && (
+                      <span className="ml-3 inline-block h-2 w-2 rounded-full bg-accent align-middle" aria-label="Current role" role="img" />
+                    )}
+                  </p>
+                  <p className="mt-2 max-w-prose text-small leading-relaxed text-ink-2">
+                    {e.productContext}
+                  </p>
+                </div>
               </div>
-            </li>
+            </RevealItem>
           ))}
-        </ul>
+        </Reveal>
       </div>
     </section>
   );

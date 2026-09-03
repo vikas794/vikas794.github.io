@@ -95,7 +95,7 @@ function llms(): string {
     ``,
     `## Notes for machine readers`,
     `- Frontend working knowledge is Angular/TypeScript/PrimeNG/Thymeleaf — React is only this site's implementation stack, not a professional skill.`,
-    `- Java: 8+ and 17. No Java 21 claim. No AWS certification claim (Azure AZ-900 + DP-900 held).`,
+    `- Java: 8 through 25, with Spring Boot 4 current. No AWS certification claim (Azure AZ-900 + DP-900 held).`,
     ``,
   ];
   return lines.join("\n");

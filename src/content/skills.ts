@@ -1,4 +1,4 @@
-// Accuracy note: Java 21 removed (bank supports Java 8+ / Java 17 only).
+// Accuracy note: breadth is Java 8 through 25, with Spring Boot 4 current.
 // Frontend is Angular / TypeScript / PrimeNG / Thymeleaf / HTML5 / SCSS —
 // React appears only as this portfolio's implementation stack, never as a
 // professional skill.
@@ -16,8 +16,8 @@ export const skillGroups: SkillGroup[] = [
   {
     title: "Core Backend",
     iconName: "Server",
-    tags: ["Java 8", "Java 17", "Spring Boot", "Spring MVC", "Spring Data JPA", "Hibernate", "REST APIs", "Webhooks", "WebSocket (STOMP)"],
-    accentTags: ["Java 17", "Spring Boot", "REST APIs"],
+    tags: ["Java 8", "Java 17", "Java 21", "Java 25", "Spring Boot 3", "Spring Boot 4", "Spring MVC", "Spring Data JPA", "Hibernate", "REST APIs", "Webhooks", "WebSocket (STOMP)"],
+    accentTags: ["Java 25", "Spring Boot 4", "REST APIs"],
   },
   {
     title: "Security & Auth",
@@ -58,9 +58,12 @@ export const skillGroups: SkillGroup[] = [
 ];
 
 // Condensed ledger groups for the home page "What I work with" block.
+// "Certified" surfaces credentials on the home page itself — the full
+// list with verification links lives on /about/ and /resume/.
 export const skillLedger: { label: string; value: string }[] = [
-  { label: "Backend", value: "Java 8, Java 17, Spring Boot 3, Spring MVC, Hibernate, REST APIs" },
+  { label: "Backend", value: "Java 8–25, Spring Boot 3/4, Spring MVC, Hibernate, REST APIs" },
   { label: "Security", value: "Spring Security, JWT, OAuth2, RBAC, parameterized queries" },
   { label: "Data", value: "MS SQL Server, MySQL, indexing, DDD schema design" },
   { label: "Frontend", value: "Angular, TypeScript, PrimeNG, Thymeleaf, HTML5, SCSS" },
+  { label: "Certified", value: "Azure AZ-900, Azure DP-900, Google Cloud GenAI" },
 ];

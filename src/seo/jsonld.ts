@@ -19,9 +19,13 @@ export function personJsonLd() {
     description: `${profile.name} is a ${profile.titleLong} with ${profile.experienceYears}+ years of professional experience building secure, scalable enterprise backend systems.`,
     knowsAbout: [
       "Java",
+      "Java 8",
       "Java 17",
+      "Java 21",
+      "Java 25",
       "Spring Boot",
       "Spring Boot 3",
+      "Spring Boot 4",
       "Spring Security",
       "REST APIs",
       "JWT",

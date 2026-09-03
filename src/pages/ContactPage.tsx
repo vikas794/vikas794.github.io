@@ -1,5 +1,6 @@
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
+import Reveal, { RevealItem } from "../components/Reveal";
 
 // The highest-conversion block on the site: role wanted, stack, work mode,
 // availability — explicit. Netlify Forms where hosted on Netlify, degrading
@@ -18,13 +19,14 @@ export default function ContactPage() {
           Java backend roles, remote or hybrid.
         </h1>
         <p className="prose mt-6">
-          I&apos;m looking for backend engineering work on product teams — Java 17,
-          Spring Boot, security and performance included — remote or hybrid from
+          I&apos;m looking for backend engineering work on product teams — Java,
+          Spring Boot 4, security and performance included — remote or hybrid from
           Mumbai, available now. The fastest way to reach me is email; I reply
           within a day.
         </p>
 
-        <div className="mt-10 grid max-w-evidence gap-10 lg:grid-cols-2">
+        <Reveal className="mt-10 grid max-w-evidence gap-10 lg:grid-cols-2">
+          <RevealItem>
           <form
             name="contact"
             method="POST"
@@ -86,27 +88,30 @@ export default function ContactPage() {
               </p>
             </div>
           </form>
+          </RevealItem>
 
-          <div className="border-t border-rule pt-6">
-            <h2 className="label">Channels</h2>
-            <ul className="ledger mt-6">
-              {profile.channels.map((c) => (
-                <li key={c.id}>
-                  <span className="ledger-label">{c.label}</span>
-                  <span className="ledger-value">
-                    <a href={c.href} target={c.href.startsWith("mailto:") ? undefined : "_blank"} rel="noopener noreferrer">
-                      {c.value}
-                    </a>
-                  </span>
+          <RevealItem>
+            <div className="border-t border-rule pt-6">
+              <h2 className="label">Channels</h2>
+              <ul className="ledger mt-6">
+                {profile.channels.map((c) => (
+                  <li key={c.id}>
+                    <span className="ledger-label">{c.label}</span>
+                    <span className="ledger-value">
+                      <a href={c.href} target={c.href.startsWith("mailto:") ? undefined : "_blank"} rel="noopener noreferrer">
+                        {c.value}
+                      </a>
+                    </span>
+                  </li>
+                ))}
+                <li>
+                  <span className="ledger-label">Location</span>
+                  <span className="ledger-value">{profile.postalAddress}</span>
                 </li>
-              ))}
-              <li>
-                <span className="ledger-label">Location</span>
-                <span className="ledger-value">{profile.postalAddress}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+              </ul>
+            </div>
+          </RevealItem>
+        </Reveal>
       </div>
     </>
   );

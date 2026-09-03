@@ -49,7 +49,7 @@ export const experiences: Experience[] = [
       },
     ],
     tech: [
-      "Java 17",
+      "Java 21",
       "Spring Boot",
       "Spring Security",
       "JWT",

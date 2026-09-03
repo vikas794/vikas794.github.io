@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import Seo from "../seo/Seo";
 import { projectListJsonLd } from "../seo/jsonld";
 import { caseStudies, alsoShipped } from "../content/projects";
+import Reveal, { RevealItem } from "../components/Reveal";
 
 // Three deep entries plus an Also-shipped ledger. Six equal-weight
 // cards signalled nothing was hard.
@@ -24,44 +25,46 @@ export default function ProjectsPage() {
           trade-offs, and measures the result — including what I&apos;d do differently.
         </p>
 
-        <div className="mt-4 divide-y divide-rule border-t border-rule">
+        <Reveal className="mt-4 divide-y divide-rule border-t border-rule">
           {caseStudies.map((c) => (
-            <article key={c.slug} className="entry-grid py-8">
-              <p className="font-mono text-sm text-ink-3">{c.number}</p>
-              <div>
-                <h2 className="font-serif text-2xl leading-snug tracking-tight md:text-3xl">
-                  <Link to={`/projects/${c.slug}/`} className="text-ink no-underline hover:text-accent hover:underline">
-                    {c.title}
-                  </Link>
-                </h2>
-                <p className="mt-3 max-w-prose text-small leading-relaxed text-ink-2">
-                  {c.summary}
-                </p>
-                <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs text-ink-3">
-                  {c.outcomes.slice(0, 2).map((o) => (
-                    <li key={o.metric}>
-                      {o.metric}: {o.after}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="font-mono text-xs leading-relaxed text-ink-3 lg:text-right">{c.stack}</p>
-            </article>
+            <RevealItem key={c.slug}>
+              <article className="entry-grid py-8">
+                <p className="font-mono text-sm text-ink-3">{c.number}</p>
+                <div>
+                  <h2 className="font-serif text-2xl leading-snug tracking-tight md:text-3xl">
+                    <Link to={`/projects/${c.slug}/`} className="text-ink no-underline hover:text-accent hover:underline">
+                      {c.title}
+                    </Link>
+                  </h2>
+                  <p className="mt-3 max-w-prose text-small leading-relaxed text-ink-2">
+                    {c.summary}
+                  </p>
+                  <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs text-ink-3">
+                    {c.outcomes.slice(0, 2).map((o) => (
+                      <li key={o.metric}>
+                        {o.metric}: {o.after}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <p className="font-mono text-xs leading-relaxed text-ink-3 lg:text-right">{c.stack}</p>
+              </article>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
 
         <section aria-labelledby="also-shipped" className="mt-12">
           <h2 id="also-shipped" className="label">
             Also shipped
           </h2>
-          <ul className="ledger mt-6">
+          <Reveal className="ledger mt-6">
             {alsoShipped.map((a) => (
-              <li key={a.title}>
+              <RevealItem key={a.title}>
                 <span className="ledger-label">{a.title}</span>
                 <span className="ledger-value">{a.line}</span>
-              </li>
+              </RevealItem>
             ))}
-          </ul>
+          </Reveal>
         </section>
       </div>
     </>

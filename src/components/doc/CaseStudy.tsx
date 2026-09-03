@@ -3,6 +3,7 @@ import type { CaseStudy } from "../../content/projects";
 import FanoutDiagram from "../../diagrams/FanoutDiagram";
 import OauthStrip from "../../diagrams/OauthStrip";
 import CodeBlock from "./CodeBlock";
+import Reveal, { RevealItem } from "../Reveal";
 
 const TOC = [
   { id: "problem", label: "Problem" },
@@ -31,21 +32,25 @@ export default function CaseStudyView({ study }: { study: CaseStudy }) {
         Skip to results
       </a>
 
-      <p className="label">Case study {study.number}</p>
-      <h1 className="mt-4 max-w-[22ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
-        {study.title}
-      </h1>
-      <p className="prose mt-6">{study.summary}</p>
-      <dl className="ledger mt-8 max-w-evidence">
-        <div>
-          <dt>Stack</dt>
-          <dd>{study.stack}</dd>
-        </div>
-        <div>
-          <dt>Updated</dt>
-          <dd>{study.updated}</dd>
-        </div>
-      </dl>
+      <Reveal>
+        <RevealItem>
+          <p className="label">Case study {study.number}</p>
+          <h1 className="mt-4 max-w-[22ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
+            {study.title}
+          </h1>
+          <p className="prose mt-6">{study.summary}</p>
+          <dl className="ledger mt-8 max-w-evidence">
+            <div>
+              <dt>Stack</dt>
+              <dd>{study.stack}</dd>
+            </div>
+            <div>
+              <dt>Updated</dt>
+              <dd>{study.updated}</dd>
+            </div>
+          </dl>
+        </RevealItem>
+      </Reveal>
 
       <div className="rail mt-12">
         <nav className="rail-meta" aria-label="On this page">

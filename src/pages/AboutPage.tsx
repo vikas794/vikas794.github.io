@@ -1,6 +1,7 @@
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
 import { certifications } from "../content/certifications";
+import Reveal, { RevealItem } from "../components/Reveal";
 
 // First person, active, specific. "How I work" carries opinions —
 // four years of experience demonstrating judgment rather than tenure.
@@ -47,33 +48,33 @@ export default function AboutPage() {
           <h2 id="how-i-work" className="label">
             How I work
           </h2>
-          <div className="mt-6 grid max-w-evidence gap-8 md:grid-cols-2">
+          <Reveal className="mt-6 grid max-w-evidence gap-8 md:grid-cols-2">
             {HOW_I_WORK.map((h) => (
-              <div key={h.lead} className="border-t border-rule pt-4">
+              <RevealItem key={h.lead} className="border-t border-rule pt-4">
                 <p className="text-small leading-relaxed text-ink-2">
                   <strong className="text-ink">{h.lead}</strong> {h.body}
                 </p>
-              </div>
+              </RevealItem>
             ))}
-          </div>
+          </Reveal>
         </section>
 
         <section aria-labelledby="credentials" className="mt-12">
           <h2 id="credentials" className="label">
             Credentials
           </h2>
-          <ul className="ledger mt-6 max-w-evidence">
+          <Reveal className="ledger mt-6 max-w-evidence">
             {certifications.map((c) => (
-              <li key={c.id}>
+              <RevealItem key={c.id}>
                 <span className="ledger-label">{c.issuer}</span>
                 <span className="ledger-value">
                   <a href={c.url} target="_blank" rel="noopener noreferrer">
                     {c.name}
                   </a>
                 </span>
-              </li>
+              </RevealItem>
             ))}
-          </ul>
+          </Reveal>
         </section>
 
         <section aria-labelledby="outside" className="mt-12">

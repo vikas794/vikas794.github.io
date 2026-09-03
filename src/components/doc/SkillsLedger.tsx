@@ -1,4 +1,5 @@
 import { skillLedger } from "../../content/skills";
+import Reveal, { RevealItem } from "../Reveal";
 
 export default function SkillsLedger() {
   return (
@@ -7,14 +8,14 @@ export default function SkillsLedger() {
         <h2 id="stack" className="label">
           What I work with
         </h2>
-        <ul className="ledger mt-6">
+        <Reveal className="ledger mt-6">
           {skillLedger.map((g) => (
-            <li key={g.label}>
+            <RevealItem key={g.label}>
               <span className="ledger-label">{g.label}</span>
               <span className="ledger-value">{g.value}</span>
-            </li>
+            </RevealItem>
           ))}
-        </ul>
+        </Reveal>
       </div>
     </section>
   );

@@ -107,3 +107,27 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 02:12:07
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿feat(hero): promote flagship proof stat and polish portfolio chrome
+
+- update theme-color meta in index.html from #6c63ff to #b03a16 to match the new accent
+- promote the first proofStrip entry as a flagship metric directly inside the Hero component
+- render the hero stat as a Link to the matching project case study via `/projects/<slug>/`
+- wrap the hero stat in Reveal/RevealItem so it fades in with the rest of the hero
+- tighten hero intro copy to "hard requirements into secure, fast systems"
+- add .hero-stat, .hero-stat-num, and .hero-stat-label styles in index.css (serif number, mono label, accent left border)
+- drop the "updated <date>" suffix from the Resume download button
+- remove the PDF_UPDATED constant in ResumePage.tsx and refresh its rationale comments
+- fix the telephone field in personJsonLd by removing the extraneous leading "+" prefix
+- append a dated journal entry to task.md recording prior repo/journal changes
+
+```
+

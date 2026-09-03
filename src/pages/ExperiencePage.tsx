@@ -1,5 +1,6 @@
 import Seo from "../seo/Seo";
 import { experiences } from "../content/experience";
+import Reveal, { RevealItem } from "../components/Reveal";
 
 // Editorial rail: sticky mono metadata left, grouped bullets right.
 export default function ExperiencePage() {
@@ -16,40 +17,42 @@ export default function ExperiencePage() {
           Four years of backends in production.
         </h1>
 
-        <div className="mt-12 flex flex-col gap-14">
+        <Reveal className="mt-12 flex flex-col gap-14">
           {experiences.map((e) => (
-            <article key={e.company} className="rail border-t border-rule pt-8">
-              <div className="rail-meta">
-                <p>{e.period}</p>
-                <p className="mt-2">{e.company}</p>
-                <p className="mt-2">{e.tech.slice(0, 4).join(" · ")}</p>
-              </div>
-              <div className="min-w-0">
-                <h2 className="font-serif text-2xl tracking-tight md:text-3xl">
-                  {e.role}
-                  {e.current && (
-                    <span className="ml-3 inline-block h-2 w-2 rounded-full bg-accent align-middle" role="img" aria-label="Current role" />
-                  )}
-                </h2>
-                <p className="prose mt-4">{e.productContext}</p>
-                {e.groups.map((g) => (
-                  <section key={g.label} aria-label={g.label} className="mt-6">
-                    <h3 className="font-mono text-xs font-medium uppercase tracking-label text-ink-3">
-                      {g.label}
-                    </h3>
-                    <ul className="mt-3 max-w-prose list-disc pl-5 text-small leading-relaxed">
-                      {g.items.map((item) => (
-                        <li key={item} className="mt-2">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                ))}
-              </div>
-            </article>
+            <RevealItem key={e.company}>
+              <article className="rail border-t border-rule pt-8">
+                <div className="rail-meta">
+                  <p>{e.period}</p>
+                  <p className="mt-2">{e.company}</p>
+                  <p className="mt-2">{e.tech.slice(0, 4).join(" · ")}</p>
+                </div>
+                <div className="min-w-0">
+                  <h2 className="font-serif text-2xl tracking-tight md:text-3xl">
+                    {e.role}
+                    {e.current && (
+                      <span className="ml-3 inline-block h-2 w-2 rounded-full bg-accent align-middle" role="img" aria-label="Current role" />
+                    )}
+                  </h2>
+                  <p className="prose mt-4">{e.productContext}</p>
+                  {e.groups.map((g) => (
+                    <section key={g.label} aria-label={g.label} className="mt-6">
+                      <h3 className="font-mono text-xs font-medium uppercase tracking-label text-ink-3">
+                        {g.label}
+                      </h3>
+                      <ul className="mt-3 max-w-prose list-disc pl-5 text-small leading-relaxed">
+                        {g.items.map((item) => (
+                          <li key={item} className="mt-2">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              </article>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </div>
     </>
   );

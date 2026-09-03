@@ -56,7 +56,7 @@ export const profile = {
   // Hero ledger (right column must stand alone without a photo)
   ledger: [
     { label: "Role", value: "Java Backend Developer" },
-    { label: "Stack", value: "Java 17 · Spring Boot 3 · MS SQL Server" },
+    { label: "Stack", value: "Java 8–25 · Spring Boot 4 · MS SQL Server" },
     { label: "Location", value: "Mumbai, India" },
     { label: "Availability", value: "Open to work — remote / hybrid" },
   ] as const,
