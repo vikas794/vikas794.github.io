@@ -4,6 +4,7 @@ import { useTheme } from "../hooks/useTheme";
 import Navbar from "./doc/SiteHeader";
 import Footer from "./doc/SiteFooter";
 import BackToTop from "./doc/BackToTop";
+import ErrorBoundary from "./ErrorBoundary";
 
 // Route changes move focus to <main>, scroll to top, and announce via a
 // polite live region. <main id="main" tabindex="-1"> — no redundant role=main.
@@ -31,7 +32,9 @@ export default function AppShell() {
       </a>
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main id="main" tabIndex={-1} ref={mainRef}>
-        <Outlet />
+        <ErrorBoundary key={location.pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <Footer />
       <BackToTop />

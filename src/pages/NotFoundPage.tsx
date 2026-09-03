@@ -1,18 +1,19 @@
-import { Link } from "react-router";
+import { useLocation } from "react-router";
 import Seo from "../seo/Seo";
+import ErrorPage from "../components/doc/ErrorPage";
 
 export default function NotFoundPage() {
+  const { pathname } = useLocation();
   return (
     <>
       <Seo title="Not found | Vikas Jaiswal" description="This page does not exist." path="/404/" noindex />
-      <div className="container" style={{ padding: "5rem 0", textAlign: "center" }}>
-        <p className="section-eyebrow">— 404</p>
-        <h1>Page not found</h1>
-        <p>The page you requested does not exist.</p>
-        <p>
-          <Link to="/">Back to home</Link>
-        </p>
-      </div>
+      <ErrorPage
+        code="404"
+        eyebrow="Error 404 · Not found"
+        title="This page doesn't exist."
+        message="The link may be outdated, or the page moved. Check the address, or head back to the home page."
+        detail={pathname}
+      />
     </>
   );
 }

@@ -172,3 +172,24 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 03:16:23
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿feat(portfolio): add hero flow diagram and case row metrics
+
+- add HeroFlowDiagram SVG component in src/diagrams/ illustrating the market-tick fan-out architecture (Kite Connect → Broadcast Scheduler → 1,000s of sessions)
+- replace the photo placeholder in Hero with an interactive HeroFlowDiagram wrapped in Reveal/RevealItem, linking to the full case study with an ArrowRight icon
+- add compact metric display to CaseRows showing outcome values and metric labels via a new metric-sm block
+- add .metric-sm and .metric-num CSS classes for scannable headline typography on case rows
+- add .hero-diagram CSS classes with surface-only border, radius, padding, and hover transition rules (no shadow, per existing card convention)
+- adjust dark mode color tokens (--paper, --paper-2, --rule, --rule-interactive) to warm-cast values and increase --shadow-overlay and --shadow-dialog opacity for readability on near-black surfaces
+- add task.md documentation entry for the changes
+
+```
+

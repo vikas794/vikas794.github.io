@@ -32,6 +32,6 @@ describe("entry-server", () => {
   it("renders the catch-all for unknown paths", async () => {
     const { head, rootHtml } = await render("/404/");
     expect(head).toMatch(/<title>Not found/);
-    expect(rootHtml).toContain("Page not found");
+    expect(rootHtml).toContain("This page doesn&#x27;t exist.");
   });
 });
