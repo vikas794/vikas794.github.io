@@ -88,3 +88,22 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 01:49:54
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿chore(repo): remove pnpm-workspace config and log CI updates in journal
+
+- delete pnpm-workspace.yaml containing the obsolete esbuild allowBuilds entry
+- add dated entry (2026-09-04 01:46:04) to task.md capturing the portfolio SSG rewrite on main
+- document deploy.yml GitHub Actions version bumps in task.md: actions/checkout v4→v5, actions/setup-node v4→v5, actions/configure-pages v4→v6, actions/upload-pages-artifact v3→v5, actions/deploy-pages v4→v5
+- record Node.js runtime bump from 20 to 24 in the deploy.yml setup-node step
+- mark the journal entry under the "Personal" project with author vikasjaiswal1039
+
+```
+

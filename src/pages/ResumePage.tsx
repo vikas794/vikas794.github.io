@@ -7,11 +7,13 @@ import { education } from "../content/education";
 
 const PDF_PATH = "/Vikas_Jaiswal_JavaBackendDeveloper.pdf";
 const PDF_SIZE = "54 KB";
-const PDF_UPDATED = profile.updated;
 
-// Download states format, size, and last-updated date. The same content
-// follows as accessible HTML — recruiters paste into ATS fields, and PDFs
-// are poorly tagged. The print sheet in index.css renders a clean one-pager.
+// Download states format and size — no visible date. A last-updated
+// timestamp reads as "hasn't been touched since" even when current;
+// profile.updated still feeds the sitemap lastmod (SEO-only, invisible).
+// The same content follows as accessible HTML — recruiters paste into ATS
+// fields, and PDFs are poorly tagged. The print sheet in index.css renders
+// a clean one-pager.
 export default function ResumePage() {
   return (
     <>
@@ -30,7 +32,7 @@ export default function ResumePage() {
         </p>
         <p className="mt-6 flex flex-wrap gap-3">
           <a href={PDF_PATH} download className="btn btn-primary no-underline">
-            Download résumé — PDF, {PDF_SIZE}, updated {PDF_UPDATED}
+            Download résumé — PDF, {PDF_SIZE}
           </a>
         </p>
 

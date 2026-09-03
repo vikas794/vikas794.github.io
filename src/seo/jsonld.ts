@@ -45,7 +45,7 @@ export function personJsonLd() {
       addressCountry: profile.country,
     },
     email: profile.email,
-    telephone: `+${profile.phoneHref}`,
+    telephone: profile.phoneHref,
     sameAs: [profile.linkedin, profile.github, profile.twitter, profile.telegram],
     worksFor: {
       "@type": "Organization",

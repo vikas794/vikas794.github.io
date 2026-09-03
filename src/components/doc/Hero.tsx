@@ -1,6 +1,11 @@
 import { Link } from "react-router";
 import { profile } from "../../content/profile";
+import { proofStrip } from "../../content/projects";
 import Reveal, { RevealItem } from "../Reveal";
+
+// The flagship proof point, promoted out of ProofStrip into the hero itself
+// so a number lands in the first viewport, not the second section.
+const heroStat = proofStrip[0];
 
 // Two CTAs only. Right column is a ledger complete on its own —
 // a photo later replaces it and pushes the ledger below.
@@ -14,11 +19,23 @@ export default function Hero() {
             {profile.headline}
           </h1>
           <p className="prose mt-6">
-            I&apos;m {profile.name}, an Azure-certified {profile.role} with{" "}
-            {profile.experienceYears}+ years turning business requirements into secure,
-            maintainable enterprise systems across {profile.domains.join(", ").toLowerCase()}.
+            I&apos;m {profile.name}, an Azure-certified {profile.role}. {profile.experienceYears}+
+            years turning hard requirements into secure, fast systems across{" "}
+            {profile.domains.join(", ").toLowerCase()}.
           </p>
-          <p className="mt-4 flex items-center gap-2 text-small text-ink-2">
+          <Reveal className="mt-8">
+            <RevealItem>
+              <Link
+                to={`/projects/${heroStat.slug}/`}
+                className="hero-stat group no-underline"
+                aria-label={`${heroStat.value} ${heroStat.label} — read the case study`}
+              >
+                <span className="hero-stat-num group-hover:text-accent">{heroStat.value}</span>
+                <span className="hero-stat-label">{heroStat.label}</span>
+              </Link>
+            </RevealItem>
+          </Reveal>
+          <p className="mt-6 flex items-center gap-2 text-small text-ink-2">
             <span className="inline-block h-2 w-2 rounded-full bg-positive" aria-hidden="true" />
             {profile.availability}
           </p>
