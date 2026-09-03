@@ -131,3 +131,25 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 02:37:21
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿feat(portfolio): adopt Reveal animations and update Java/Spring Boot stack
+
+- remove the `limit` prop and child truncation logic from the `Reveal` component so it never hides children regardless of count
+- wrap all doc sections and page content in `Reveal`/`RevealItem` for consistent entrance animations across CaseStudy, ClosingCta, SkillsLedger, WorkHistory, AboutPage, ContactPage, ExperiencePage, and ProjectsPage
+- update Java version references from Java 17 to Java 8-25 and Spring Boot from 3 to 3/4 across `experience.ts`, `profile.ts`, `skills.ts`, `Home.tsx`, `ContactPage.tsx`, and `routes/manifest.tsx`
+- add "Certified" entry to the `skillLedger` in `skills.ts` listing Azure AZ-900, Azure DP-900, and Google Cloud GenAI credentials
+- update `skills.ts` accentTags to highlight Java 25 and Spring Boot 4, and refresh accuracy comments
+- append Java 8, Java 21, Java 25, and Spring Boot 4 to `personJsonLd().knowsAbout` in `seo/jsonld.ts`
+- update `seo/generate.ts` LLM notes to reflect the Java 8-25 breadth and Spring Boot 4 current status
+- tighten hero and contact page copy to reference the updated stack and remove the "Java 17" specific mention
+
+```
+

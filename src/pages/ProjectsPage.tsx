@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import Seo from "../seo/Seo";
 import { projectListJsonLd } from "../seo/jsonld";
@@ -28,12 +29,20 @@ export default function ProjectsPage() {
         <Reveal className="mt-4 divide-y divide-rule border-t border-rule">
           {caseStudies.map((c) => (
             <RevealItem key={c.slug}>
-              <article className="entry-grid py-8">
+              <article className="entry-grid group py-8">
                 <p className="font-mono text-sm text-ink-3">{c.number}</p>
                 <div>
                   <h2 className="font-serif text-2xl leading-snug tracking-tight md:text-3xl">
-                    <Link to={`/projects/${c.slug}/`} className="text-ink no-underline hover:text-accent hover:underline">
+                    <Link
+                      to={`/projects/${c.slug}/`}
+                      className="inline-flex items-center gap-2 text-ink no-underline hover:text-accent hover:underline"
+                    >
                       {c.title}
+                      <ArrowRight
+                        size={20}
+                        aria-hidden="true"
+                        className="shrink-0 opacity-0 transition-all duration-150 group-hover:translate-x-1 group-hover:opacity-100"
+                      />
                     </Link>
                   </h2>
                   <p className="mt-3 max-w-prose text-small leading-relaxed text-ink-2">

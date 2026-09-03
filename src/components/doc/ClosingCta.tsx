@@ -1,3 +1,4 @@
+import { ArrowRight, Mail } from "lucide-react";
 import { Link } from "react-router";
 import { profile } from "../../content/profile";
 import Reveal, { RevealItem } from "../Reveal";
@@ -17,11 +18,17 @@ export default function ClosingCta() {
               Mumbai — on teams where correctness, security, and performance matter.
             </p>
             <p className="mt-8 flex flex-wrap gap-3">
-              <a href={`mailto:${profile.email}`} className="btn btn-primary no-underline">
+              <a href={`mailto:${profile.email}`} className="btn btn-primary group no-underline">
+                <Mail size={16} aria-hidden="true" />
                 {profile.email}
               </a>
-              <Link to="/contact/" className="btn btn-ghost no-underline">
+              <Link to="/contact/" className="btn btn-ghost group no-underline">
                 More ways to reach me
+                <ArrowRight
+                  size={16}
+                  aria-hidden="true"
+                  className="transition-transform duration-150 group-hover:translate-x-1"
+                />
               </Link>
             </p>
           </RevealItem>

@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { experiences } from "../../content/experience";
 import Reveal, { RevealItem } from "../Reveal";
@@ -10,8 +11,13 @@ export default function WorkHistory() {
           <h2 id="work-history" className="label">
             Where I&apos;ve worked
           </h2>
-          <Link to="/experience/" className="text-small">
+          <Link to="/experience/" className="group inline-flex items-center gap-1 text-small">
             Full history
+            <ArrowRight
+              size={14}
+              aria-hidden="true"
+              className="transition-transform duration-150 group-hover:translate-x-1"
+            />
           </Link>
         </div>
         <Reveal className="mt-2 divide-y divide-rule">

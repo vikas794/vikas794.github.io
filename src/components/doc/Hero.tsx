@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { profile } from "../../content/profile";
 import { proofStrip } from "../../content/projects";
@@ -41,8 +42,13 @@ export default function Hero() {
           </p>
           <Reveal className="mt-8 flex flex-wrap gap-3">
             <RevealItem>
-              <Link to="/projects/" className="btn btn-primary no-underline">
+              <Link to="/projects/" className="btn btn-primary group no-underline">
                 Read the case studies
+                <ArrowRight
+                  size={16}
+                  aria-hidden="true"
+                  className="transition-transform duration-150 group-hover:translate-x-1"
+                />
               </Link>
             </RevealItem>
             <RevealItem>

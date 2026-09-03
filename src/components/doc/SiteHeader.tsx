@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { Moon, Sun } from "lucide-react";
+import { Link, NavLink } from "react-router";
+import { Menu, Moon, Sun, X } from "lucide-react";
 
 const NAV_LINKS = [
+  { to: "/", label: "Home" },
   { to: "/about/", label: "About" },
   { to: "/experience/", label: "Experience" },
   { to: "/projects/", label: "Work" },
@@ -27,13 +28,18 @@ export default function SiteHeader({
         </Link>
         <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
           {NAV_LINKS.map((l) => (
-            <Link
+            <NavLink
               key={l.to}
               to={l.to}
-              className="text-small text-ink-2 no-underline hover:text-accent hover:underline"
+              end={l.to === "/"}
+              className={({ isActive }) =>
+                `text-small no-underline hover:text-accent hover:underline ${
+                  isActive ? "text-accent" : "text-ink-2"
+                }`
+              }
             >
               {l.label}
-            </Link>
+            </NavLink>
           ))}
           <button
             onClick={toggleTheme}
@@ -69,7 +75,7 @@ export default function SiteHeader({
             aria-expanded={menuOpen}
             aria-label="Toggle menu"
           >
-            <span aria-hidden="true">{menuOpen ? "✕" : "☰"}</span>
+            {menuOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -78,13 +84,16 @@ export default function SiteHeader({
           <ul className="flex flex-col">
             {NAV_LINKS.map((l) => (
               <li key={l.to} className="border-b border-rule last:border-0">
-                <Link
+                <NavLink
                   to={l.to}
-                  className="block py-3 no-underline"
+                  end={l.to === "/"}
+                  className={({ isActive }) =>
+                    `block py-3 no-underline ${isActive ? "text-accent" : ""}`
+                  }
                   onClick={() => setMenuOpen(false)}
                 >
                   {l.label}
-                </Link>
+                </NavLink>
               </li>
             ))}
           </ul>
