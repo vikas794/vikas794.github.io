@@ -1,41 +1,46 @@
-import { Component, type ErrorInfo, type ReactNode } from "react";
+import { Component, type ReactNode, type ErrorInfo as ReactErrorInfo } from "react";
 import ErrorPage from "./doc/ErrorPage";
 
 interface Props {
   children: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface State {
-  error: Error | null;
+  hasError: boolean;
+  error?: Error;
 }
 
-// Catches render-time crashes anywhere under <Outlet> and swaps them for a
-// 500-flavored version of ErrorPage instead of a blank white screen. Static
-// hosting has no server to emit a real 5xx, so this is the closest
-// equivalent: a client-side "something broke" page with the same shape.
 export default class ErrorBoundary extends Component<Props, State> {
-  state: State = { error: null };
+  public state: State = {
+    hasError: false,
+  };
 
-  static getDerivedStateFromError(error: Error): State {
-    return { error };
+  public static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("Unhandled render error:", error, info.componentStack);
+  public componentDidCatch(error: Error, errorInfo: ReactErrorInfo) {
+    console.error("Uncaught error caught by ErrorBoundary:", error, errorInfo);
   }
 
-  render() {
-    if (this.state.error) {
+  public render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
       return (
         <ErrorPage
           code="500"
-          eyebrow="Error 500 · Something broke"
+          eyebrow="Error 500 · Application Error"
           title="Something went wrong."
-          message="This page hit an unexpected error. Try reloading, or head back to the home page — if it keeps happening, let me know."
-          detail={this.state.error.message}
+          message="An unexpected error occurred while rendering this page. You can try refreshing or heading back to the home page."
+          detail={this.state.error?.message}
         />
       );
     }
+
     return this.props.children;
   }
 }
