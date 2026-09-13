@@ -68,6 +68,38 @@ export function websiteJsonLd() {
     url: `${SITE_URL}/`,
     author: { "@id": `${SITE_URL}/#person` },
     inLanguage: "en",
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".label", ".prose"],
+    },
+  };
+}
+
+export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.path === "/" ? `${SITE_URL}/` : `${SITE_URL}${item.path}`,
+    })),
+  };
+}
+
+export function faqPageJsonLd(faqs: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
   };
 }
 

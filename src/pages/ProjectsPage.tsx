@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import Seo from "../seo/Seo";
-import { projectListJsonLd } from "../seo/jsonld";
+import { projectListJsonLd, breadcrumbJsonLd } from "../seo/jsonld";
 import { caseStudies, alsoShipped } from "../content/projects";
 import Reveal, { RevealItem } from "../components/Reveal";
 
@@ -16,6 +16,14 @@ export default function ProjectsPage() {
         path="/projects/"
       />
       <script type="application/ld+json">{JSON.stringify(projectListJsonLd())}</script>
+      <script type="application/ld+json">
+        {JSON.stringify(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Projects", path: "/projects/" },
+          ])
+        )}
+      </script>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
         <p className="label">Selected work</p>
         <h1 className="mt-4 max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">

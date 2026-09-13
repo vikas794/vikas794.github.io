@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import Seo from "../seo/Seo";
 import { caseStudies } from "../content/projects";
 import { profile } from "../content/profile";
+import { breadcrumbJsonLd } from "../seo/jsonld";
 import CaseStudyView from "../components/doc/CaseStudy";
 
 export default function ProjectDetailPage({ slug }: { slug: string }) {
@@ -30,8 +31,24 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
           headline: study.title,
           description: study.summary,
           author: { "@id": "https://vikas794.github.io/#person" },
+          publisher: { "@id": "https://vikas794.github.io/#person" },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://vikas794.github.io/projects/${study.slug}/`,
+          },
           dateModified: study.updated,
+          datePublished: study.updated,
+          inLanguage: "en",
         })}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Projects", path: "/projects/" },
+            { name: study.title, path: `/projects/${study.slug}/` },
+          ])
+        )}
       </script>
       <CaseStudyView study={study} />
     </>

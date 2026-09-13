@@ -1,5 +1,6 @@
 import Seo from "../seo/Seo";
 import { experiences } from "../content/experience";
+import { breadcrumbJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
 
 // Editorial rail: sticky mono metadata left, grouped bullets right.
@@ -11,6 +12,14 @@ export default function ExperiencePage() {
         description="Professional experience: WEQ Technologies, Medify Nexus, and Wipro — real-time trading, healthcare data, and enterprise backends."
         path="/experience/"
       />
+      <script type="application/ld+json">
+        {JSON.stringify(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Experience", path: "/experience/" },
+          ])
+        )}
+      </script>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
         <p className="label">Career</p>
         <h1 className="mt-4 max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">

@@ -61,6 +61,8 @@ jobs:
           test "$(grep -c '<loc>' dist/sitemap.xml)" = "9" || (echo "sitemap should list 9 URLs" && exit 1)
           grep -q "https://vikas794.github.io/sitemap.xml" dist/robots.txt || (echo "robots missing sitemap ref" && exit 1)
           test -f dist/llms.txt || (echo "missing dist/llms.txt" && exit 1)
+          test -f dist/llms-full.txt || (echo "missing dist/llms-full.txt" && exit 1)
+          grep -q "BreadcrumbList" dist/about/index.html || (echo "missing BreadcrumbList in about" && exit 1)
           test -f dist/google55cf3945321b0fe5.html || (echo "search-console file missing" && exit 1)
           echo "prerender assertions passed"
       - name: Setup Pages

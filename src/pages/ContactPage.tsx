@@ -1,5 +1,6 @@
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
+import { breadcrumbJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
 
 // The highest-conversion block on the site: role wanted, stack, work mode,
@@ -13,6 +14,14 @@ export default function ContactPage() {
         description="Vikas Jaiswal is open to backend engineering roles (remote/hybrid, Mumbai). Email, LinkedIn, GitHub, WhatsApp, Telegram."
         path="/contact/"
       />
+      <script type="application/ld+json">
+        {JSON.stringify(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Contact", path: "/contact/" },
+          ])
+        )}
+      </script>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
         <p className="label">Contact</p>
         <h1 className="mt-4 max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
