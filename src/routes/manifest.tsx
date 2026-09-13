@@ -9,6 +9,7 @@ import ProjectDetailPage from "../pages/ProjectDetailPage";
 import ResumePage from "../pages/ResumePage";
 import ContactPage from "../pages/ContactPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import CustomErrorPage from "../pages/CustomErrorPage";
 
 export interface RouteMeta {
   title: string;
@@ -85,6 +86,15 @@ export const routes: AppRoute[] = [
     },
   },
   {
+    path: "/error/:code/",
+    element: <CustomErrorPage />,
+    meta: {
+      title: `Error | ${base}`,
+      description: "An error occurred.",
+      noindex: true,
+    },
+  },
+  {
     path: "*",
     element: <NotFoundPage />,
     meta: {
@@ -97,7 +107,7 @@ export const routes: AppRoute[] = [
 
 // Feeds the SSG script AND the sitemap generator — adding a route is a one-array edit.
 export function expandRoutes(): string[] {
-  return routes.filter((r) => r.path !== "*").map((r) => r.path);
+  return routes.filter((r) => r.path !== "*" && !r.path.includes(":")).map((r) => r.path);
 }
 
 export function resolveMeta(path: string): RouteMeta {
