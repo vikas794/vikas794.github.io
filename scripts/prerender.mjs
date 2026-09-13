@@ -32,13 +32,19 @@ for (const route of routePaths) {
   await writeRoute(route);
 }
 
-// 404: both hosts serve a root 404.html with a 404 status automatically.
-// The catch-all route already carries noindex via its manifest meta.
-{
-  const { head, rootHtml } = await render("/404/");
+// Error pages prerendering (400, 401, 403, 404, 500, 502, 503)
+const errorCodesToPrerender = ["400", "401", "403", "404", "500", "502", "503"];
+
+for (const code of errorCodesToPrerender) {
+  const route = `/error/${code}/`;
+  const { head, rootHtml } = await render(route);
   const html = template
     .replace("<!--ssg-head-->", () => head)
     .replace('<div id="root"></div>', () => rootHtml);
-  await writeFile(join(dist, "404.html"), html);
-  console.log("prerendered /404/ -> dist/404.html");
+
+  // Also render specific html file for root server compatibility (e.g., 404.html, 500.html)
+  await writeRoute(route);
+  const fileName = `${code}.html`;
+  await writeFile(join(dist, fileName), html);
+  console.log(`prerendered ${route} -> dist/${fileName}`);
 }
