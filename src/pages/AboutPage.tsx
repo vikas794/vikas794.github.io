@@ -1,6 +1,7 @@
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
 import { certifications } from "../content/certifications";
+import { breadcrumbJsonLd, faqPageJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
 
 // First person, active, specific. "How I work" carries opinions —
@@ -32,6 +33,24 @@ export default function AboutPage() {
         description="How Vikas Jaiswal works: API design, security, performance, and team opinions from 4+ years of backend engineering, plus Azure certifications."
         path="/about/"
       />
+      <script type="application/ld+json">
+        {JSON.stringify(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about/" },
+          ])
+        )}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(
+          faqPageJsonLd(
+            HOW_I_WORK.map((item) => ({
+              question: item.lead,
+              answer: item.body,
+            }))
+          )
+        )}
+      </script>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
         <p className="label">About</p>
         <h1 className="mt-4 max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">

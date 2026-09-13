@@ -4,6 +4,7 @@ import { experiences } from "../content/experience";
 import { skillGroups } from "../content/skills";
 import { certifications } from "../content/certifications";
 import { education } from "../content/education";
+import { breadcrumbJsonLd } from "../seo/jsonld";
 
 const PDF_PATH = "/Vikas_Jaiswal_JavaBackendDeveloper.pdf";
 const PDF_SIZE = "54 KB";
@@ -22,6 +23,14 @@ export default function ResumePage() {
         description="Résumé of Vikas Jaiswal, Java Spring Boot Backend Developer (4+ years). Download PDF or read the accessible HTML version."
         path="/resume/"
       />
+      <script type="application/ld+json">
+        {JSON.stringify(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Résumé", path: "/resume/" },
+          ])
+        )}
+      </script>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
         <p className="label">Résumé</p>
         <h1 className="mt-4 font-serif text-4xl leading-display tracking-tight md:text-5xl">
