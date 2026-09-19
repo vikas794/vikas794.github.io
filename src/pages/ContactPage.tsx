@@ -87,12 +87,14 @@ export default function ContactPage() {
                   <label htmlFor="contact-name" className="font-mono text-xs uppercase tracking-label text-ink-3">
                     Name
                   </label>
+                  <p className="mt-1 text-xs text-ink-3">Your full name, so I know who&apos;s reaching out.</p>
                   <input
                     id="contact-name"
                     name="name"
                     type="text"
                     required
                     autoComplete="name"
+                    placeholder="e.g. Priya Sharma"
                     className="mt-2 min-h-11 w-full rounded-md border border-rule-strong bg-paper px-3 py-2 text-small"
                   />
                 </div>
@@ -100,12 +102,14 @@ export default function ContactPage() {
                   <label htmlFor="contact-email" className="font-mono text-xs uppercase tracking-label text-ink-3">
                     Email
                   </label>
+                  <p className="mt-1 text-xs text-ink-3">Where I should reply — I&apos;ll respond within a day.</p>
                   <input
                     id="contact-email"
                     name="email"
                     type="email"
                     required
                     autoComplete="email"
+                    placeholder="e.g. priya@company.com"
                     className="mt-2 min-h-11 w-full rounded-md border border-rule-strong bg-paper px-3 py-2 text-small"
                   />
                 </div>
@@ -113,11 +117,15 @@ export default function ContactPage() {
                   <label htmlFor="contact-message" className="font-mono text-xs uppercase tracking-label text-ink-3">
                     Message
                   </label>
+                  <p className="mt-1 text-xs text-ink-3">
+                    What you&apos;re hiring for or building — role, stack, timeline, anything relevant.
+                  </p>
                   <textarea
                     id="contact-message"
                     name="message"
                     required
                     rows={5}
+                    placeholder="e.g. We're hiring a backend engineer (Java, Spring Boot) for a remote/hybrid role in Mumbai, starting next month..."
                     className="mt-2 w-full rounded-md border border-rule-strong bg-paper px-3 py-2 text-small"
                   />
                 </div>
