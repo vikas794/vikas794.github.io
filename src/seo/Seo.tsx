@@ -1,4 +1,5 @@
-import { canonicalUrl, DEFAULT_OG_IMAGE } from "./site";
+import { canonicalUrl, DEFAULT_OG_IMAGE, SITE_NAME } from "./site";
+import { profile } from "../content/profile";
 
 export interface SeoProps {
   title: string;
@@ -20,7 +21,7 @@ export default function Seo({ title, description, path, image, noindex }: SeoPro
       <meta name="description" content={description} />
       <meta name="author" content="Vikas Jaiswal" />
       <link rel="canonical" href={canonical} />
-      <meta property="og:site_name" content="Vikas Jaiswal — Portfolio" />
+      <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en_US" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={canonical} />
@@ -28,7 +29,7 @@ export default function Seo({ title, description, path, image, noindex }: SeoPro
       <meta property="og:description" content={description} />
       <meta property="og:image" content={ogImage} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:creator" content="@vikasjaiswal" />
+      <meta name="twitter:creator" content={profile.twitterHandle} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />

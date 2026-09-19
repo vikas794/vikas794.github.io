@@ -23,7 +23,7 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
   const path = `/projects/${study.slug}/`;
   return (
     <>
-      <Seo title={`${study.title} | ${profile.name}`} description={study.summary} path={path} />
+      <Seo title={`${study.title} | ${profile.name}`} description={study.metaDescription} path={path} />
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",

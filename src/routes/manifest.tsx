@@ -32,7 +32,7 @@ export const routes: AppRoute[] = [
     element: <Home />,
     meta: {
       title: `${base} | ${role} · Backend Engineer`,
-      description: `${base} is a ${role} with ${profile.experienceYears}+ years building secure, scalable enterprise systems. Java 8-25, Spring Boot 4, REST APIs, JWT, Spring Security. Based in ${profile.location}.`,
+      description: `${base}, ${role} with ${profile.experienceYears}+ years building secure, scalable enterprise systems — Java 8-25, REST APIs, JWT. ${profile.location}.`,
     },
   },
   {
@@ -65,7 +65,7 @@ export const routes: AppRoute[] = [
       element: <ProjectDetailPage slug={c.slug} />,
       meta: {
         title: `${c.title} | ${base}`,
-        description: c.summary,
+        description: c.metaDescription,
       },
     })
   ),
