@@ -7,7 +7,7 @@ import { certifications } from "../content/certifications";
 import { education } from "../content/education";
 import { breadcrumbJsonLd } from "../seo/jsonld";
 
-const PDF_PATH = "/Vikas_Jaiswal_JavaBackendDeveloper.pdf";
+export const PDF_PATH = "/Vikas_Jaiswal_JavaBackendDeveloper.pdf";
 const PDF_SIZE = "54 KB";
 
 // Download states format and size — no visible date. A last-updated

@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router";
 import { useTheme } from "../hooks/useTheme";
+import { useHydrated } from "../hooks/useHydrated";
+import { prefetchResumeAssets } from "../lib/prefetchResume";
 import Navbar from "./doc/SiteHeader";
 import Footer from "./doc/SiteFooter";
 import BackToTop from "./doc/BackToTop";
@@ -13,6 +15,11 @@ export default function AppShell() {
   const location = useLocation();
   const mainRef = useRef<HTMLElement>(null);
   const liveRef = useRef<HTMLDivElement>(null);
+  const hydrated = useHydrated();
+
+  useEffect(() => {
+    if (hydrated) prefetchResumeAssets();
+  }, [hydrated]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
