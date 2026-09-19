@@ -338,7 +338,7 @@ li a:hover {
   border-radius: var(--radius-md);
   border: 1px solid var(--rule-interactive);
   transition: background-color 120ms var(--ease-out), color 120ms var(--ease-out),
-    border-color 120ms var(--ease-out);
+    border-color 120ms var(--ease-out), transform 120ms var(--ease-out);
 }
 
 .btn:active {
@@ -349,6 +349,11 @@ li a:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--paper);
+}
+
+.btn-primary:hover,
+.btn-ghost:hover {
+  transform: translateY(-1px);
 }
 
 .btn-primary:hover {
@@ -362,6 +367,30 @@ li a:hover {
 
 .btn-ghost:hover {
   background: var(--paper-2);
+}
+
+/* Primary nav: an underline that extends left-to-right on hover/focus, like
+   a ledger rule being drawn — not a plain color swap. */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 160ms var(--ease-out);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
 }
 
 /* ---------------- entry grids (replaces arbitrary grid-cols) ---------------- */
@@ -409,10 +438,6 @@ li a:hover {
 
 .wide-scroll {
   min-width: 36rem;
-}
-
-.pdf-viewer {
-  height: 36rem;
 }
 
 /* ---------------- shell: skip link, sr-only, theme toggle ---------------- */

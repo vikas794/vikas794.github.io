@@ -1,26 +1,31 @@
 # Vikas Jaiswal – Developer Portfolio
 
-A modern single-page portfolio for Vikas Jaiswal, a Java Backend Developer. Built with React 19 + Vite 6 + TypeScript + Tailwind CSS 4.
+A statically-generated (SSR + prerendered) portfolio for Vikas Jaiswal, a Java
+Backend Developer. Built with React 19 + Vite 6 + TypeScript + Tailwind CSS 4
++ React Router 7.
 
 ## Tech Stack
 
-- **Frontend**: React 19, TypeScript, Tailwind CSS 4, Motion (Framer Motion)
+- **Frontend**: React 19, TypeScript, Tailwind CSS 4 (CSS-first `@theme` config, no `tailwind.config.js`), Motion (Framer Motion)
 - **Build tool**: Vite 6
-- **Package manager**: npm
+- **Package manager**: pnpm
 - **Icons**: Lucide React
+- **Rendering**: SSR (`src/entry-server.tsx`) + static prerender (`scripts/prerender.mjs`) for every route
 
 ## Project Structure
 
 ```
 /
 ├── src/
-│   ├── components/       # Hero, About, Skills, Experience, etc.
-│   ├── hooks/            # useTheme.ts
-│   ├── App.tsx           # Main app with lazy loading & prefetching
-│   ├── main.tsx          # Entry point
-│   └── index.css         # Global styles & design tokens
-├── public/               # Static assets
-├── index.html
+│   ├── components/doc/   # Hero, SiteHeader, CaseStudy, WorkHistory, etc.
+│   ├── content/           # Typed content — single source for routes/SEO/pages
+│   ├── pages/              # One page per route
+│   ├── seo/                # Seo.tsx, jsonld.ts, generate.ts (sitemap/robots/llms.txt)
+│   ├── routes/manifest.tsx # Route table — feeds SSR, prerender, and sitemap
+│   ├── entry-server.tsx    # SSR entry
+│   └── index.css           # Design tokens & global styles
+├── scripts/prerender.mjs  # Writes every route to static HTML at build time
+├── public/                 # Static assets
 ├── vite.config.ts
 └── package.json
 ```
@@ -28,17 +33,15 @@ A modern single-page portfolio for Vikas Jaiswal, a Java Backend Developer. Buil
 ## Development
 
 ```bash
-npm install
-npm run dev   # runs on http://0.0.0.0:5000
+pnpm install
+pnpm dev   # runs on http://0.0.0.0:5000
 ```
 
-## Deployment
+## Build & Deployment
 
-Configured as a **static** deployment:
-- Build: `npm run build`
-- Output: `dist/`
+```bash
+pnpm build   # client bundle → SSR bundle → prerender → SEO generation
+```
 
-## Configuration Notes
-
-- Vite dev server runs on `0.0.0.0:5000` with `allowedHosts: true` for Replit proxy compatibility.
-- No backend — purely a static frontend portfolio.
+Deployed on Netlify (`netlify.toml`). The Vite dev server binds
+`0.0.0.0:5000` with `allowedHosts: true` for Replit's proxy.

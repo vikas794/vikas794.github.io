@@ -17,6 +17,9 @@ export function useTheme() {
       }
     })();
     if (stored === "light" || stored === "dark") {
+      // Syncing from an external source (localStorage/DOM) on mount, not
+      // deriving state from props — the documented SSR-safe pattern above.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(stored);
       return;
     }

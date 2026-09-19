@@ -49,7 +49,7 @@ export default function Hero() {
                 <ArrowRight
                   size={16}
                   aria-hidden="true"
-                  className="transition-transform duration-150 group-hover:translate-x-1"
+                  className="transition-transform duration-200 ease-out group-hover:translate-x-1.5"
                 />
               </Link>
             </RevealItem>
@@ -74,7 +74,7 @@ export default function Hero() {
                   <ArrowRight
                     size={14}
                     aria-hidden="true"
-                    className="transition-transform duration-150 group-hover:translate-x-1"
+                    className="transition-transform duration-200 ease-out group-hover:translate-x-1.5"
                   />
                 </span>
               </Link>

@@ -55,7 +55,7 @@ export default function SiteHeader({
               to={l.to}
               end={l.to === "/"}
               className={({ isActive }) =>
-                `text-small no-underline hover:text-accent hover:underline ${
+                `nav-link text-small no-underline hover:text-accent ${
                   isActive ? "text-accent" : "text-ink-2"
                 }`
               }

@@ -8,12 +8,12 @@ import { useHydrated } from "../hooks/useHydrated";
 // Reduced motion resolves to {opacity:1, y:0}: content PRESENT, not
 // fast-faded. Content must never depend on an animation firing to become
 // visible — this component never truncates its children.
-export const staggerParent: Variants = {
+const staggerParent: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.07, delayChildren: 0.02 } },
 };
 
-export const staggerChild: Variants = {
+const staggerChild: Variants = {
   hidden: { opacity: 0, y: 16 },
   show: {
     opacity: 1,

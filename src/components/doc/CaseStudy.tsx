@@ -132,7 +132,11 @@ export default function CaseStudyView({ study }: { study: CaseStudy }) {
               <h2 id="code" className="label">
                 Code that mattered
               </h2>
-              <CodeBlock code={study.code} />
+              <Reveal>
+                <RevealItem>
+                  <CodeBlock code={study.code} />
+                </RevealItem>
+              </Reveal>
             </section>
           )}
 

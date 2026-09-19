@@ -13,7 +13,11 @@ export default function AppRoutes() {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    // Syncing displayed location to the router's own location on mount and
+    // for same-path updates (e.g. hash/query changes) — a real transition
+    // only runs for the else branch below, driven by the View Transitions API.
     if (location.pathname === displayedLocation.pathname) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplayedLocation(location);
       return;
     }

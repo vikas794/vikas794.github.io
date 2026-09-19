@@ -1,4 +1,5 @@
 import Seo from "../seo/Seo";
+import ResumePdfPreview from "../components/ResumePdfPreview";
 import { profile } from "../content/profile";
 import { experiences } from "../content/experience";
 import { skillGroups } from "../content/skills";
@@ -46,15 +47,7 @@ export default function ResumePage() {
         </p>
 
         <div className="no-print mt-10 border border-rule" role="region" aria-label="Résumé PDF preview">
-          <object data={PDF_PATH} type="application/pdf" className="pdf-viewer w-full">
-            <p className="p-6 text-small">
-              Your browser can&apos;t preview PDFs.{" "}
-              <a href={PDF_PATH} download>
-                Download the résumé instead
-              </a>
-              , or read the HTML version below.
-            </p>
-          </object>
+          <ResumePdfPreview file={PDF_PATH} />
         </div>
 
         <div className="mt-12 max-w-evidence">
