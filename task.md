@@ -258,3 +258,47 @@ BREAKING CHANGE: The site is now a multi-page SSR/SSG application. The previous 
 
 ```
 
+
+## 2026-09-04 03:52:58
+
+**Project:** Personal
+**Branch:** main
+**Author:** vikasjaiswal1039
+
+### Commit
+```
+﻿feat(ui): unify theme and route animations via view transitions api
+
+- add shared runViewTransition utility in src/lib/viewTransition.ts that
+  wraps the View Transitions API with reduced-motion and feature-detection
+  fallbacks, tagging <html> with vt-theme or vt-route so the two
+  transitions get distinct keyframes on the shared ::view-transition
+  pseudo-elements
+- drive route changes through the View Transitions API in AppRoutes.tsx
+  by tracking a displayedLocation state and updating it inside the
+  transition callback so the old page is held on screen until the
+  "before" snapshot is taken
+- skip the first-render transition in AppRoutes.tsx so SSR + hydration
+  don't trigger an unwanted entrance animation
+- refactor SiteHeader.tsx handleThemeToggle to delegate to
+  runViewTransition("theme", toggleTheme) instead of inlining the
+  reduced-motion check, startViewTransition call, and flushSync wrap
+- fix the theme reveal radius in SiteHeader.tsx to use the full document
+  extent (scrollWidth/scrollHeight) rather than just the viewport so
+  the circular reveal reaches every part of the page
+- scope the ::view-transition-old(root) and ::view-transition-new(root)
+  rules in index.css under html.vt-theme and html.vt-route respectively
+  so the theme and route animations no longer fight over the same
+  pseudo-elements
+- replace the .page-enter class and page-enter keyframes in index.css
+  with route-old-out and route-new-in keyframes for a soft page-turn
+  between routes via the View Transitions API
+- lengthen the theme-reveal animation duration from 560ms to 900ms
+- remove the skipEntrance ref and the keyed wrapper div in AppShell.tsx
+  since route transitions are now handled by the View Transitions API
+  in AppRoutes.tsx
+- add a journal entry in task.md documenting the prior unified-error-
+  boundary and reusable ErrorPage commit
+
+```
+

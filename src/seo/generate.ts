@@ -12,7 +12,7 @@ import { experiences } from "../content/experience.js";
 import { caseStudies, alsoShipped } from "../content/projects.js";
 import { certifications } from "../content/certifications.js";
 import { education } from "../content/education.js";
-import { expandRoutes } from "../routes/manifest.js";
+import { routes, expandRoutes } from "../routes/manifest.js";
 import { SITE_URL, canonicalUrl } from "./site.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -55,13 +55,18 @@ function llms(): string {
     ``,
     `- Location: ${profile.location} (${profile.postalAddress})`,
     `- Availability: ${profile.availability}`,
-    `- Email: ${profile.email}`,
-    `- LinkedIn: ${profile.linkedin}`,
-    `- GitHub: ${profile.github}`,
-    `- X: ${profile.twitter} (${profile.twitterHandle})`,
-    `- WhatsApp: ${profile.whatsapp}`,
-    `- Telegram: ${profile.telegram}`,
-    `- Portfolio: ${profile.portfolio}`,
+    `- Email: [${profile.email}](mailto:${profile.email})`,
+    `- LinkedIn: [${profile.linkedinDisplay}](${profile.linkedin})`,
+    `- GitHub: [${profile.githubDisplay}](${profile.github})`,
+    `- X: [${profile.twitterHandle}](${profile.twitter})`,
+    `- WhatsApp: [Chat on WhatsApp](${profile.whatsapp})`,
+    `- Telegram: [${profile.telegramDisplay}](${profile.telegram})`,
+    `- Portfolio: [${profile.portfolio}](${profile.portfolio})`,
+    ``,
+    `## Pages`,
+    ...routes
+      .filter((r) => r.path !== "*" && !r.path.includes(":"))
+      .map((r) => `- [${r.meta.title}](${canonicalUrl(r.path)}): ${r.meta.description}`),
     ``,
     `## Key Summary & Capabilities`,
     `- Primary Expertise: Enterprise Java Backend Engineering (Java 8-25, Spring Boot 3 & 4, REST APIs, Security, Scalability).`,
@@ -69,7 +74,7 @@ function llms(): string {
     `- Certifications: Microsoft Certified Azure Fundamentals (AZ-900), Azure Data Fundamentals (DP-900), Google Cloud GenAI.`,
     ``,
     `## Credentials (prominent, verified)`,
-    ...certifications.map((c) => `- ${c.name} — ${c.issuer}: ${c.url}`),
+    ...certifications.map((c) => `- [${c.name}](${c.url}) — ${c.issuer}`),
     ``,
     `## Experience`,
     ...experiences.flatMap((e) => [
@@ -83,7 +88,7 @@ function llms(): string {
     `## Case studies`,
     ...caseStudies.flatMap((c) => [
       ``,
-      `### ${c.title} (${SITE_URL}/projects/${c.slug}/)`,
+      `### [${c.title}](${SITE_URL}/projects/${c.slug}/)`,
       c.summary,
       `Stack: ${c.stack}`,
       ...c.outcomes.map((o) => `- ${o.metric}: ${o.before} → ${o.after} (measured: ${o.method})`),
