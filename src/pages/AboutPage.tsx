@@ -1,6 +1,7 @@
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
 import { certifications } from "../content/certifications";
+import { faqs } from "../content/faq";
 import { breadcrumbJsonLd, faqPageJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
 
@@ -42,14 +43,7 @@ export default function AboutPage() {
         )}
       </script>
       <script type="application/ld+json">
-        {JSON.stringify(
-          faqPageJsonLd(
-            HOW_I_WORK.map((item) => ({
-              question: item.lead,
-              answer: item.body,
-            }))
-          )
-        )}
+        {JSON.stringify(faqPageJsonLd(faqs))}
       </script>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
         <p className="label">About</p>
@@ -105,6 +99,24 @@ export default function AboutPage() {
             and to staying current with the Java and Spring ecosystem, which is how the
             Azure certifications above happened.
           </p>
+        </section>
+
+        <section aria-labelledby="faq" className="mt-12">
+          <h2 id="faq" className="label">
+            Frequently asked questions
+          </h2>
+          <Reveal className="mt-6 max-w-evidence divide-y divide-rule">
+            {faqs.map((f) => (
+              <RevealItem key={f.question}>
+                <details className="group py-4">
+                  <summary className="cursor-pointer text-small font-medium text-ink marker:content-none">
+                    {f.question}
+                  </summary>
+                  <p className="prose mt-3 text-small text-ink-2">{f.answer}</p>
+                </details>
+              </RevealItem>
+            ))}
+          </Reveal>
         </section>
       </div>
     </>

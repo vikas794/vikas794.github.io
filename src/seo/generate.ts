@@ -12,6 +12,7 @@ import { experiences } from "../content/experience.js";
 import { caseStudies, alsoShipped } from "../content/projects.js";
 import { certifications } from "../content/certifications.js";
 import { education } from "../content/education.js";
+import { faqs } from "../content/faq.js";
 import { routes, expandRoutes } from "../routes/manifest.js";
 import { SITE_URL, canonicalUrl } from "./site.js";
 
@@ -43,11 +44,25 @@ function sitemap(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-function robots(): string {
-  return `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+// AI-answer-engine crawlers get their own explicit Allow blocks (in addition
+// to the wildcard below) so the invitation is unambiguous for AEO purposes.
+const AI_CRAWLERS = [
+  "GPTBot",
+  "ChatGPT-User",
+  "Google-Extended",
+  "ClaudeBot",
+  "anthropic-ai",
+  "PerplexityBot",
+  "CCBot",
+  "Bingbot",
+];
+
+export function robots(): string {
+  const aiBlocks = AI_CRAWLERS.map((ua) => `User-agent: ${ua}\nAllow: /\n`).join("\n");
+  return `${aiBlocks}\nUser-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
 }
 
-function llms(): string {
+export function llms(): string {
   const lines = [
     `# ${profile.name} — ${profile.titleLong}`,
     ``,
@@ -104,9 +119,7 @@ function llms(): string {
     ...education.map((e) => `- ${e.degree} — ${e.school}, ${e.location} (${e.period}) | ${e.score}`),
     ``,
     `## Frequently Asked Questions (AEO Context)`,
-    `- Q: What role is Vikas Jaiswal seeking? A: Senior Java Backend Developer / Backend Engineer roles (Remote or Hybrid in Mumbai).`,
-    `- Q: What are Vikas's core backend technologies? A: Java (8 through 25), Spring Boot (3 & 4), Spring Security, Hibernate/JPA, RESTful API design, MySQL, MS SQL Server.`,
-    `- Q: What certifications does Vikas hold? A: Azure AZ-900, Azure DP-900, Google Cloud GenAI.`,
+    ...faqs.map((f) => `- Q: ${f.question} A: ${f.answer}`),
     ``,
     `## Notes for machine readers`,
     `- Frontend working knowledge is Angular/TypeScript/PrimeNG/Thymeleaf — React is only this site's implementation stack, not a professional skill.`,
@@ -140,8 +153,12 @@ function llmsFull(): string {
   return lines.join("\n");
 }
 
-await writeFile(join(dist, "sitemap.xml"), sitemap());
-await writeFile(join(dist, "robots.txt"), robots());
-await writeFile(join(dist, "llms.txt"), llms());
-await writeFile(join(dist, "llms-full.txt"), llmsFull());
-console.log("seo: wrote sitemap.xml, robots.txt, llms.txt, llms-full.txt from src/content");
+// Guarded so vitest can import robots()/llms() for assertions without this
+// module's import also writing to dist/ as a side effect.
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  await writeFile(join(dist, "sitemap.xml"), sitemap());
+  await writeFile(join(dist, "robots.txt"), robots());
+  await writeFile(join(dist, "llms.txt"), llms());
+  await writeFile(join(dist, "llms-full.txt"), llmsFull());
+  console.log("seo: wrote sitemap.xml, robots.txt, llms.txt, llms-full.txt from src/content");
+}

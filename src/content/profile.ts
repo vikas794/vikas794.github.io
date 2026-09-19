@@ -1,10 +1,3 @@
-export const SITE_URL = "https://vikas794.github.io";
-
-export const CANONICAL_URL = (path: string) => {
-  const p = path.endsWith("/") ? path : `${path}/`;
-  return `${SITE_URL}${p === "/" ? "" : p}`;
-};
-
 export interface ContactChannel {
   id: string;
   label: string;

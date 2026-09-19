@@ -75,3 +75,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+      - name: Ping IndexNow for fast recrawl
+        run: pnpm run indexnow
+        continue-on-error: true
