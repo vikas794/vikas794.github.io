@@ -43,7 +43,7 @@ describe('CaseStudy template', () => {
 
   it('shows the code excerpt with its honesty note', () => {
     renderStudy();
-    expect(screen.getByText('BroadcastScheduler.java')).toBeInTheDocument();
+    expect(screen.getByText('BrokerWebSocketService.java')).toBeInTheDocument();
     expect(screen.getByText(/not a verbatim paste/i)).toBeInTheDocument();
   });
 });

@@ -30,13 +30,13 @@ export default function FanoutDiagram() {
         </g>
         <g>
           <rect x="206" y="24" width="150" height="52" rx="6" className={box} />
-          <text x="281" y="46" textAnchor="middle" fontSize="13" className={label}>Tick Ingest</text>
-          <text x="281" y="62" textAnchor="middle" fontSize="11" className={label} opacity="0.7">last tick ref</text>
+          <text x="281" y="46" textAnchor="middle" fontSize="13" className={label}>Tick Handler</text>
+          <text x="281" y="62" textAnchor="middle" fontSize="11" className={label} opacity="0.7">publishTick()</text>
         </g>
         <g>
           <rect x="396" y="24" width="160" height="52" rx="6" fill="none" stroke="var(--accent)" strokeWidth="2" />
-          <text x="476" y="46" textAnchor="middle" fontSize="13" className={label}>Broadcast Scheduler</text>
-          <text x="476" y="62" textAnchor="middle" fontSize="11" className={label} opacity="0.7">built here · 500ms</text>
+          <text x="476" y="46" textAnchor="middle" fontSize="13" className={label}>STOMP Broker</text>
+          <text x="476" y="62" textAnchor="middle" fontSize="11" className={label} opacity="0.7">built here · in-proc pub/sub</text>
         </g>
 
         {/* Row 2: state + order paths */}
@@ -97,7 +97,7 @@ export default function FanoutDiagram() {
       </svg>
       <figcaption className="mt-3 font-mono text-xs leading-relaxed text-ink-3">
         Fan-out: one upstream socket feeds thousands of sessions through the
-        Broadcast Scheduler. Order and wallet paths never touch tick traffic.
+        STOMP Broker. Order and wallet paths never touch tick traffic.
       </figcaption>
     </figure>
   );

@@ -87,13 +87,13 @@ export default function HeroFlowDiagram() {
         <G variants={static_ ? undefined : fadeUp}>
           <rect x="144" y="34" width="128" height="64" rx="6" fill="none" stroke="var(--accent)" strokeWidth="2" />
           <text x="208" y="60" textAnchor="middle" fontSize="12" className={label}>
-            Broadcast
+            Tick Publish
           </text>
           <text x="208" y="76" textAnchor="middle" fontSize="12" className={label}>
-            Scheduler
+            STOMP Broker
           </text>
           <text x="208" y="90" textAnchor="middle" fontSize="10" className={label} opacity="0.7">
-            built here · 500ms
+            built here
           </text>
         </G>
 
