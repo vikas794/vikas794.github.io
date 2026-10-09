@@ -48,7 +48,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "market-ticks-fanout",
     number: "01",
-    title: "Streaming live market ticks to thousands of clients from one upstream socket",
+    title: "Fanning out live market ticks from one socket",
     stack: "Kite Connect · WebSocket · Spring Scheduler · Razorpay · iText7 · AWS S3",
     summary:
       "Real-time algo-trading backend with Kite Connect OAuth, WebSocket tick broadcast to concurrent users, Razorpay wallet with GST, and automated PDF payout generation stored on S3.",

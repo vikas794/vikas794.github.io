@@ -45,15 +45,15 @@ export default function HeroFlowDiagram() {
       };
 
   return (
-    <figure className="hero-diagram">
+    <div className="hero-diagram">
       <Svg
         viewBox="0 0 400 132"
         role="img"
-        aria-labelledby="hero-flow-title hero-flow-desc"
+        aria-label="Market-tick fan-out, simplified"
+        aria-describedby="hero-flow-desc"
         className="h-auto w-full text-ink"
         {...svgProps}
       >
-        <title id="hero-flow-title">Market-tick fan-out, simplified</title>
         <desc id="hero-flow-desc">
           One Kite Connect upstream socket feeds the Broadcast Scheduler, which
           fans ticks out to thousands of WebSocket sessions.
@@ -122,6 +122,6 @@ export default function HeroFlowDiagram() {
           </text>
         </G>
       </Svg>
-    </figure>
+    </div>
   );
 }

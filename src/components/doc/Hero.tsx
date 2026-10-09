@@ -31,7 +31,6 @@ export default function Hero() {
               <Link
                 to={`/projects/${heroStat.slug}/`}
                 className="hero-stat group no-underline"
-                aria-label={`${heroStat.value} ${heroStat.label} — read the case study`}
               >
                 <span className="hero-stat-num group-hover:text-accent">{heroStat.value}</span>
                 <span className="hero-stat-label">{heroStat.label}</span>
@@ -66,7 +65,7 @@ export default function Hero() {
               <Link
                 to={`/projects/${heroStat.slug}/`}
                 className="hero-diagram group block no-underline"
-                aria-label="How the fan-out works — read the case study"
+                aria-label="How this works — read the fan-out case study"
               >
                 <HeroFlowDiagram />
                 <span className="mt-3 flex items-center gap-1 text-small text-ink-2 group-hover:text-accent">

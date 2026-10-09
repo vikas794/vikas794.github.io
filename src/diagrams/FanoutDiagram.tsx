@@ -10,10 +10,10 @@ export default function FanoutDiagram() {
       <svg
         viewBox="0 0 680 460"
         role="img"
-        aria-labelledby="fanout-title fanout-desc"
+        aria-label="Market-tick fan-out architecture"
+        aria-describedby="fanout-desc"
         className="h-auto w-full text-ink"
       >
-        <title id="fanout-title">Market-tick fan-out architecture</title>
         <desc id="fanout-desc">
           One Kite Connect socket feeds Tick Ingest, then the Broadcast Scheduler,
           which looks up the Session Registry and pushes filtered ticks over

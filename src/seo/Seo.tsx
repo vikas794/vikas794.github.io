@@ -28,6 +28,9 @@ export default function Seo({ title, description, path, image, noindex }: SeoPro
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={title} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:creator" content={profile.twitterHandle} />
       <meta name="twitter:title" content={title} />
@@ -36,7 +39,7 @@ export default function Seo({ title, description, path, image, noindex }: SeoPro
       {noindex ? (
         <meta name="robots" content="noindex, follow" />
       ) : (
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
       )}
     </>
   );

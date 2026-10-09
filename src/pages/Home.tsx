@@ -7,9 +7,9 @@ import WorkHistory from "../components/doc/WorkHistory";
 import SkillsLedger from "../components/doc/SkillsLedger";
 import ClosingCta from "../components/doc/ClosingCta";
 
-const TITLE = "Vikas Jaiswal | Java Spring Boot Backend Developer · Backend Engineer";
+const TITLE = "Vikas Jaiswal | Java Spring Boot Backend Developer";
 const DESC =
-  "Vikas Jaiswal, Java Spring Boot Backend Developer with 4+ years building secure, scalable enterprise systems — Java 8-25, Spring Boot, REST APIs, JWT. Mumbai, India.";
+  "Vikas Jaiswal, Java Spring Boot Backend Developer: 4+ years building secure, scalable enterprise systems. Java 8-25, REST APIs, JWT.";
 
 export default function Home() {
   return (

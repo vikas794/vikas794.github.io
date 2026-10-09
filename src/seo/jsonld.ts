@@ -15,6 +15,7 @@ export function personJsonLd() {
     givenName: profile.firstName,
     familyName: profile.lastName,
     url: `${SITE_URL}/`,
+    image: `${SITE_URL}/og-image.png`,
     jobTitle: profile.titleLong,
     description: `${profile.name} is a ${profile.titleLong} with ${profile.experienceYears}+ years of professional experience building secure, scalable enterprise backend systems.`,
     knowsAbout: [
@@ -53,6 +54,7 @@ export function personJsonLd() {
     sameAs: [profile.linkedin, profile.github, profile.twitter, profile.telegram],
     worksFor: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#org-weq`,
       name: "WEQ Technologies",
       address: { "@type": "PostalAddress", addressLocality: "Mumbai", addressCountry: "IN" },
     },
@@ -67,6 +69,7 @@ export function websiteJsonLd() {
     name: `${profile.name} — ${profile.titleLong} Portfolio`,
     url: `${SITE_URL}/`,
     author: { "@id": `${SITE_URL}/#person` },
+    publisher: { "@id": `${SITE_URL}/#person` },
     inLanguage: "en",
     speakable: {
       "@type": "SpeakableSpecification",

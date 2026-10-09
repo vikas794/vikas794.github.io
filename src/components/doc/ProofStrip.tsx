@@ -16,7 +16,6 @@ export default function ProofStrip() {
               <Link
                 to={`/projects/${m.slug}/`}
                 className="metric group no-underline"
-                aria-label={`${m.value} ${m.label} — read the case study`}
               >
                 <span className="metric-num group-hover:text-accent">{m.value}</span>
                 <span className="metric-label">{m.label}</span>

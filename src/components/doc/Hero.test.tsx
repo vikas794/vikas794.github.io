@@ -23,7 +23,7 @@ describe("Hero", () => {
 
   it("links the flagship stat to its case study", () => {
     renderHero();
-    const link = screen.getByRole("link", { name: `${heroStat.value} ${heroStat.label} — read the case study` });
+    const link = screen.getByRole("link", { name: new RegExp(heroStat.label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")) });
     expect(link).toHaveAttribute("href", `/projects/${heroStat.slug}/`);
   });
 
@@ -38,7 +38,7 @@ describe("Hero", () => {
     renderHero();
     expect(screen.getByRole("img", { name: /^Market-tick fan-out, simplified/ })).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "How the fan-out works — read the case study" })
+      screen.getByRole("link", { name: "How this works — read the fan-out case study" })
     ).toHaveAttribute("href", `/projects/${heroStat.slug}/`);
   });
 });

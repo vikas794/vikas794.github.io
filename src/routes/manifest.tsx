@@ -31,8 +31,8 @@ export const routes: AppRoute[] = [
     path: "/",
     element: <Home />,
     meta: {
-      title: `${base} | ${role} · Backend Engineer`,
-      description: `${base}, ${role} with ${profile.experienceYears}+ years building secure, scalable enterprise systems — Java 8-25, REST APIs, JWT. ${profile.location}.`,
+      title: `${base} | ${role}`,
+      description: `${base}, ${role}: ${profile.experienceYears}+ years building secure, scalable enterprise systems. Java 8-25, REST APIs, JWT.`,
     },
   },
   {
