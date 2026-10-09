@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Vikas Jaiswal</title>
+  <rect width="512" height="512" rx="112" fill="#161310"/>
+  <g transform="translate(0 -22)" fill="#fbfaf8">
+    <polygon points="104,134 232,134 232,152 214,152 270,352 258,386 244,386 148,152 104,152"/>
+    <polygon points="146,152 214,152 272,352 258,386"/>
+    <polygon points="286,134 392,134 392,152 354,152 266,386 248,386 258,352 318,152 286,152"/>
+  </g>
+  <rect x="190" y="418" width="132" height="12" rx="2" fill="#f0784b"/>
+</svg>
