@@ -36,7 +36,7 @@ export function useTheme() {
   // through flushSync inside document.startViewTransition, which only
   // flushes synchronous work up to (and including) layout effects — a
   // passive effect here would land after the transition already
-  // snapshotted the "new" frame, and the dissolve would just
+  // snapshotted the "new" frame, and the circular reveal would just
   // flash between two identical (pre-toggle) frames.
   useLayoutEffect(() => {
     if (isFirstRun.current) {
