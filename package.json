@@ -28,7 +28,7 @@
     "express": "^5.2.1",
     "lucide-react": "^0.546.0",
     "motion": "^14.0.0",
-    "pdfjs-dist": "^6.4.299",
+    "pdfjs-dist": "6.3.289",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-pdf": "^11.0.0",
