@@ -45,7 +45,6 @@ jobs:
           args: >-
             --no-progress --max-retries 2 --timeout 20
             --accept 200,201,204,301,302,308,403,429,999
-            --exclude-mail
             '${{ env.SITE }}/' '${{ env.SITE }}/about/' '${{ env.SITE }}/experience/'
             '${{ env.SITE }}/projects/' '${{ env.SITE }}/resume/' '${{ env.SITE }}/contact/'
           fail: true
