@@ -17,8 +17,7 @@ export default function Hero() {
     <section aria-labelledby="home-hero" className="border-b border-rule">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 md:px-8 md:py-20 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div>
-          <p className="label">Portfolio · Java backend · Mumbai</p>
-          <h1 id="home-hero" className="t-display mt-4">
+          <h1 id="home-hero" className="t-display">
             {profile.headline}
           </h1>
           <p className="prose mt-6">

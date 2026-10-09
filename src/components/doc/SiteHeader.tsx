@@ -21,7 +21,7 @@ export default function SiteHeader({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Circular reveal from the button, via the View Transitions API. Falls
+  // Slow soft-edged circular reveal from the button, via the View Transitions API. Falls
   // back to an instant swap when the API is unsupported or the user has
   // asked for reduced motion — toggleTheme() itself never changes.
   function handleThemeToggle(event: MouseEvent<HTMLButtonElement>) {

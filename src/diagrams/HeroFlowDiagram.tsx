@@ -27,6 +27,7 @@ const draw: Variants = {
 export default function HeroFlowDiagram() {
   const box = "fill-none stroke-current stroke-[1.5]";
   const label = "fill-current font-mono";
+  const labelDim = "fill-ink-2 font-mono";
   const reduce = useReducedMotion();
   const hydrated = useHydrated();
   const static_ = reduce || !hydrated;
@@ -64,7 +65,7 @@ export default function HeroFlowDiagram() {
           <text x="60" y="62" textAnchor="middle" fontSize="12" className={label}>
             Kite Connect
           </text>
-          <text x="60" y="78" textAnchor="middle" fontSize="10" className={label} opacity="0.7">
+          <text x="60" y="78" textAnchor="middle" fontSize="10" className={labelDim}>
             1 upstream socket
           </text>
         </G>
@@ -79,7 +80,7 @@ export default function HeroFlowDiagram() {
             strokeWidth="1.5"
             variants={static_ ? undefined : draw}
           />
-          <text x="130" y="58" textAnchor="middle" fontSize="10" className={label} opacity="0.75">
+          <text x="130" y="58" textAnchor="middle" fontSize="10" className={labelDim}>
             wss
           </text>
         </G>
@@ -92,7 +93,7 @@ export default function HeroFlowDiagram() {
           <text x="208" y="76" textAnchor="middle" fontSize="12" className={label}>
             STOMP Broker
           </text>
-          <text x="208" y="90" textAnchor="middle" fontSize="10" className={label} opacity="0.7">
+          <text x="208" y="90" textAnchor="middle" fontSize="10" className={labelDim}>
             built here
           </text>
         </G>
@@ -107,7 +108,7 @@ export default function HeroFlowDiagram() {
             strokeWidth="1.5"
             variants={static_ ? undefined : draw}
           />
-          <text x="286" y="58" textAnchor="middle" fontSize="10" className={label} opacity="0.75">
+          <text x="286" y="58" textAnchor="middle" fontSize="10" className={labelDim}>
             wss
           </text>
         </G>
