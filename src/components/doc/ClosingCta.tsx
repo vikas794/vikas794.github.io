@@ -9,8 +9,7 @@ export default function ClosingCta() {
       <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
         <Reveal>
           <RevealItem>
-            <p className="label">Contact</p>
-            <h2 id="contact-cta" className="t-display mt-4 max-w-[16ch]">
+            <h2 id="contact-cta" className="t-display max-w-[16ch]">
               Hiring for a backend role? Let&apos;s talk.
             </h2>
             <p className="prose mt-6">
