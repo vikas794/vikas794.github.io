@@ -1,0 +1,77 @@
+# Weekly watchdog against the LIVE site. Silent when healthy; opens (or
+# comments on) a GitHub Issue when something regresses, which emails you.
+name: SEO health
+
+on:
+  schedule:
+    - cron: "23 5 * * 1" # Mondays 05:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  SITE: https://vikas794.github.io
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Live endpoints and indexability
+        id: live
+        run: |
+          set -u
+          fail=0
+          for p in "" sitemap.xml robots.txt llms.txt feed.xml about/ projects/ contact/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -L "$SITE/$p")
+            [ "$code" = "200" ] || { echo "::error::$SITE/$p returned $code"; fail=1; }
+          done
+          home=$(curl -sL "$SITE/")
+          echo "$home" | grep -qi '<link rel="canonical"' || { echo "::error::home missing canonical"; fail=1; }
+          echo "$home" | grep -qi 'application/ld+json' || { echo "::error::home missing JSON-LD"; fail=1; }
+          if echo "$home" | grep -qi 'name="robots"[^>]*noindex'; then echo "::error::home is noindex"; fail=1; fi
+          if curl -sI "$SITE/" | grep -qi 'x-robots-tag:.*noindex'; then echo "::error::X-Robots-Tag noindex"; fail=1; fi
+          curl -s "$SITE/robots.txt" | grep -qi '^Disallow: /$' && { echo "::error::robots.txt blocks everything"; fail=1; }
+          exit $fail
+
+      - name: Link check
+        id: links
+        if: always()
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress --max-retries 2 --timeout 20
+            --accept 200,201,204,301,302,308,403,429,999
+            --exclude-mail
+            '${{ env.SITE }}/' '${{ env.SITE }}/about/' '${{ env.SITE }}/experience/'
+            '${{ env.SITE }}/projects/' '${{ env.SITE }}/resume/' '${{ env.SITE }}/contact/'
+          fail: true
+
+      - name: Lighthouse
+        id: lh
+        if: always()
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            ${{ env.SITE }}/
+            ${{ env.SITE }}/projects/
+          configPath: ./.github/lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Open issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="SEO health check failed"
+          url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          existing=$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Still failing: $url"
+          else
+            gh issue create --title "$title" --body "The weekly SEO watchdog found a regression (live endpoints, links or Lighthouse). Details: $url"
+          fi

@@ -9,6 +9,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+  # Monthly rebuild: refreshes computed copy ("N+ years") and keeps the
+  # site's freshness signal alive with zero manual work.
+  schedule:
+    - cron: "17 4 1 * *"
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -31,6 +36,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # full history: sitemap lastmod + IndexNow diff use git log
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -58,7 +65,11 @@ jobs:
           test -f dist/404.html || (echo "missing dist/404.html" && exit 1)
           if grep -r "data-msg=" dist; then echo "client-render fallback in dist" && exit 1; fi
           test -f dist/sitemap.xml || (echo "missing dist/sitemap.xml" && exit 1)
-          test "$(grep -c '<loc>' dist/sitemap.xml)" = "9" || (echo "sitemap should list 9 URLs" && exit 1)
+          actual="$(grep -c '<loc>' dist/sitemap.xml)"
+          test "$actual" -ge 9 || (echo "sitemap has only $actual URLs (expected >= 9)" && exit 1)
+          # every prerendered page must be in the sitemap
+          pages="$(find dist -name index.html -not -path 'dist/index.html' -not -path 'dist/error/*' | wc -l)"
+          test "$actual" -eq "$((pages + 1))" || (echo "sitemap ($actual) != prerendered pages ($((pages + 1)))" && exit 1)
           grep -q "https://vikas794.github.io/sitemap.xml" dist/robots.txt || (echo "robots missing sitemap ref" && exit 1)
           test -f dist/llms.txt || (echo "missing dist/llms.txt" && exit 1)
           test -f dist/llms-full.txt || (echo "missing dist/llms-full.txt" && exit 1)
@@ -77,4 +88,6 @@ jobs:
         uses: actions/deploy-pages@v5
       - name: Ping IndexNow for fast recrawl
         run: pnpm run indexnow
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
         continue-on-error: true

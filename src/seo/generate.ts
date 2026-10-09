@@ -1,8 +1,10 @@
 // Generated SEO — run AFTER build:prerender so dist/ is complete:
 //   tsx src/seo/generate.ts   (wired as `build:seo` in the build chain)
 // Writes dist/sitemap.xml, dist/robots.txt, dist/llms.txt, dist/llms-full.txt
-// entirely from src/content. lastmod comes from each item's `updated` field —
+// entirely from src/content. lastmod comes from the last git commit touching the content (fallback: the
+// hand-set `updated` fields) —
 // never the build date (emitting today for every URL trains Google to ignore it).
+import { execFileSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -21,13 +23,33 @@ const dist = join(root, "dist");
 
 const latestStudyUpdate = caseStudies.map((c) => c.updated).sort().at(-1)!;
 
+// Last commit date (YYYY-MM-DD) touching the given paths, or null when git
+// history is unavailable (shallow clone, no .git). CI checks out with
+// fetch-depth: 0 so this resolves; locally/offline we fall back to the
+// hand-maintained `updated` fields.
+function gitDate(paths: string[]): string | null {
+  try {
+    const out = execFileSync("git", ["log", "-1", "--format=%cs", "--", ...paths], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(out) ? out : null;
+  } catch {
+    return null;
+  }
+}
+
+const siteGitDate = gitDate(["src/content", "src/pages", "src/components"]);
+const projectsGitDate = gitDate(["src/content/projects.ts", "src/pages/ProjectDetailPage.tsx"]);
+
 function lastmodFor(path: string): string {
   const slugMatch = path.match(/^\/projects\/([^/]+)\/$/);
   if (slugMatch) {
-    return caseStudies.find((c) => c.slug === slugMatch[1])?.updated ?? profile.updated;
+    return projectsGitDate ?? caseStudies.find((c) => c.slug === slugMatch[1])?.updated ?? profile.updated;
   }
-  if (path === "/" || path === "/projects/") return latestStudyUpdate;
-  return profile.updated;
+  if (path === "/" || path === "/projects/") return siteGitDate ?? latestStudyUpdate;
+  return siteGitDate ?? profile.updated;
 }
 
 function esc(s: string): string {

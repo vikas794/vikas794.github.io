@@ -171,7 +171,7 @@ export const caseStudies: CaseStudy[] = [
 // Home proof strip: every number links to the case study that
 // substantiates it (the credibility mechanic). Methods stated always.
 export const proofStrip: { value: string; label: string; method: string; slug: string }[] = [
-  { value: "1 → thousands", label: "Upstream sockets → concurrent tick consumers", method: "WebSocket session count, production", slug: "market-ticks-fanout" },
+  { value: "1 → Thousands", label: "Upstream sockets → concurrent tick consumers", method: "WebSocket session count, production", slug: "market-ticks-fanout" },
   { value: "+30%", label: "API throughput", method: "Load test on instrumented hot paths", slug: "healthcare-backend-trust" },
   { value: "−80%", label: "Manual data-handling effort", method: "Ops hours on record processing", slug: "healthcare-backend-trust" },
   { value: "0", label: "HQL string-concat call sites", method: "Repo-wide grep + review, before/after", slug: "sql-injection-surface" },

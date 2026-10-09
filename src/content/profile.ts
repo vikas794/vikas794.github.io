@@ -11,6 +11,16 @@ export interface ContactChannel {
 export const TELEGRAM_HANDLE = "Vikas7";
 export const TELEGRAM_URL = `https://t.me/${TELEGRAM_HANDLE}`;
 
+// Single source of truth for career start; years are derived so "N+ years"
+// copy never goes stale (rebuilt monthly by scheduled-rebuild.yml).
+const EXPERIENCE_START = new Date(Date.UTC(2022, 1, 1)); // Feb 2022
+
+export function computeExperienceYears(now: Date = new Date()): number {
+  let years = now.getUTCFullYear() - EXPERIENCE_START.getUTCFullYear();
+  if (now.getUTCMonth() < EXPERIENCE_START.getUTCMonth()) years -= 1;
+  return Math.max(years, 0);
+}
+
 export const profile = {
   name: "Vikas Jaiswal",
   firstName: "Vikas",
@@ -25,7 +35,7 @@ export const profile = {
   ] as readonly string[],
   titleLong: "Java Spring Boot Backend Developer",
   badge: "Azure-Certified Java Backend Developer",
-  experienceYears: 4,
+  experienceYears: computeExperienceYears(),
   experienceSince: "Feb 2022",
   location: "Mumbai, India",
   locality: "Mumbai",
