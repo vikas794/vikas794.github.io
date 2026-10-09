@@ -3,7 +3,6 @@ import { profile } from "../content/profile";
 import { certifications } from "../content/certifications";
 import { faqs } from "../content/faq";
 import { breadcrumbJsonLd, faqPageJsonLd } from "../seo/jsonld";
-import KeyFacts from "../components/doc/KeyFacts";
 import Reveal, { RevealItem } from "../components/Reveal";
 
 // First person, active, specific. "How I work" carries opinions —
@@ -57,10 +56,6 @@ export default function AboutPage() {
           retry behavior. I like it there.
         </p>
 
-        <div className="-mx-5 mt-12 md:-mx-8">
-          <KeyFacts />
-        </div>
-
         <section aria-labelledby="how-i-work" className="mt-12">
           <h2 id="how-i-work" className="label">
             How I work
@@ -92,17 +87,6 @@ export default function AboutPage() {
               </RevealItem>
             ))}
           </Reveal>
-        </section>
-
-        <section aria-labelledby="outside" className="mt-12">
-          <h2 id="outside" className="label">
-            Outside the code
-          </h2>
-          <p className="prose mt-6">
-            I&apos;m based in Santacruz, Mumbai. Outside work, most hours go to family —
-            and to staying current with the Java and Spring ecosystem, which is how the
-            Azure certifications above happened.
-          </p>
         </section>
 
         <section aria-labelledby="faq" className="mt-12">

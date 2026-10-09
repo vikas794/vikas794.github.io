@@ -6,7 +6,7 @@ import Reveal, { RevealItem } from "../Reveal";
 export default function ClosingCta() {
   return (
     <section aria-labelledby="contact-cta" className="bg-paper-2">
-      <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+      <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-32">
         <Reveal>
           <RevealItem>
             <h2 id="contact-cta" className="t-display max-w-[16ch]">

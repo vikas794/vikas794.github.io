@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router";
+import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { useTheme } from "../hooks/useTheme";
 import { useHydrated } from "../hooks/useHydrated";
 import { prefetchResumeAssets } from "../lib/prefetchResume";
@@ -16,6 +17,9 @@ export default function AppShell() {
   const mainRef = useRef<HTMLElement>(null);
   const liveRef = useRef<HTMLDivElement>(null);
   const hydrated = useHydrated();
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
 
   useEffect(() => {
     if (hydrated) prefetchResumeAssets();
@@ -39,6 +43,7 @@ export default function AppShell() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
+      {hydrated && !reduce && <motion.div aria-hidden="true" className="scroll-progress" style={{ scaleX: progress }} />}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main id="main" tabIndex={-1} ref={mainRef}>
         <ErrorBoundary key={location.pathname}>

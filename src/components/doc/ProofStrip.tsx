@@ -6,16 +6,16 @@ import Reveal, { RevealItem } from "../Reveal";
 export default function ProofStrip() {
   return (
     <section aria-labelledby="proof" className="border-b border-rule">
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8">
+      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-24">
         <h2 id="proof" className="label">
           Results, measured
         </h2>
-        <Reveal className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.7fr_1fr_1fr_1fr]">
           {proofStrip.map((m) => (
             <RevealItem key={m.label}>
               <Link
                 to={`/projects/${m.slug}/`}
-                className="metric group no-underline"
+                className="metric metric-lg group no-underline"
               >
                 <span className="metric-num group-hover:text-accent">{m.value}</span>
                 <span className="metric-label">{m.label}</span>

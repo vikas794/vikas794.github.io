@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { profile } from "../../content/profile";
 import { proofStrip } from "../../content/projects";
 import Reveal, { RevealItem } from "../Reveal";
+import HeadlineReveal from "../HeadlineReveal";
 import HeroFlowDiagram from "../../diagrams/HeroFlowDiagram";
 
 // The flagship proof point, promoted out of ProofStrip into the hero itself
@@ -15,11 +16,9 @@ const heroStat = proofStrip[0];
 export default function Hero() {
   return (
     <section aria-labelledby="home-hero" className="border-b border-rule">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 md:px-8 md:py-20 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:px-8 md:py-28 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center lg:gap-16">
         <div>
-          <h1 id="home-hero" className="t-display">
-            {profile.headline}
-          </h1>
+          <HeadlineReveal id="home-hero" text={profile.headline} />
           <p className="prose mt-6">
             I&apos;m {profile.name}, an Azure-certified {profile.titleLong} based in{" "}
             {profile.location}. {profile.experienceYears}+ years turning hard requirements into secure, fast systems across{" "}
