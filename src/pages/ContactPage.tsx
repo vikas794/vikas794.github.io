@@ -45,8 +45,7 @@ export default function ContactPage() {
         )}
       </script>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
-        <p className="label">Contact</p>
-        <h1 className="mt-4 max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
+        <h1 className="max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
           Java backend roles, remote or hybrid.
         </h1>
         <p className="prose mt-6">
