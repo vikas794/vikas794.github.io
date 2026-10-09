@@ -497,6 +497,13 @@ li a:hover {
   display: none;
 }
 
+/* Animatable radius for the theme reveal mask (see the vt-theme rules below). */
+@property --theme-reveal {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 /* Both animated transitions on the site (theme toggle, route change) run
    through the View Transitions API — see src/lib/viewTransition.ts. Each
    call tags <html> with vt-theme or vt-route for the duration, so the two
@@ -505,26 +512,39 @@ li a:hover {
    Transitions, or with reduced motion, just swap instantly, no pseudo
    elements involved at all. */
 @media (prefers-reduced-motion: no-preference) {
-  /* Theme toggle: a slow tonal dissolve. The old theme stays fully opaque
-     underneath while the new one fades in over it, so there is no
-     mid-transition dip from two half-visible layers and no hard edge —
-     the page just shades from one theme into the other. */
+  /* Theme toggle: a slow circular reveal from the clicked button, driven
+     by --theme-x/--theme-y/--theme-r (set in SiteHeader). The edge is a
+     soft gradient mask (feathered by --theme-feather), not a hard clip, so
+     the new theme spreads out like a shade rather than a wipe. */
   html.vt-theme::view-transition-old(root) {
     animation: none;
     mix-blend-mode: normal;
   }
 
   html.vt-theme::view-transition-new(root) {
-    animation: theme-shade 900ms cubic-bezier(0.45, 0, 0.2, 1) both;
+    --theme-feather: 280px;
     mix-blend-mode: normal;
+    -webkit-mask-image: radial-gradient(
+      circle at var(--theme-x, 50%) var(--theme-y, 50%),
+      #000 max(calc(var(--theme-reveal) - var(--theme-feather)), 0px),
+      transparent var(--theme-reveal)
+    );
+    mask-image: radial-gradient(
+      circle at var(--theme-x, 50%) var(--theme-y, 50%),
+      #000 max(calc(var(--theme-reveal) - var(--theme-feather)), 0px),
+      transparent var(--theme-reveal)
+    );
+    animation: theme-reveal 1400ms cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
-  @keyframes theme-shade {
+  @keyframes theme-reveal {
     from {
-      opacity: 0;
+      --theme-reveal: 0px;
     }
     to {
-      opacity: 1;
+      /* Reaches the farthest corner plus the feather, so the mask is fully
+         opaque everywhere by the end. */
+      --theme-reveal: calc(var(--theme-r, 150%) + 280px);
     }
   }
 
