@@ -161,4 +161,34 @@ describe("runViewTransition", () => {
 
     expect(document.documentElement.classList.contains("vt-theme")).toBe(false);
   });
+
+  it("should skip the in-flight transition when a new one starts", async () => {
+    const skip = vi.fn();
+    let resolveFirst: () => void = () => {};
+    const first = new Promise<void>((r) => {
+      resolveFirst = r;
+    });
+    const secondFinished = Promise.resolve();
+    const mock = vi
+      .fn()
+      .mockImplementationOnce((cb: () => void) => {
+        cb();
+        return { finished: first, skipTransition: skip };
+      })
+      .mockImplementationOnce((cb: () => void) => {
+        cb();
+        return { finished: secondFinished, skipTransition: vi.fn() };
+      });
+    (document as unknown as { startViewTransition: unknown }).startViewTransition = mock;
+
+    runViewTransition("route", vi.fn());
+    runViewTransition("route", vi.fn());
+    expect(skip).toHaveBeenCalledTimes(1);
+
+    // The superseded transition finishing must not clear the class early.
+    resolveFirst();
+    await first;
+    await Promise.resolve();
+    expect(document.documentElement.classList.contains("vt-route")).toBe(false);
+  });
 });

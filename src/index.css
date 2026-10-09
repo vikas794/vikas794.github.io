@@ -26,6 +26,10 @@
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
+  --dur-1: 140ms;
+  --dur-2: 240ms;
+  --dur-route: 320ms;
+
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
@@ -295,7 +299,7 @@ li a:hover {
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--ink);
-  transition: color var(--dur-1, 120ms) var(--ease-out);
+  transition: color var(--dur-1) var(--ease-out);
 }
 
 .hero-stat .hero-stat-label {
@@ -314,7 +318,7 @@ li a:hover {
   border-radius: var(--radius-lg);
   background: var(--paper-2);
   padding: 1.25rem;
-  transition: border-color var(--dur-1, 120ms) var(--ease-out);
+  transition: border-color var(--dur-1) var(--ease-out);
 }
 
 .hero-diagram:hover {
@@ -337,8 +341,9 @@ li a:hover {
   font-weight: 500;
   border-radius: var(--radius-md);
   border: 1px solid var(--rule-interactive);
-  transition: background-color 120ms var(--ease-out), color 120ms var(--ease-out),
-    border-color 120ms var(--ease-out), transform 120ms var(--ease-out);
+  transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out),
+    filter var(--dur-1) var(--ease-out);
 }
 
 .btn:active {
@@ -385,7 +390,7 @@ li a:hover {
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 160ms var(--ease-out);
+  transition: transform var(--dur-2) var(--ease-out);
 }
 
 .nav-link:hover::after,
@@ -507,7 +512,7 @@ li a:hover {
   }
 
   html.vt-theme::view-transition-new(root) {
-    animation: theme-reveal 900ms var(--ease-out);
+    animation: theme-reveal 550ms var(--ease-out);
   }
 
   @keyframes theme-reveal {
@@ -519,27 +524,45 @@ li a:hover {
     }
   }
 
-  /* Route change: the old page slides up and out while the new page
-     slides up and in underneath it — a soft page-turn, not a hard cut. */
+  /* Route change: the old page fades out fast, then the new page rises in
+     8px — one direction, no opacity dip from two half-visible pages. The
+     header and back-to-top get their own named groups (only while a route
+     transition runs, so the theme reveal still sweeps over them) and stay
+     put instead of fading with the page. */
+  html.vt-route .vt-persist-header {
+    view-transition-name: site-header;
+  }
+
+  html.vt-route .vt-persist-fab {
+    view-transition-name: back-to-top;
+  }
+
+  html.vt-route::view-transition-old(site-header),
+  html.vt-route::view-transition-new(site-header),
+  html.vt-route::view-transition-old(back-to-top),
+  html.vt-route::view-transition-new(back-to-top) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
   html.vt-route::view-transition-old(root) {
-    animation: route-old-out 520ms var(--ease-out) both;
+    animation: route-old-out var(--dur-1) ease-in both;
   }
 
   html.vt-route::view-transition-new(root) {
-    animation: route-new-in 520ms var(--ease-out) both;
+    animation: route-new-in var(--dur-route) var(--ease-out) var(--dur-1) both;
   }
 
   @keyframes route-old-out {
     to {
       opacity: 0;
-      transform: translateY(-14px);
     }
   }
 
   @keyframes route-new-in {
     from {
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(8px);
     }
   }
 }

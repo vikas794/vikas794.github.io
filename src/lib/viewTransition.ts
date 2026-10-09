@@ -4,6 +4,9 @@ import { flushSync } from "react-dom";
 // route change) — both go through the View Transitions API so they get the
 // same well-supported, compositor-driven animation, distinguished only by
 // a `vt-<kind>` class on <html> that index.css keys its keyframes off of.
+// Rapid clicks: skip the in-flight transition so animations never stack.
+let activeTransition: ViewTransition | null = null;
+
 export function runViewTransition(kind: "theme" | "route", mutate: () => void) {
   const prefersReduced =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -13,6 +16,8 @@ export function runViewTransition(kind: "theme" | "route", mutate: () => void) {
     return;
   }
 
+  activeTransition?.skipTransition?.();
+
   const root = document.documentElement;
   // Clear both up front — if a previous transition's own cleanup hasn't
   // landed yet (e.g. it's still mid-flight when this one starts), we'd
@@ -21,5 +26,11 @@ export function runViewTransition(kind: "theme" | "route", mutate: () => void) {
   root.classList.remove("vt-theme", "vt-route");
   root.classList.add(`vt-${kind}`);
   const transition = document.startViewTransition(() => flushSync(mutate));
-  transition.finished.finally(() => root.classList.remove(`vt-${kind}`));
+  activeTransition = transition;
+  transition.finished.finally(() => {
+    // A superseded transition must not strip the class its successor owns.
+    if (activeTransition !== transition) return;
+    activeTransition = null;
+    root.classList.remove(`vt-${kind}`);
+  });
 }

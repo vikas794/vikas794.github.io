@@ -8,7 +8,7 @@ export default function BackToTop() {
 
   return (
     <button
-      className="fixed bottom-6 right-6 z-40 inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-rule-strong bg-paper text-ink"
+      className="vt-persist-fab fixed bottom-6 right-6 z-40 inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-rule-strong bg-paper text-ink"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Back to top"
     >

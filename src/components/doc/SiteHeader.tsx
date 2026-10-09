@@ -43,7 +43,7 @@ export default function SiteHeader({
   }
 
   return (
-    <header className="border-b border-rule bg-paper">
+    <header className="vt-persist-header border-b border-rule bg-paper">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
         <Link to="/" className="font-serif text-xl tracking-tight no-underline" aria-label="Vikas Jaiswal — home">
           Vikas Jaiswal

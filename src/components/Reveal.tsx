@@ -10,15 +10,15 @@ import { useHydrated } from "../hooks/useHydrated";
 // visible — this component never truncates its children.
 const staggerParent: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.07, delayChildren: 0.02 } },
+  show: { transition: { staggerChildren: 0.05, delayChildren: 0.02 } },
 };
 
 const staggerChild: Variants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.36, ease: [0.16, 1, 0.3, 1] },
   },
 };
 

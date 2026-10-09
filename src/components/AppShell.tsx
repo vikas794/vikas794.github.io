@@ -22,15 +22,17 @@ export default function AppShell() {
   }, [hydrated]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.scrollTo(0, 0);
+    // "instant" so the global smooth-scroll rule never animates the reset
+    // underneath the route transition; hash links keep their own scroll.
+    if (typeof window !== "undefined" && !location.hash) {
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
     mainRef.current?.focus({ preventScroll: true });
     const path = location.pathname;
     if (liveRef.current) {
       liveRef.current.textContent = `Navigated to ${path}`;
     }
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   return (
     <>
