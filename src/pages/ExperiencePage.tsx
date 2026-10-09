@@ -8,8 +8,8 @@ export default function ExperiencePage() {
   return (
     <>
       <Seo
-        title="Experience | Vikas Jaiswal · Java Spring Boot Backend Developer"
-        description="Professional experience: WEQ Technologies, Medify Nexus, and Wipro — real-time trading, healthcare data, and enterprise backends."
+        title="Experience | Vikas Jaiswal · Java Developer"
+        description="Experience at WEQ Technologies, Medify Nexus and Wipro: real-time trading, healthcare data and enterprise backends."
         path="/experience/"
       />
       <script type="application/ld+json">
@@ -45,9 +45,9 @@ export default function ExperiencePage() {
                   <p className="prose mt-4">{e.productContext}</p>
                   {e.groups.map((g) => (
                     <section key={g.label} aria-label={g.label} className="mt-6">
-                      <h3 className="font-mono text-xs font-medium uppercase tracking-label text-ink-3">
+                      <p className="font-mono text-xs font-medium uppercase tracking-label text-ink-3">
                         {g.label}
-                      </h3>
+                      </p>
                       <ul className="mt-3 max-w-prose list-disc pl-5 text-small leading-relaxed">
                         {g.items.map((item) => (
                           <li key={item} className="mt-2">

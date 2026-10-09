@@ -12,7 +12,7 @@ export default function ProjectsPage() {
     <>
       <Seo
         title="Projects | Vikas Jaiswal · Case Studies"
-        description="Three deep backend case studies: market-tick fan-out, healthcare performance, SQL-injection hardening — plus also-shipped one-liners."
+        description="Three backend case studies: market-tick fan-out, healthcare performance and SQL-injection hardening."
         path="/projects/"
       />
       <script type="application/ld+json">{JSON.stringify(projectListJsonLd())}</script>

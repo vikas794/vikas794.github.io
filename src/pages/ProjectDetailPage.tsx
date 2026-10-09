@@ -23,7 +23,7 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
   const path = `/projects/${study.slug}/`;
   return (
     <>
-      <Seo title={`${study.title} | ${profile.name}`} description={study.metaDescription} path={path} />
+      <Seo title={`${study.title} | ${profile.name}`.length <= 60 ? `${study.title} | ${profile.name}` : study.title} description={study.metaDescription} path={path} />
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
@@ -38,6 +38,7 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
           },
           dateModified: study.updated,
           datePublished: study.updated,
+          image: "https://vikas794.github.io/og-image.png",
           inLanguage: "en",
         })}
       </script>

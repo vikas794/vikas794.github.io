@@ -30,8 +30,8 @@ export default function AboutPage() {
   return (
     <>
       <Seo
-        title="About | Vikas Jaiswal · Java Spring Boot Backend Developer"
-        description="How Vikas Jaiswal works: API design, security, performance, and team opinions from 4+ years of backend engineering, plus Azure certifications."
+        title="About | Vikas Jaiswal · Java Backend Developer"
+        description="How Vikas Jaiswal works: API design, security, performance and team opinions from 4+ years of backend work."
         path="/about/"
       />
       <script type="application/ld+json">

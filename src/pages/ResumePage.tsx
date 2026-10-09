@@ -20,8 +20,8 @@ export default function ResumePage() {
   return (
     <>
       <Seo
-        title="Résumé | Vikas Jaiswal · Java Spring Boot Backend Developer"
-        description="Résumé of Vikas Jaiswal, Java Spring Boot Backend Developer (4+ years). Download PDF or read the accessible HTML version."
+        title="Résumé | Vikas Jaiswal · Java Developer"
+        description="Résumé of Vikas Jaiswal, Java Spring Boot Backend Developer. Download the PDF or read the HTML version."
         path="/resume/"
       />
       <script type="application/ld+json">

@@ -32,7 +32,7 @@ export default function ContactPage() {
     <>
       <Seo
         title="Contact | Vikas Jaiswal · Open to Work"
-        description="Vikas Jaiswal is open to backend engineering roles (remote/hybrid, Mumbai). Email, LinkedIn, GitHub, WhatsApp, Telegram."
+        description="Vikas Jaiswal is open to backend roles (remote/hybrid, Mumbai). Email, LinkedIn, GitHub, WhatsApp, Telegram."
         path="/contact/"
       />
       <script type="application/ld+json">

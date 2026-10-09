@@ -53,7 +53,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "Real-time algo-trading backend with Kite Connect OAuth, WebSocket tick broadcast to concurrent users, Razorpay wallet with GST, and automated PDF payout generation stored on S3.",
     metaDescription:
-      "Real-time algo-trading backend: Kite Connect OAuth, WebSocket tick broadcast to thousands of clients, Razorpay wallet with GST, automated PDF payouts on S3.",
+      "Real-time algo-trading backend: Kite Connect OAuth, WebSocket tick broadcast to thousands of clients, Razorpay wallet.",
     problem:
       "Upstream gives us exactly one Kite Connect socket. Every open trade screen needs the same ticks, immediately, without slowing order placement or billing. Polling per client multiplies upstream load and lags; a naive broadcast blocks request threads. The constraint: fan every tick out to thousands of sessions from that single socket while the order and wallet paths stay untouched.",
     constraints: ["Single upstream socket", "Thousands of concurrent WebSocket sessions", "Order + billing paths must never block on ticks", "Market-hours bursts, no quiet window to catch up"],
@@ -92,7 +92,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "High-availability backend for sensitive health records. JWT-secured REST APIs cut integration time 40%. Python ETL pipelines eliminated 80% of manual effort. Async multithreading: +30% throughput, −150ms latency.",
     metaDescription:
-      "Healthcare backend: JWT-secured REST APIs cut integration time 40%, Python ETL cut manual effort 80%, async I/O: +30% throughput, -150ms latency.",
+      "Healthcare backend: JWT-secured REST APIs cut integration time 40%; async I/O gave +30% throughput and -150ms latency.",
     problem:
       "Partner integrations stall on unclear auth and slow reports while manual record handling eats ops hours on sensitive data.",
     constraints: ["Sensitive health records", "Slow reports block partner onboarding", "Manual ETL does not scale"],
@@ -121,7 +121,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "Replaced legacy HQL string concatenation with parameterized queries across all modules — closed SQL injection surface entirely. @PreAuthorize-based RBAC for granular multi-tenant control.",
     metaDescription:
-      "Replaced legacy HQL concatenation with parameterized queries, closing the SQL injection surface. Added @PreAuthorize RBAC for multi-tenant control.",
+      "Replaced HQL string concatenation with parameterized queries to close the SQL injection surface; added @PreAuthorize RBAC.",
     problem:
       "Legacy HQL concatenation scattered across 30+ modules leaves an injection surface that code review alone cannot bound.",
     constraints: ["Live multi-tenant codebase", "30+ modules", "Zero downtime for the fix"],

@@ -15,7 +15,7 @@ export default function CodeBlock({ code }: { code: CodeExcerpt }) {
         role="region"
         aria-label={`Code excerpt from ${code.path}`}
       >
-        <pre className="wide-scroll p-0 font-mono text-code leading-6">
+        <pre className="wide-scroll overflow-x-auto p-0 font-mono text-code leading-6">
           <code>
             {code.lines.map((l, i) => {
               const comment = l.code.trimStart().startsWith("//");

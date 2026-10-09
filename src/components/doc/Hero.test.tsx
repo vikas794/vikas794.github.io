@@ -38,7 +38,7 @@ describe("Hero", () => {
     renderHero();
     expect(screen.getByRole("img", { name: /^Market-tick fan-out, simplified/ })).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "How this works — read the fan-out case study" })
+      screen.getByRole("link", { name: /How this works/ })
     ).toHaveAttribute("href", `/projects/${heroStat.slug}/`);
   });
 });

@@ -39,16 +39,16 @@ export const routes: AppRoute[] = [
     path: "/about/",
     element: <AboutPage />,
     meta: {
-      title: `About | ${base} · ${role}`,
-      description: `How ${base} works: API design, security, performance, and team opinions from ${profile.experienceYears}+ years of backend engineering, plus Azure certifications.`,
+      title: `About | ${base} · Java Backend Developer`,
+      description: `How ${base} works: API design, security, performance and team opinions from ${profile.experienceYears}+ years of backend work.`,
     },
   },
   {
     path: "/experience/",
     element: <ExperiencePage />,
     meta: {
-      title: `Experience | ${base} · ${role}`,
-      description: `Professional experience: WEQ Technologies, Medify Nexus, and Wipro — real-time trading, healthcare data, and enterprise backends.`,
+      title: `Experience | ${base} · Java Developer`,
+      description: `Experience at WEQ Technologies, Medify Nexus and Wipro: real-time trading, healthcare data and enterprise backends.`,
     },
   },
   {
@@ -56,7 +56,7 @@ export const routes: AppRoute[] = [
     element: <ProjectsPage />,
     meta: {
       title: `Projects | ${base} · Case Studies`,
-      description: `Three deep backend case studies: market-tick fan-out, healthcare performance, SQL-injection hardening — plus also-shipped one-liners.`,
+      description: `Three backend case studies: market-tick fan-out, healthcare performance and SQL-injection hardening.`,
     },
   },
   ...caseStudies.map(
@@ -64,7 +64,7 @@ export const routes: AppRoute[] = [
       path: `/projects/${c.slug}/`,
       element: <ProjectDetailPage slug={c.slug} />,
       meta: {
-        title: `${c.title} | ${base}`,
+        title: `${c.title} | ${base}`.length <= 60 ? `${c.title} | ${base}` : c.title,
         description: c.metaDescription,
       },
     })
@@ -73,8 +73,8 @@ export const routes: AppRoute[] = [
     path: "/resume/",
     element: <ResumePage />,
     meta: {
-      title: `Résumé | ${base} · ${role}`,
-      description: `Résumé of ${base}, ${role} (${profile.experienceYears}+ years). Download PDF or read the accessible HTML version.`,
+      title: `Résumé | ${base} · Java Developer`,
+      description: `Résumé of ${base}, ${role}. Download the PDF or read the HTML version.`,
     },
   },
   {
@@ -82,7 +82,7 @@ export const routes: AppRoute[] = [
     element: <ContactPage />,
     meta: {
       title: `Contact | ${base} · Open to Work`,
-      description: `${base} is open to backend engineering roles (remote/hybrid, Mumbai). Email, LinkedIn, GitHub, WhatsApp, Telegram.`,
+      description: `${base} is open to backend roles (remote/hybrid, Mumbai). Email, LinkedIn, GitHub, WhatsApp, Telegram.`,
     },
   },
   {

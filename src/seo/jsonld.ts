@@ -41,7 +41,11 @@ export function personJsonLd() {
       "@type": "EducationalOccupationalCredential",
       name: c.name,
       credentialCategory: "certification",
-      recognizedBy: { "@type": "Organization", name: c.issuer },
+      recognizedBy: {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#issuer-${c.issuer.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        name: c.issuer,
+      },
     })),
     address: {
       "@type": "PostalAddress",

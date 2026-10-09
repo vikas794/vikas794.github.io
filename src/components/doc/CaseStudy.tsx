@@ -86,12 +86,13 @@ export function CaseStudyDecisionsTable({ decisions }: { decisions: CaseStudy["d
         aria-label="Decisions and trade-offs"
       >
         <table className="wide-scroll w-full text-left text-small">
+          <caption className="sr-only">Decisions and trade-offs</caption>
           <thead>
             <tr className="border-b border-rule bg-paper-2 font-mono text-xs text-ink-3">
-              <th className="px-4 py-3 font-medium">Decision</th>
-              <th className="px-4 py-3 font-medium">Option A</th>
-              <th className="px-4 py-3 font-medium">Option B</th>
-              <th className="px-4 py-3 font-medium">Chosen</th>
+              <th scope="col" className="px-4 py-3 font-medium">Decision</th>
+              <th scope="col" className="px-4 py-3 font-medium">Option A</th>
+              <th scope="col" className="px-4 py-3 font-medium">Option B</th>
+              <th scope="col" className="px-4 py-3 font-medium">Chosen</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-rule">
@@ -138,12 +139,13 @@ export function CaseStudyResultsTable({ outcomes }: { outcomes: CaseStudy["outco
         aria-label="Results, before and after"
       >
         <table className="wide-scroll w-full text-left text-small">
+          <caption className="sr-only">Results, before and after</caption>
           <thead>
             <tr className="border-b border-rule bg-paper-2 font-mono text-xs text-ink-3">
-              <th className="px-4 py-3 font-medium">Metric</th>
-              <th className="px-4 py-3 font-medium">Before</th>
-              <th className="px-4 py-3 font-medium">After</th>
-              <th className="px-4 py-3 font-medium">How measured</th>
+              <th scope="col" className="px-4 py-3 font-medium">Metric</th>
+              <th scope="col" className="px-4 py-3 font-medium">Before</th>
+              <th scope="col" className="px-4 py-3 font-medium">After</th>
+              <th scope="col" className="px-4 py-3 font-medium">How measured</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-rule">

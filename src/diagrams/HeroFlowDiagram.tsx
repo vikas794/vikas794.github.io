@@ -45,7 +45,7 @@ export default function HeroFlowDiagram() {
       };
 
   return (
-    <div className="hero-diagram">
+    <span className="hero-diagram block">
       <Svg
         viewBox="0 0 400 132"
         role="img"
@@ -122,6 +122,6 @@ export default function HeroFlowDiagram() {
           </text>
         </G>
       </Svg>
-    </div>
+    </span>
   );
 }
