@@ -6,7 +6,7 @@ import Reveal, { RevealItem } from "../Reveal";
 export default function WorkHistory() {
   return (
     <section aria-labelledby="work-history" className="border-b border-rule">
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8">
+      <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
         <div className="flex items-baseline justify-between gap-4">
           <h2 id="work-history" className="label">
             Where I&apos;ve worked
@@ -20,10 +20,10 @@ export default function WorkHistory() {
             />
           </Link>
         </div>
-        <Reveal className="mt-2 divide-y divide-rule">
+        <Reveal className="mt-8 divide-y divide-rule">
           {experiences.map((e) => (
             <RevealItem key={e.company}>
-              <div className="history-grid py-6">
+              <div className="history-grid case-row py-6">
                 <p className="font-mono text-xs leading-relaxed text-ink-3">{e.period}</p>
                 <div>
                   <p className="font-serif text-xl tracking-tight">

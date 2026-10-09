@@ -725,3 +725,104 @@ li a:hover {
     font-size: 0.8em;
   }
 }
+
+/* ---------------- premium polish: calm density, a few moving parts ---------------- */
+
+/* Headline mask: each word rises out of its own clipped line box. */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+/* Big, quiet metric used on the home strip and case rows. */
+.metric-lg .metric-num {
+  font-size: clamp(2.25rem, 1.7rem + 1.8vw, 3.25rem);
+  white-space: nowrap;
+  transition: color var(--dur-2) var(--ease-out), transform 500ms var(--ease-out);
+}
+
+.metric-lg .metric-label {
+  font-size: 0.9375rem;
+}
+
+/* The method is available, not shouting: on hover-capable screens it slides
+   in on hover/focus; on touch it stays visible. */
+@media (hover: hover) {
+  .metric-lg .metric-method {
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  }
+
+  .metric-lg:hover .metric-method,
+  .metric-lg:focus-visible .metric-method {
+    opacity: 1;
+    transform: none;
+  }
+
+  .metric-lg:hover .metric-num {
+    transform: translateY(-3px);
+  }
+}
+
+.case-metric {
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  color: var(--accent);
+}
+
+/* Rows: a hairline that draws under the active row, content nudges right. */
+.case-row {
+  position: relative;
+  transition: padding-left 450ms var(--ease-out);
+}
+
+.case-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .case-row:hover {
+    padding-left: 0.75rem;
+  }
+
+  .case-row:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Key facts: collapsed by default, same hairline language. */
+.facts summary::-webkit-details-marker {
+  display: none;
+}
+
+.facts summary::after {
+  content: " +";
+  color: var(--accent);
+}
+
+.facts[open] summary::after {
+  content: " −";
+}
+
+/* Scroll progress: a 2px accent line under the header, scrubbed by scroll. */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 60;
+  background: var(--accent);
+  transform-origin: left;
+  pointer-events: none;
+}

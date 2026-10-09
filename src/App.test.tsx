@@ -20,11 +20,10 @@ describe('App', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
     expect(screen.getByLabelText('Vikas Jaiswal — home')).toBeInTheDocument();
 
-    // Home route: single display h1 + ledger + proof strip
+    // Home route: single display h1 + proof strip
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'I build the backends that move money, data, and messages'
     );
-    expect(screen.getByText('Role')).toBeInTheDocument();
     expect(screen.getByText('Results, measured')).toBeInTheDocument();
     expect(screen.getByText('Selected work')).toBeInTheDocument();
   });

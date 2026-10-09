@@ -3,22 +3,22 @@ import type { ReactNode } from "react";
 import { useHydrated } from "../hooks/useHydrated";
 
 // The ONE shared entrance primitive, used consistently across every page —
-// section entrances are opacity + y:10 via variants with staggerChildren
+// section entrances are opacity + y:28 via variants with staggerChildren
 // .06, never delay: i*0.1 (which grows unboundedly with list length).
 // Reduced motion resolves to {opacity:1, y:0}: content PRESENT, not
 // fast-faded. Content must never depend on an animation firing to become
 // visible — this component never truncates its children.
 const staggerParent: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.05, delayChildren: 0.02 } },
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
 };
 
 const staggerChild: Variants = {
-  hidden: { opacity: 0, y: 10 },
+  hidden: { opacity: 0, y: 28 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.36, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -44,7 +44,7 @@ export default function Reveal({
       variants={staggerParent}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.15 }}
     >
       {children}
     </motion.div>

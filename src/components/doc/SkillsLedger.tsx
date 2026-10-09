@@ -4,7 +4,7 @@ import Reveal, { RevealItem } from "../Reveal";
 export default function SkillsLedger() {
   return (
     <section aria-labelledby="stack" className="border-b border-rule">
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8">
+      <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
         <h2 id="stack" className="label">
           What I work with
         </h2>
