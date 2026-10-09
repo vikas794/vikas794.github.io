@@ -3,7 +3,7 @@
 // Writes dist/sitemap.xml, dist/robots.txt, dist/llms.txt, dist/llms-full.txt
 // entirely from src/content. lastmod comes from each item's `updated` field —
 // never the build date (emitting today for every URL trains Google to ignore it).
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { profile } from "../content/profile.js";
@@ -153,6 +153,65 @@ function llmsFull(): string {
   return lines.join("\n");
 }
 
+export function rss(): string {
+  const items = [...caseStudies]
+    .sort((a, b) => b.updated.localeCompare(a.updated))
+    .map((c) => {
+      const url = `${SITE_URL}/projects/${c.slug}/`;
+      return `  <item>
+    <title>${esc(c.title)}</title>
+    <link>${url}</link>
+    <guid isPermaLink="true">${url}</guid>
+    <pubDate>${new Date(c.updated).toUTCString()}</pubDate>
+    <description>${esc(c.summary)}</description>
+  </item>`;
+    })
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>${esc(profile.name)} — Case studies</title>
+  <link>${SITE_URL}/projects/</link>
+  <description>${esc(profile.headline)}</description>
+  <language>en</language>
+${items}
+</channel>
+</rss>
+`;
+}
+
+export function aiSummary() {
+  return {
+    name: profile.name,
+    url: `${SITE_URL}/`,
+    role: profile.titleLong,
+    description: `${profile.headline}. ${profile.experienceYears}+ years across ${profile.domains.join(", ")}.`,
+    location: profile.location,
+    availability: profile.availability,
+    contact: { email: profile.email, linkedin: profile.linkedin, github: profile.github },
+    domains: [...profile.domains],
+    caseStudies: caseStudies.map((c) => ({ title: c.title, url: `${SITE_URL}/projects/${c.slug}/`, summary: c.summary })),
+    fullContext: `${SITE_URL}/llms-full.txt`,
+    updated: profile.updated,
+  };
+}
+
+export function aiFaq() {
+  return { url: `${SITE_URL}/about/`, updated: profile.updated, faqs: faqs.map((f) => ({ question: f.question, answer: f.answer })) };
+}
+
+export function aiTxt(): string {
+  return `# AI crawler policy for ${SITE_URL}
+Allow: /
+Attribution: link to ${SITE_URL}/ when citing
+Context: ${SITE_URL}/llms.txt
+Context-Full: ${SITE_URL}/llms-full.txt
+Summary: ${SITE_URL}/ai/summary.json
+FAQ: ${SITE_URL}/ai/faq.json
+Contact: ${profile.email}
+`;
+}
+
 // Guarded so vitest can import robots()/llms() for assertions without this
 // module's import also writing to dist/ as a side effect.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -160,5 +219,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await writeFile(join(dist, "robots.txt"), robots());
   await writeFile(join(dist, "llms.txt"), llms());
   await writeFile(join(dist, "llms-full.txt"), llmsFull());
-  console.log("seo: wrote sitemap.xml, robots.txt, llms.txt, llms-full.txt from src/content");
+  await writeFile(join(dist, "feed.xml"), rss());
+  await mkdir(join(dist, "ai"), { recursive: true });
+  await mkdir(join(dist, ".well-known"), { recursive: true });
+  await writeFile(join(dist, "ai", "summary.json"), JSON.stringify(aiSummary(), null, 2));
+  await writeFile(join(dist, "ai", "faq.json"), JSON.stringify(aiFaq(), null, 2));
+  await writeFile(join(dist, ".well-known", "ai.txt"), aiTxt());
+  console.log("seo: wrote sitemap, robots, llms*, feed.xml, ai/*.json, .well-known/ai.txt from src/content");
 }

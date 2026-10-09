@@ -75,6 +75,7 @@ export function websiteJsonLd() {
     author: { "@id": `${SITE_URL}/#person` },
     publisher: { "@id": `${SITE_URL}/#person` },
     inLanguage: "en",
+    dateModified: profile.updated,
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".label", ".prose"],
@@ -116,7 +117,18 @@ export function profilePageJsonLd(path: string) {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     url,
+    dateModified: profile.updated,
     mainEntity: { "@id": `${SITE_URL}/#person` },
+  };
+}
+
+export function employerOrganizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#org-weq`,
+    name: "WEQ Technologies",
+    address: { "@type": "PostalAddress", addressLocality: "Mumbai", addressCountry: "IN" },
   };
 }
 

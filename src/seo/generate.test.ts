@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { robots, llms } from "./generate";
+import { robots, llms, rss, aiFaq, aiSummary } from "./generate";
 import { faqs } from "../content/faq";
 
 describe("generated SEO files", () => {
@@ -17,5 +17,11 @@ describe("generated SEO files", () => {
     for (const f of faqs) {
       expect(out).toContain(`Q: ${f.question}`);
     }
+  });
+
+  it("rss, ai/faq.json and ai/summary.json derive from content", () => {
+    expect(rss()).toContain("<rss version=\"2.0\">");
+    expect(aiFaq().faqs).toHaveLength(faqs.length);
+    expect(aiSummary().caseStudies.length).toBeGreaterThan(0);
   });
 });

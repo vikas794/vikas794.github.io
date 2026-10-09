@@ -1,5 +1,11 @@
 import Seo from "../seo/Seo";
-import { personJsonLd, websiteJsonLd, profilePageJsonLd, projectListJsonLd } from "../seo/jsonld";
+import {
+  personJsonLd,
+  websiteJsonLd,
+  profilePageJsonLd,
+  projectListJsonLd,
+  employerOrganizationJsonLd,
+} from "../seo/jsonld";
 import Hero from "../components/doc/Hero";
 import ProofStrip from "../components/doc/ProofStrip";
 import CaseRows from "../components/doc/CaseRows";
@@ -20,6 +26,7 @@ export default function Home() {
       <script type="application/ld+json">{JSON.stringify(websiteJsonLd())}</script>
       <script type="application/ld+json">{JSON.stringify(profilePageJsonLd("/"))}</script>
       <script type="application/ld+json">{JSON.stringify(projectListJsonLd())}</script>
+      <script type="application/ld+json">{JSON.stringify(employerOrganizationJsonLd())}</script>
       <Hero />
       <ProofStrip />
       <CaseRows />

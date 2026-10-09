@@ -22,8 +22,8 @@ export default function Hero() {
             {profile.headline}
           </h1>
           <p className="prose mt-6">
-            I&apos;m {profile.name}, an Azure-certified {profile.role}. {profile.experienceYears}+
-            years turning hard requirements into secure, fast systems across{" "}
+            I&apos;m {profile.name}, an Azure-certified {profile.titleLong} based in{" "}
+            {profile.location}. {profile.experienceYears}+ years turning hard requirements into secure, fast systems across{" "}
             {profile.domains.join(", ").toLowerCase()}.
           </p>
           <Reveal className="mt-8">
