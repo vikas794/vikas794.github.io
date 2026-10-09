@@ -51,9 +51,9 @@ export const caseStudies: CaseStudy[] = [
     title: "Fanning out live market ticks from one socket",
     stack: "Kite Connect · WebSocket · Spring Scheduler · Razorpay · iText7 · AWS S3",
     summary:
-      "Real-time algo-trading backend with Kite Connect OAuth, WebSocket tick broadcast to concurrent users, Razorpay wallet with GST, and automated PDF payout generation stored on S3.",
+      "One Kite Connect upstream socket fans live ticks out to thousands of concurrent WebSocket sessions, alongside Kite OAuth, a Razorpay wallet with GST, and automated PDF payouts stored on S3.",
     metaDescription:
-      "Real-time algo-trading backend: Kite Connect OAuth, WebSocket tick broadcast to thousands of clients, Razorpay wallet.",
+      "Fans live market ticks from one Kite Connect socket to thousands of WebSocket clients without blocking order or wallet paths.",
     problem:
       "Upstream gives us exactly one Kite Connect socket. Every open trade screen needs the same ticks, immediately, without slowing order placement or billing. Polling per client multiplies upstream load and lags; a naive broadcast blocks request threads. The constraint: fan every tick out to thousands of sessions from that single socket while the order and wallet paths stay untouched.",
     constraints: ["Single upstream socket", "Thousands of concurrent WebSocket sessions", "Order + billing paths must never block on ticks", "Market-hours bursts, no quiet window to catch up"],
@@ -90,9 +90,9 @@ export const caseStudies: CaseStudy[] = [
     title: "Making a healthcare backend fast enough to trust",
     stack: "JWT · Spring Security · ETL · @Async · MS SQL Server",
     summary:
-      "High-availability backend for sensitive health records. JWT-secured REST APIs cut integration time 40%. Python ETL pipelines eliminated 80% of manual effort. Async multithreading: +30% throughput, −150ms latency.",
+      "Cut partner integration time 40% and manual data effort 80%, and gained +30% throughput and −150ms latency, on a high-availability backend for sensitive health records.",
     metaDescription:
-      "Healthcare backend: JWT-secured REST APIs cut integration time 40%; async I/O gave +30% throughput and -150ms latency.",
+      "Healthcare backend: −40% integration time, −80% manual effort, +30% throughput, −150ms latency.",
     problem:
       "Partner integrations stall on unclear auth and slow reports while manual record handling eats ops hours on sensitive data.",
     constraints: ["Sensitive health records", "Slow reports block partner onboarding", "Manual ETL does not scale"],
@@ -119,9 +119,9 @@ export const caseStudies: CaseStudy[] = [
     title: "Closing the SQL injection surface across a live codebase",
     stack: "Spring Security · RBAC · Parameterized Queries · @PreAuthorize",
     summary:
-      "Replaced legacy HQL string concatenation with parameterized queries across all modules — closed SQL injection surface entirely. @PreAuthorize-based RBAC for granular multi-tenant control.",
+      "Closed the SQL injection surface by replacing legacy HQL string concatenation with parameterized queries across all modules, plus @PreAuthorize-based RBAC for multi-tenant control.",
     metaDescription:
-      "Replaced HQL string concatenation with parameterized queries to close the SQL injection surface; added @PreAuthorize RBAC.",
+      "Closed the SQL injection surface with parameterized queries in place of HQL concatenation, plus @PreAuthorize RBAC.",
     problem:
       "Legacy HQL concatenation scattered across 30+ modules leaves an injection surface that code review alone cannot bound.",
     constraints: ["Live multi-tenant codebase", "30+ modules", "Zero downtime for the fix"],

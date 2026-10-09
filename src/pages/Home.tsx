@@ -5,6 +5,7 @@ import ProofStrip from "../components/doc/ProofStrip";
 import CaseRows from "../components/doc/CaseRows";
 import WorkHistory from "../components/doc/WorkHistory";
 import SkillsLedger from "../components/doc/SkillsLedger";
+import KeyFacts from "../components/doc/KeyFacts";
 import ClosingCta from "../components/doc/ClosingCta";
 
 const TITLE = "Vikas Jaiswal | Java Spring Boot Backend Developer";
@@ -24,6 +25,7 @@ export default function Home() {
       <CaseRows />
       <WorkHistory />
       <SkillsLedger />
+      <KeyFacts />
       <ClosingCta />
     </>
   );

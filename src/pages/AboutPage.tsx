@@ -3,6 +3,7 @@ import { profile } from "../content/profile";
 import { certifications } from "../content/certifications";
 import { faqs } from "../content/faq";
 import { breadcrumbJsonLd, faqPageJsonLd } from "../seo/jsonld";
+import KeyFacts from "../components/doc/KeyFacts";
 import Reveal, { RevealItem } from "../components/Reveal";
 
 // First person, active, specific. "How I work" carries opinions —
@@ -56,6 +57,10 @@ export default function AboutPage() {
           looks until it breaks: transaction boundaries, auth checks, query plans, and
           retry behavior. I like it there.
         </p>
+
+        <div className="-mx-5 mt-12 md:-mx-8">
+          <KeyFacts />
+        </div>
 
         <section aria-labelledby="how-i-work" className="mt-12">
           <h2 id="how-i-work" className="label">
