@@ -17,6 +17,12 @@ export const profile = {
   lastName: "Jaiswal",
   headline: "I build the backends that move money, data, and messages",
   role: "Java Backend Developer",
+  roleShort: "Java Developer",
+  alternateNames: [
+    "Vikas Jaiswal Java Developer",
+    "Vikas Java Developer",
+    "Vikas Jaiswal Spring Boot Developer",
+  ] as readonly string[],
   titleLong: "Java Spring Boot Backend Developer",
   badge: "Azure-Certified Java Backend Developer",
   experienceYears: 4,

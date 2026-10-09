@@ -12,6 +12,7 @@ export function personJsonLd() {
     "@type": "Person",
     "@id": `${SITE_URL}/#person`,
     name: profile.name,
+    alternateName: [...profile.alternateNames],
     givenName: profile.firstName,
     familyName: profile.lastName,
     url: `${SITE_URL}/`,

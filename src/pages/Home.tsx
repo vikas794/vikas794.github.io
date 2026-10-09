@@ -16,7 +16,7 @@ import ClosingCta from "../components/doc/ClosingCta";
 
 const TITLE = "Vikas Jaiswal | Java Spring Boot Backend Developer";
 const DESC =
-  "Vikas Jaiswal, Java Spring Boot Backend Developer: 4+ years building secure, scalable enterprise systems. Java 8-25, REST APIs, JWT.";
+  "Vikas Jaiswal is a Java Backend Developer in Mumbai with 4+ years building secure Spring Boot backends: REST APIs, JWT, Java 8-25. Azure-certified, open to work.";
 
 export default function Home() {
   return (
