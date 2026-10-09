@@ -10,6 +10,7 @@ const TOC = [
   { id: "constraints", label: "Constraints" },
   { id: "architecture", label: "Architecture" },
   { id: "critical-path", label: "Critical path" },
+  { id: "approach", label: "Approach" },
   { id: "decisions", label: "Decisions" },
   { id: "code", label: "Code" },
   { id: "results", label: "Results" },
@@ -69,6 +70,23 @@ export function CaseStudyConstraints({ constraints }: { constraints: string[] })
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+export function CaseStudyApproach({ steps }: { steps: string[] }) {
+  return (
+    <section aria-labelledby="approach" className="mt-10">
+      <h2 id="approach" className="label">
+        How it was done
+      </h2>
+      <ol className="mt-4 max-w-prose list-decimal pl-5 text-small leading-relaxed">
+        {steps.map((s) => (
+          <li key={s} className="mt-2">
+            {s}
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
@@ -181,9 +199,10 @@ export default function CaseStudyView({ study }: { study: CaseStudy }) {
   const hasDiagram = study.diagram === "fanout";
   const visibleToc = TOC.filter(
     (t) =>
-      (t.id !== "architecture" && t.id !== "critical-path" && t.id !== "code") ||
+      (t.id !== "architecture" && t.id !== "critical-path" && t.id !== "code" && t.id !== "approach") ||
       (hasDiagram && (t.id === "architecture" || t.id === "critical-path")) ||
-      (t.id === "code" && study.code)
+      (t.id === "code" && study.code) ||
+      (t.id === "approach" && study.approach)
   );
 
   return (
@@ -223,6 +242,8 @@ export default function CaseStudyView({ study }: { study: CaseStudy }) {
               </section>
             </>
           )}
+
+          {study.approach && <CaseStudyApproach steps={study.approach} />}
 
           <CaseStudyDecisionsTable decisions={study.decisions} />
 

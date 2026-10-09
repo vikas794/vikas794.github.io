@@ -221,9 +221,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await writeFile(join(dist, "llms-full.txt"), llmsFull());
   await writeFile(join(dist, "feed.xml"), rss());
   await mkdir(join(dist, "ai"), { recursive: true });
-  await mkdir(join(dist, ".well-known"), { recursive: true });
   await writeFile(join(dist, "ai", "summary.json"), JSON.stringify(aiSummary(), null, 2));
   await writeFile(join(dist, "ai", "faq.json"), JSON.stringify(aiFaq(), null, 2));
-  await writeFile(join(dist, ".well-known", "ai.txt"), aiTxt());
-  console.log("seo: wrote sitemap, robots, llms*, feed.xml, ai/*.json, .well-known/ai.txt from src/content");
+  await writeFile(join(dist, "ai.txt"), aiTxt());
+  console.log("seo: wrote sitemap, robots, llms*, feed.xml, ai/*.json, ai.txt from src/content");
 }

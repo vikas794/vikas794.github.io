@@ -128,6 +128,7 @@ export function employerOrganizationJsonLd() {
     "@type": "Organization",
     "@id": `${SITE_URL}/#org-weq`,
     name: "WEQ Technologies",
+    url: "https://weqtechnologies.com/",
     address: { "@type": "PostalAddress", addressLocality: "Mumbai", addressCountry: "IN" },
   };
 }

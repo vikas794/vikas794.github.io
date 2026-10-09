@@ -36,6 +36,8 @@ export interface CaseStudy {
   constraints: string[];
   decisions: TradeoffRow[];
   outcomes: CaseStudyOutcome[];
+  // Optional ordered steps for how the work was carried out.
+  approach?: string[];
   codeRef: string;
   code?: CodeExcerpt;
   diagram?: "fanout";
@@ -133,7 +135,32 @@ export const caseStudies: CaseStudy[] = [
       { metric: "HQL-concat call sites", before: "Present across modules", after: "Zero", method: "Repo-wide grep + review before/after" },
       { metric: "RBAC coverage", before: "Partial", after: "30+ modules", method: "Annotation audit across modules" },
     ],
-    codeRef: "HQL-concat → parameterized diff (follows in the full write-up)",
+    approach: [
+      "Inventory first: a repo-wide grep for string-built HQL (+ on query strings, String.format, concatenated where-clauses) gave a concrete list of call sites per module, so progress was countable instead of a feeling.",
+      "Replace each concatenated fragment with a named parameter bound through the query API. Dynamic filters keep their shape; only the values stop being spliced into the query text.",
+      "Ship module by module on the live, multi-tenant codebase, so every change stays small enough to review and roll back without downtime.",
+      "Add method-level authorization with @PreAuthorize rules so role checks sit next to the service method they protect, rather than only on URL patterns that a new route can bypass.",
+      "Re-run the grep after each module and review the diff; the count reaching zero is the exit condition.",
+    ],
+    codeRef: "HQL-concat → parameterized, annotated",
+    code: {
+      path: "OrderRepositoryImpl.java",
+      honesty: "Simplified illustration of the pattern — entity and field names are generic, not a verbatim paste from the production code.",
+      lines: [
+        { code: "// Before: user input is spliced into the query text." },
+        { code: "String hql = \"from Order o where o.status = '\" + status + \"'\";", note: "Injectable: a crafted status value changes the query itself." },
+        { code: "session.createQuery(hql).list();" },
+        { code: "" },
+        { code: "// After: the query text is constant; the value is bound." },
+        { code: "session.createQuery(\"from Order o where o.status = :status\", Order.class)", note: "The parser sees the structure first; the value can never alter it." },
+        { code: "  .setParameter(\"status\", status)" },
+        { code: "  .list();" },
+        { code: "" },
+        { code: "// Authorization sits on the method, not only on the URL." },
+        { code: "@PreAuthorize(\"hasRole('ADMIN')\")", note: "Enforced on every call path, including ones added later." },
+        { code: "public List<Order> findByStatus(String status) { /* ... */ }" },
+      ],
+    },
     whatIdDoDifferently:
       "Add a CI grep-gate and a JPQL allow-list test so concatenation can never be reintroduced. Verification stated honestly: static grep plus review, not a pentest claim.",
     updated: "2026-04-03",

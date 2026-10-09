@@ -45,7 +45,7 @@ export const profile = {
   domains: ["FinTech", "Healthcare", "EdTech", "Logistics"] as const,
   // Site content revision — feeds sitemap lastmod for pages without their
   // own item date. Bump only when page content actually changes.
-  updated: "2026-04-03",
+  updated: "2026-10-09",
   // Hero ledger (right column must stand alone without a photo)
   ledger: [
     { label: "Role", value: "Java Backend Developer" },

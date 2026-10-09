@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { Link } from "react-router";
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
 import { breadcrumbJsonLd } from "../seo/jsonld";
@@ -162,6 +163,44 @@ export default function ContactPage() {
             </div>
           </RevealItem>
         </Reveal>
+
+        <section aria-labelledby="what-to-send" className="mt-14 max-w-evidence border-t border-rule pt-6">
+          <h2 id="what-to-send" className="label">
+            What to include in your message
+          </h2>
+          <p className="prose mt-4">
+            A few details let me answer properly on the first reply instead of
+            starting with questions.
+          </p>
+          <ul className="mt-4 max-w-prose list-disc pl-5 text-small leading-relaxed">
+            <li className="mt-1">The role and team: what the backend does and who it serves.</li>
+            <li className="mt-1">The stack: Java version, Spring Boot version, database, and how services are deployed.</li>
+            <li className="mt-1">Work mode: remote, hybrid or on-site, and the location if it is not remote.</li>
+            <li className="mt-1">Timeline: when you want someone to start and how long the process takes.</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="what-i-do" className="mt-10 max-w-evidence">
+          <h2 id="what-i-do" className="label">
+            What I can help with
+          </h2>
+          <p className="prose mt-4">
+            I&apos;m a {profile.titleLong} in {profile.location} with{" "}
+            {profile.experienceYears}+ years of experience across{" "}
+            {profile.domains.join(", ")}. I work on REST APIs, authentication
+            and authorization, database design, and query and transaction
+            performance. If your team needs that kind of work, the{" "}
+            <Link to="/projects/">case studies</Link> show how I approach it and
+            what I measured, and my <Link to="/resume/">résumé</Link> has the
+            full work history.
+          </p>
+          <p className="prose mt-4">
+            I&apos;m open to {profile.workModes.join(", ")} arrangements and
+            speak {profile.languages.join(" and ")}. Email is the quickest
+            channel; LinkedIn, WhatsApp and Telegram work too, and I reply
+            within a day.
+          </p>
+        </section>
       </div>
     </>
   );
