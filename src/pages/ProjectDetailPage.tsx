@@ -11,8 +11,8 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
     return (
       <>
         <Seo title="Not found | Vikas Jaiswal" description="This page does not exist." path={`/projects/${slug}/`} noindex />
-        <div className="mx-auto max-w-6xl px-5 py-16 md:px-8">
-          <h1 className="font-serif text-4xl tracking-tight">Case study not found</h1>
+        <div className="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-24">
+          <h1 className="t-display">Case study not found</h1>
           <p className="mt-4">
             <Link to="/projects/">Back to projects</Link>
           </p>

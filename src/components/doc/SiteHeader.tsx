@@ -43,10 +43,15 @@ export default function SiteHeader({
   }
 
   return (
-    <header className="vt-persist-header border-b border-rule bg-paper">
+    <header className="vt-persist-header site-header border-b border-rule">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-        <Link to="/" className="font-serif text-xl tracking-tight no-underline" aria-label="Vikas Jaiswal — home">
+        <Link
+          to="/"
+          className="wordmark font-serif text-xl font-medium tracking-tight no-underline"
+          aria-label="Vikas Jaiswal — home"
+        >
           Vikas Jaiswal
+          <span className="wordmark-dot" aria-hidden="true" />
         </Link>
         <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
           {NAV_LINKS.map((l) => (

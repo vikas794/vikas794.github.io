@@ -1,4 +1,5 @@
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { useEffect, useRef } from "react";
+import { motion, useInView, useReducedMotion, type Variants } from "motion/react";
 import { useHydrated } from "../hooks/useHydrated";
 
 // A compact teaser of the flagship case study's real architecture — not a
@@ -23,6 +24,38 @@ const draw: Variants = {
   hidden: { pathLength: 0, opacity: 0 },
   show: { pathLength: 1, opacity: 1, transition: { duration: 0.28, ease: "easeOut" } },
 };
+
+// Small accent packets travelling the wires: one in, three fanning out. The
+// only autonomous motion on the home screen. Pauses when scrolled away.
+const PACKETS = [
+  { d: "M116 66 H144", begin: "0s" },
+  { d: "M272 66 L300 52", begin: "0.4s" },
+  { d: "M272 66 H300", begin: "0.7s" },
+  { d: "M272 66 L300 80", begin: "1.0s" },
+];
+
+function FlowPackets() {
+  const ref = useRef<SVGGElement>(null);
+  const inView = useInView(ref, { amount: 0.3 });
+
+  useEffect(() => {
+    const svg = ref.current?.ownerSVGElement;
+    if (!svg) return;
+    if (inView) svg.unpauseAnimations?.();
+    else svg.pauseAnimations?.();
+  }, [inView]);
+
+  return (
+    <g ref={ref} aria-hidden="true">
+      {PACKETS.map((p) => (
+        <circle key={p.d} r="2.5" fill="var(--accent)" opacity="0">
+          <animateMotion dur="1.6s" begin={p.begin} repeatCount="indefinite" path={p.d} />
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.85;1" dur="1.6s" begin={p.begin} repeatCount="indefinite" />
+        </circle>
+      ))}
+    </g>
+  );
+}
 
 export default function HeroFlowDiagram() {
   const box = "fill-none stroke-current stroke-[1.5]";
@@ -122,6 +155,7 @@ export default function HeroFlowDiagram() {
             sessions
           </text>
         </G>
+        {!static_ && <FlowPackets />}
       </Svg>
     </span>
   );

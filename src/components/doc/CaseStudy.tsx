@@ -4,6 +4,7 @@ import FanoutDiagram from "../../diagrams/FanoutDiagram";
 import OauthStrip from "../../diagrams/OauthStrip";
 import CodeBlock from "./CodeBlock";
 import Reveal, { RevealItem } from "../Reveal";
+import HeadlineReveal from "../HeadlineReveal";
 
 const TOC = [
   { id: "problem", label: "Problem" },
@@ -21,10 +22,8 @@ export function CaseStudyHeader({ study }: { study: CaseStudy }) {
   return (
     <Reveal>
       <RevealItem>
-        <p className="label">Case study {study.number}</p>
-        <h1 className="mt-4 max-w-[22ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
-          {study.title}
-        </h1>
+        <p className="margin-num text-4xl md:text-5xl" aria-hidden="true">{study.number}</p>
+        <HeadlineReveal id="case-h1" text={study.title} className="t-display mt-4 max-w-[20ch]" />
         <p className="prose mt-6">{study.summary}</p>
         <dl className="ledger mt-8 max-w-evidence">
           <div>
@@ -60,7 +59,7 @@ export function CaseStudyToc({
 export function CaseStudyConstraints({ constraints }: { constraints: string[] }) {
   return (
     <section aria-labelledby="constraints" className="mt-10">
-      <h2 id="constraints" className="label">
+      <h2 id="constraints" className="sec-title">
         Constraints
       </h2>
       <ul className="mt-4 max-w-prose list-disc pl-5 text-small leading-relaxed">
@@ -77,7 +76,7 @@ export function CaseStudyConstraints({ constraints }: { constraints: string[] })
 export function CaseStudyApproach({ steps }: { steps: string[] }) {
   return (
     <section aria-labelledby="approach" className="mt-10">
-      <h2 id="approach" className="label">
+      <h2 id="approach" className="sec-title">
         How it was done
       </h2>
       <ol className="mt-4 max-w-prose list-decimal pl-5 text-small leading-relaxed">
@@ -94,7 +93,7 @@ export function CaseStudyApproach({ steps }: { steps: string[] }) {
 export function CaseStudyDecisionsTable({ decisions }: { decisions: CaseStudy["decisions"] }) {
   return (
     <section aria-labelledby="decisions" className="mt-10">
-      <h2 id="decisions" className="label">
+      <h2 id="decisions" className="sec-title">
         Decisions and trade-offs
       </h2>
       <div
@@ -132,7 +131,7 @@ export function CaseStudyDecisionsTable({ decisions }: { decisions: CaseStudy["d
 export function CaseStudyCodeExcerpt({ code }: { code: NonNullable<CaseStudy["code"]> }) {
   return (
     <section aria-labelledby="code" className="mt-10">
-      <h2 id="code" className="label">
+      <h2 id="code" className="sec-title">
         Code that mattered
       </h2>
       <Reveal>
@@ -147,7 +146,7 @@ export function CaseStudyCodeExcerpt({ code }: { code: NonNullable<CaseStudy["co
 export function CaseStudyResultsTable({ outcomes }: { outcomes: CaseStudy["outcomes"] }) {
   return (
     <section aria-labelledby="results" className="mt-10">
-      <h2 id="results" className="label" tabIndex={-1}>
+      <h2 id="results" className="sec-title" tabIndex={-1}>
         Results
       </h2>
       <div
@@ -185,7 +184,7 @@ export function CaseStudyResultsTable({ outcomes }: { outcomes: CaseStudy["outco
 export function CaseStudyRetrospective({ text }: { text: string }) {
   return (
     <section aria-labelledby="differently" className="mt-10">
-      <h2 id="differently" className="label">
+      <h2 id="differently" className="sec-title">
         What I&apos;d do differently
       </h2>
       <p className="prose mt-4">{text}</p>
@@ -206,7 +205,7 @@ export default function CaseStudyView({ study }: { study: CaseStudy }) {
   );
 
   return (
-    <article className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
+    <article className="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-24">
       <a href="#results" className="skip-link">
         Skip to results
       </a>
@@ -216,9 +215,9 @@ export default function CaseStudyView({ study }: { study: CaseStudy }) {
       <div className="rail mt-12">
         <CaseStudyToc toc={visibleToc} />
 
-        <div className="min-w-0">
+        <div className="sec-scope min-w-0">
           <section aria-labelledby="problem">
-            <h2 id="problem" className="label">
+            <h2 id="problem" className="sec-title">
               The problem
             </h2>
             <p className="prose mt-4">{study.problem}</p>
@@ -229,13 +228,13 @@ export default function CaseStudyView({ study }: { study: CaseStudy }) {
           {hasDiagram && (
             <>
               <section aria-labelledby="architecture" className="mt-10">
-                <h2 id="architecture" className="label">
+                <h2 id="architecture" className="sec-title">
                   Architecture
                 </h2>
                 <FanoutDiagram />
               </section>
               <section aria-labelledby="critical-path" className="mt-10">
-                <h2 id="critical-path" className="label">
+                <h2 id="critical-path" className="sec-title">
                   The critical path
                 </h2>
                 <OauthStrip />

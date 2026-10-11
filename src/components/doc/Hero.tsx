@@ -4,51 +4,51 @@ import { profile } from "../../content/profile";
 import { proofStrip } from "../../content/projects";
 import Reveal, { RevealItem } from "../Reveal";
 import HeadlineReveal from "../HeadlineReveal";
+import Magnetic from "../Magnetic";
 import HeroFlowDiagram from "../../diagrams/HeroFlowDiagram";
 
 // The flagship proof point, promoted out of ProofStrip into the hero itself
 // so a number lands in the first viewport, not the second section.
 const heroStat = proofStrip[0];
 
-// Right column: a real diagram grounding the headline in actual work,
-// then a ledger complete on its own — a photo later replaces the diagram
-// and pushes the ledger below.
+// Two columns from lg: headline, copy and CTAs on the left; stat, diagram
+// and ledger on the right, level with the headline. Everything that matters
+// to a recruiter is visible without scrolling.
 export default function Hero() {
   return (
-    <section aria-labelledby="home-hero" className="border-b border-rule">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:px-8 md:py-28 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center lg:gap-16">
-        <div>
-          <HeadlineReveal id="home-hero" text={profile.headline} />
-          <p className="prose mt-6">
-            I&apos;m {profile.name}, an Azure-certified {profile.titleLong} based in{" "}
-            {profile.location}. {profile.experienceYears}+ years turning hard requirements into secure, fast systems across{" "}
-            {profile.domains.join(", ").toLowerCase()}.
-          </p>
-          <Reveal className="mt-8">
-            <RevealItem>
-              <Link
-                to={`/projects/${heroStat.slug}/`}
-                className="hero-stat group no-underline"
-              >
-                <span className="hero-stat-num group-hover:text-accent">{heroStat.value}</span>
-                <span className="hero-stat-label">{heroStat.label}</span>
-              </Link>
-            </RevealItem>
-          </Reveal>
-          <p className="mt-6 flex items-center gap-2 text-small text-ink-2">
+    <section aria-labelledby="home-hero" className="relative border-b border-rule">
+      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-12 md:px-8 md:py-20 lg:grid-cols-12 lg:items-center lg:gap-10">
+        <div className="lg:col-span-7">
+          <p className="inline-flex items-center gap-2 font-mono text-xs text-ink-2">
             <span className="inline-block h-2 w-2 rounded-full bg-positive" aria-hidden="true" />
             {profile.availability}
           </p>
-          <Reveal className="mt-8 flex flex-wrap gap-3">
+
+          <HeadlineReveal
+            id="home-hero"
+            text={profile.headline}
+            highlight="money, data, and messages"
+            className="t-mega mt-5"
+          />
+
+          <p className="prose mt-6">
+            I&apos;m {profile.firstName}, a Java Spring Boot developer in {profile.locality}. For{" "}
+            {profile.experienceYears}+ years I&apos;ve built secure, fast services for{" "}
+            {profile.domains.join(", ").toLowerCase()}, and I measure what I ship.
+          </p>
+
+          <Reveal className="mt-8 flex flex-wrap items-center gap-4">
             <RevealItem>
-              <Link to="/projects/" className="btn btn-primary group no-underline">
-                Read the case studies
-                <ArrowRight
-                  size={16}
-                  aria-hidden="true"
-                  className="transition-transform duration-200 ease-out group-hover:translate-x-1.5"
-                />
-              </Link>
+              <Magnetic>
+                <Link to="/projects/" className="btn btn-primary group no-underline">
+                  Read the case studies
+                  <ArrowRight
+                    size={16}
+                    aria-hidden="true"
+                    className="transition-transform duration-200 ease-out group-hover:translate-x-1.5"
+                  />
+                </Link>
+              </Magnetic>
             </RevealItem>
             <RevealItem>
               <Link to="/resume/" className="btn btn-ghost no-underline">
@@ -57,13 +57,17 @@ export default function Hero() {
             </RevealItem>
           </Reveal>
         </div>
-        <aside aria-label="At a glance">
+
+        <aside aria-label="At a glance" className="lg:col-span-5">
           <Reveal>
             <RevealItem>
-              <Link
-                to={`/projects/${heroStat.slug}/`}
-                className="hero-diagram group block no-underline"
-              >
+              <Link to={`/projects/${heroStat.slug}/`} className="stat-float group no-underline">
+                <span className="hero-stat-num block tabular">{heroStat.value}</span>
+                <span className="hero-stat-label mt-2 block">{heroStat.label}</span>
+              </Link>
+            </RevealItem>
+            <RevealItem className="mt-5">
+              <Link to={`/projects/${heroStat.slug}/`} className="hero-diagram group block no-underline">
                 <HeroFlowDiagram />
                 <span className="mt-3 flex items-center gap-1 text-small text-ink-2 group-hover:text-accent">
                   How this works
@@ -76,14 +80,6 @@ export default function Hero() {
               </Link>
             </RevealItem>
           </Reveal>
-          <dl className="ledger mt-6">
-            {profile.ledger.map((row) => (
-              <div key={row.label}>
-                <dt>{row.label}</dt>
-                <dd>{row.value}</dd>
-              </div>
-            ))}
-          </dl>
         </aside>
       </div>
     </section>

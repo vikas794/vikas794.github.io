@@ -6,6 +6,7 @@ import { skillGroups } from "../content/skills";
 import { certifications } from "../content/certifications";
 import { education } from "../content/education";
 import { breadcrumbJsonLd } from "../seo/jsonld";
+import HeadlineReveal from "../components/HeadlineReveal";
 
 export const PDF_PATH = "/Vikas_Jaiswal_JavaBackendDeveloper.pdf";
 const PDF_SIZE = "54 KB";
@@ -32,11 +33,14 @@ export default function ResumePage() {
           ])
         )}
       </script>
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
-        <h1 className="font-serif text-4xl leading-display tracking-tight md:text-5xl">
-          {profile.name} — {profile.titleLong}
-        </h1>
-        <p className="mt-6 text-small text-ink-2">
+      <div className="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-24">
+        <HeadlineReveal
+          id="resume-h1"
+          text={`${profile.name}, ${profile.titleLong}`}
+          highlight={profile.titleLong}
+          className="t-display max-w-[20ch]"
+        />
+        <p className="mt-8 text-small text-ink-2">
           {profile.location} · {profile.email} · {profile.phoneDisplay}
         </p>
         <p className="mt-6 flex flex-wrap gap-3">
@@ -49,18 +53,18 @@ export default function ResumePage() {
           <ResumePdfPreview file={PDF_PATH} />
         </div>
 
-        <div className="mt-12 max-w-evidence">
-          <h2 className="label">HTML version — ATS-friendly</h2>
+        <div className="sec-scope mt-12">
+          <h2 className="sec-title">HTML version — ATS-friendly</h2>
           {experiences.map((e) => (
-            <section key={e.company} className="mt-8">
-              <h3 className="font-serif text-2xl tracking-tight">
+            <section key={e.company} className="mt-8 max-w-evidence">
+              <h3 className="t-title">
                 {e.role} — {e.company}
               </h3>
               <p className="mt-1 font-mono text-xs text-ink-3">{e.period}</p>
               <p className="mt-3 max-w-prose text-small text-ink-2">{e.productContext}</p>
               {e.groups.map((g) => (
                 <div key={g.label} className="mt-4">
-                  <h4 className="font-mono text-xs font-medium uppercase tracking-label text-ink-3">
+                  <h4 className="label">
                     {g.label}
                   </h4>
                   <ul className="mt-2 list-disc pl-5 text-small leading-relaxed">
@@ -75,17 +79,29 @@ export default function ResumePage() {
             </section>
           ))}
 
-          <section className="mt-10">
-            <h3 className="font-serif text-2xl tracking-tight">Skills</h3>
-            {skillGroups.map((g) => (
-              <p key={g.title} className="mt-3 text-small leading-relaxed">
-                <strong>{g.title}:</strong> {g.tags.join(", ")}
-              </p>
-            ))}
+          <section className="mt-12">
+            <h3 className="t-title">Skills</h3>
+            <div className="mt-6 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+              {skillGroups.map((g) => (
+                <div key={g.title} className="border-t border-rule pt-4">
+                  <h4 className="label">{g.title}</h4>
+                  <ul className="mt-3 flex flex-wrap gap-2">
+                    {g.tags.map((t) => (
+                      <li
+                        key={t}
+                        className="rounded-sm border border-rule bg-paper-2 px-2 py-1 text-small leading-none"
+                      >
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </section>
 
-          <section className="mt-10">
-            <h3 className="font-serif text-2xl tracking-tight">Certifications</h3>
+          <section className="mt-12 max-w-evidence">
+            <h3 className="t-title">Certifications</h3>
             <ul className="mt-3 list-disc pl-5 text-small leading-relaxed">
               {certifications.map((c) => (
                 <li key={c.id} className="mt-1">
@@ -98,8 +114,8 @@ export default function ResumePage() {
             </ul>
           </section>
 
-          <section className="mt-10">
-            <h3 className="font-serif text-2xl tracking-tight">Education</h3>
+          <section className="mt-12 max-w-evidence">
+            <h3 className="t-title">Education</h3>
             <ul className="mt-3 list-disc pl-5 text-small leading-relaxed">
               {education.map((e) => (
                 <li key={e.school}>

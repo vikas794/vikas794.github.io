@@ -1,4 +1,5 @@
 @import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
 @import "@fontsource-variable/ibm-plex-sans";
 @import "@fontsource/ibm-plex-mono/latin-400.css";
 @import "@fontsource/ibm-plex-mono/latin-500.css";
@@ -25,6 +26,7 @@
   --container-evidence: 55rem;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   --dur-1: 140ms;
   --dur-2: 240ms;
@@ -52,6 +54,8 @@
   --color-rule: var(--rule);
   --color-rule-strong: var(--rule-interactive);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
   --color-positive: var(--positive);
   --color-negative: var(--negative);
 }
@@ -66,6 +70,10 @@
   --rule: #e3dfd7;
   --rule-interactive: #8a8680;
   --accent: #b03a16;
+  --accent-soft: #f8e3d9;
+  --grain: 0.035;
+  --dot: #d9d4ca;
+  --on-accent: #fbfaf8;
   --positive: #166534;
   --negative: #a11c1c;
   --prose-max: 34rem;
@@ -85,6 +93,10 @@ html.dark {
   --rule: #37302c;
   --rule-interactive: #6e6661;
   --accent: #f0784b;
+  --accent-soft: #4b2616;
+  --grain: 0.06;
+  --dot: #3a332e;
+  --on-accent: #161310;
   --positive: #4ade80;
   --negative: #f87171;
   --shadow-overlay: 0 8px 32px rgb(0 0 0 / 0.45);
@@ -124,32 +136,83 @@ h3 {
   text-wrap: balance;
 }
 
-.t-display {
+/* Type scale (DESIGN.md §4). Serif for impact, 500 weight, tight tracking. */
+.t-mega,
+.t-display,
+.t-section,
+.t-title {
   font-family: var(--font-serif);
-  font-weight: 400;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.t-mega {
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  font-size: clamp(2.5rem, 1.8rem + 2.8vw, 4rem);
+}
+
+.t-display {
   letter-spacing: -0.03em;
   line-height: 1.02;
-  font-size: clamp(2.5rem, 1.8rem + 3.4vw, 4.5rem);
+  font-size: clamp(2.25rem, 1.7rem + 2.4vw, 3.5rem);
 }
 
-p {
-  max-width: var(--prose-max);
+.t-section {
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
 }
 
-/* Prose links are always underlined — color alone is never the affordance */
-.prose a,
-p a,
-li a {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-  text-decoration-thickness: 1px;
+.t-title {
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
 }
 
-.prose a:hover,
-p a:hover,
-li a:hover {
-  text-decoration-thickness: 2px;
+.t-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  font-variant-ligatures: none;
+}
+
+h1 em,
+h2 em,
+h3 em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* In the base layer so utilities (max-w-none, no-underline, text-ink) can
+   override them. Unlayered, these beat every utility class. */
+@layer base {
+  p {
+    max-width: var(--prose-max);
+    text-wrap: pretty;
+  }
+
+  /* Prose links are always underlined — color alone is never the affordance */
+  .prose a,
+  p a,
+  li a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+
+  .prose a:hover,
+  p a:hover,
+  li a:hover {
+    text-decoration-thickness: 2px;
+  }
 }
 
 /* ---------------- focus: always visible, never shadow-only ---------------- */
@@ -173,20 +236,15 @@ li a:hover {
 
 /* ---------------- the four hand-written components ---------------- */
 
-/* Eyebrow-grade micro label: mono, uppercase, accent leading rule */
+/* Small mono tag. Used sparingly (DESIGN.md section 4): section titles are
+   real serif headings now, not tracked-out uppercase labels. */
 .label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ink-3);
   font-variant-ligatures: none;
-}
-
-.label::before {
-  content: "— ";
-  color: var(--accent);
 }
 
 /* The signature device: hairline-ruled key/value */
@@ -210,10 +268,9 @@ li a:hover {
 .ledger dt,
 .ledger .ledger-label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ink-3);
   font-variant-ligatures: none;
   padding-top: 0.2em;
@@ -295,7 +352,7 @@ li a:hover {
 
 .hero-stat .hero-stat-num {
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 1.7rem + 2.2vw, 3.25rem);
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -332,6 +389,7 @@ li a:hover {
 /* ---------------- buttons / touch targets ---------------- */
 
 .btn {
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -407,7 +465,7 @@ li a:hover {
 
 @media (min-width: 1024px) {
   .entry-grid {
-    grid-template-columns: 4rem minmax(0, 1fr) 12rem;
+    grid-template-columns: 5rem minmax(0, 1fr) 12rem;
     gap: 2rem;
   }
 }
@@ -753,7 +811,7 @@ li a:hover {
 
 /* Big, quiet metric used on the home strip and case rows. */
 .metric-lg .metric-num {
-  font-size: clamp(2.25rem, 1.7rem + 1.8vw, 3.25rem);
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
   white-space: nowrap;
   transition: color var(--dur-2) var(--ease-out), transform 500ms var(--ease-out);
 }
@@ -808,7 +866,7 @@ li a:hover {
 
 @media (hover: hover) {
   .case-row:hover {
-    padding-left: 0.75rem;
+    padding-left: 0.5rem;
   }
 
   .case-row:hover::after {
@@ -840,3 +898,424 @@ li a:hover {
   transform-origin: left;
   pointer-events: none;
 }
+
+
+/* ============================================================
+   THE MARKED-UP SPEC — signature devices (DESIGN.md §2)
+   highlighter / margin number / solid band
+   ============================================================ */
+
+/* 1. The highlighter. A marker swipe that draws left to right. Pure CSS so
+   it also runs on the prerendered page with no JavaScript. */
+.mark {
+  color: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(var(--accent-soft), var(--accent-soft));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 0% 0.46em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 0.08em;
+  margin: 0 -0.08em;
+  animation: mark-draw 760ms var(--ease-out) 520ms forwards;
+}
+
+@keyframes mark-draw {
+  to {
+    background-size: 100% 0.46em;
+  }
+}
+
+/* 2. The margin number. Oversized mono index, quiet until it matters. */
+.margin-num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink-3);
+  transition: color var(--dur-2) var(--ease-out), transform 500ms var(--ease-spring);
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+}
+
+.section-head .section-num {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-right: 0.9rem;
+  vertical-align: 0.9em;
+  letter-spacing: 0.02em;
+}
+
+/* Counter-numbered h2s inside long-form reading (case studies, résumé). */
+.sec-scope {
+  counter-reset: sec;
+}
+
+.sec-title {
+  counter-increment: sec;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.sec-title::before {
+  content: counter(sec, decimal-leading-zero);
+  display: inline-block;
+  margin-right: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  vertical-align: 0.7em;
+}
+
+/* 3. Solid bands: the once-per-page shout. Inverted text, own focus ring. */
+.band-accent {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.band-ink {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.band-accent :focus-visible {
+  outline-color: var(--on-accent);
+}
+
+.band-ink :focus-visible {
+  outline-color: var(--paper);
+}
+
+.band-accent .margin-num,
+.band-accent .t-meta,
+.band-accent .section-num,
+.band-accent .metric-label,
+.band-accent .metric-method,
+.band-accent .metric-num {
+  color: var(--on-accent);
+}
+
+.band-accent .t-meta,
+.band-accent .metric-method {
+  opacity: 0.88;
+}
+
+.band-accent a,
+.band-ink a {
+  color: inherit;
+}
+
+.band-ink .section-num {
+  color: var(--accent);
+}
+
+.band-ink .mark {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  color: var(--on-accent);
+}
+
+.band-accent .mark {
+  background-image: linear-gradient(var(--on-accent), var(--on-accent));
+  color: var(--accent);
+}
+
+.band-ink .btn-ghost {
+  color: var(--paper);
+  border-color: color-mix(in srgb, var(--paper) 55%, transparent);
+}
+
+.band-ink .btn-ghost:hover {
+  background: color-mix(in srgb, var(--paper) 14%, transparent);
+}
+
+.band-ink .btn-primary:focus-visible {
+  outline-color: var(--paper);
+  box-shadow: 0 0 0 4px var(--accent);
+}
+
+/* ---------------- playful details ---------------- */
+
+@media (hover: hover) {
+  .btn-primary:hover,
+  .btn-ghost:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* Magnetic wrapper (see Magnetic.tsx): the child follows the pointer. */
+.magnetic {
+  display: inline-block;
+  transition: transform 380ms var(--ease-spring);
+  will-change: transform;
+}
+
+/* Wordmark: the dot hops on hover. */
+.wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2rem;
+}
+
+.wordmark-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform 500ms var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .wordmark:hover .wordmark-dot {
+    transform: translateY(-0.2rem);
+  }
+}
+
+.theme-toggle .theme-icon {
+  transition: transform 600ms var(--ease-spring);
+}
+
+
+/* Active nav link carries a highlighter underline. */
+.nav-link {
+  isolation: isolate;
+}
+
+.nav-link[aria-current="page"]::after {
+  height: 0.5em;
+  bottom: 0.05em;
+  background: var(--accent-soft);
+  transform: scaleX(1);
+  z-index: -1;
+}
+
+/* Sticky header gets a blur once content slides under it. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Ticker: a slow line of stack names. Decorative, aria-hidden. */
+.ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--rule);
+  background: var(--paper-2);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  gap: 2.5rem;
+  padding: 1.1rem 0;
+  animation: ticker 52s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.ticker-item::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@keyframes ticker {
+  to {
+    transform: translateX(calc(-50% - 1.25rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+
+  .mark {
+    animation: none;
+    background-size: 100% 0.46em;
+  }
+
+  .magnetic {
+    transform: none !important;
+  }
+}
+
+/* Raised panel: a surface change plus a hairline, no shadow. */
+.panel {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    padding: 2rem;
+  }
+}
+
+/* Form fields share one look. */
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.field {
+  margin-top: 0.5rem;
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid var(--rule-interactive);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  transition: border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
+}
+
+.field:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* The big index number at the start of a row. */
+.row-num {
+  font-size: clamp(2rem, 1.6rem + 2vw, 3.25rem);
+}
+
+@media (hover: hover) {
+  /* Rows fill with the soft accent and the number goes loud. */
+  .case-row {
+    isolation: isolate;
+  }
+
+  .case-row:hover .margin-num {
+    color: var(--accent);
+    transform: none;
+  }
+}
+
+/* The hero stat: a solid accent tile that overlaps the headline column. */
+.stat-float {
+  display: block;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  transition: transform 500ms var(--ease-spring);
+}
+
+.stat-float .hero-stat-num,
+.stat-float .hero-stat-label {
+  color: var(--on-accent);
+}
+
+.stat-float:focus-visible {
+  outline-color: var(--ink);
+}
+
+@media (hover: hover) {
+  .stat-float:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Highlighters below the fold draw as they scroll into view (where the
+   browser supports scroll-driven animation). Elsewhere they keep the
+   time-based draw, so the finished highlight is always what you see. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .mark-view {
+      animation: mark-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 15% entry 100%;
+    }
+  }
+}
+
+/* ---------------- backgrounds (DESIGN.md section 7) ---------------- */
+
+/* Paper grain: inline SVG noise, no request. Nearly invisible, but it takes
+   the flat digital edge off the warm paper. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media print, (forced-colors: active) {
+  body::before {
+    display: none;
+  }
+}
+
+/* Hero dot grid: faint, fading toward the edges. The cursor reveals accent
+   dots around it (HeroSpotlight.tsx). Text always sits above both layers. */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--dot) 1.2px, transparent 1.6px);
+  background-size: 24px 24px;
+}
+
+.hero-dots-hot {
+  background-image: radial-gradient(circle, var(--accent) 1.4px, transparent 1.9px);
+  opacity: 0;
+  transition: opacity 400ms var(--ease-out);
+  -webkit-mask-image: radial-gradient(circle 150px at var(--mx, 50%) var(--my, 50%), #000, transparent);
+  mask-image: radial-gradient(circle 150px at var(--mx, 50%) var(--my, 50%), #000, transparent);
+}
+
+.hero-bg[data-active="true"] .hero-dots-hot {
+  opacity: 0.9;
+}
+

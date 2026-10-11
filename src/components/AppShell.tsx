@@ -7,6 +7,7 @@ import { prefetchResumeAssets } from "../lib/prefetchResume";
 import Navbar from "./doc/SiteHeader";
 import Footer from "./doc/SiteFooter";
 import BackToTop from "./doc/BackToTop";
+import HeroSpotlight from "./HeroSpotlight";
 import ErrorBoundary from "./ErrorBoundary";
 
 // Route changes move focus to <main>, scroll to top, and announce via a
@@ -45,7 +46,8 @@ export default function AppShell() {
       </a>
       {hydrated && !reduce && <motion.div aria-hidden="true" className="scroll-progress" style={{ scaleX: progress }} />}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <main id="main" tabIndex={-1} ref={mainRef}>
+      <main id="main" tabIndex={-1} ref={mainRef} className="relative isolate">
+        <HeroSpotlight />
         <ErrorBoundary key={location.pathname}>
           <Outlet />
         </ErrorBoundary>

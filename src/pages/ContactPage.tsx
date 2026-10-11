@@ -4,10 +4,14 @@ import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
 import { breadcrumbJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
+import HeadlineReveal from "../components/HeadlineReveal";
+import SectionHeading from "../components/SectionHeading";
+import CopyEmail from "../components/CopyEmail";
+import Magnetic from "../components/Magnetic";
 
 // The highest-conversion block on the site: role wanted, stack, work mode,
-// availability — explicit. Netlify Forms where hosted on Netlify, degrading
-// to direct email everywhere else. No map: Mumbai is a word.
+// availability, all explicit. Netlify Forms where hosted on Netlify,
+// degrading to direct email everywhere else. No map: Mumbai is a word.
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
@@ -44,161 +48,203 @@ export default function ContactPage() {
           ])
         )}
       </script>
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
-        <h1 className="max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
-          Java backend roles, remote or hybrid.
-        </h1>
-        <p className="prose mt-6">
-          I&apos;m looking for backend engineering work on product teams — Java,
-          Spring Boot 4, security and performance included — remote or hybrid from
-          Mumbai, available now. The fastest way to reach me is email; I reply
-          within a day.
+      <div className="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-24">
+        <HeadlineReveal
+          id="contact-h1"
+          text="Java backend roles, remote or hybrid."
+          highlight="remote or hybrid"
+          className="t-display max-w-[16ch]"
+        />
+        <p className="prose mt-8">
+          I&apos;m looking for backend work on product teams: Java, Spring Boot 4, security and performance included.
+          Remote or hybrid from Mumbai, available now. Email is the fastest way to reach me, and I reply within a day.
+        </p>
+        <p className="mt-8 flex flex-wrap items-center gap-4">
+          <Magnetic>
+            <CopyEmail email={profile.email} />
+          </Magnetic>
+          <a href={`mailto:${profile.email}`} className="btn btn-ghost no-underline">
+            Open in mail app
+          </a>
         </p>
 
-        <Reveal className="mt-10 grid max-w-evidence gap-10 lg:grid-cols-2">
+        <Reveal className="mt-16 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
           <RevealItem>
-          {submitted ? (
-            <div className="border-t border-rule pt-6">
-              <h2 className="text-xl font-medium text-ink-1">Thank you!</h2>
-              <p className="prose mt-3">
-                Your message has been submitted. If you don&apos;t hear back soon, feel free to reach out directly via email at{" "}
-                <a href={`mailto:${profile.email}`} className="text-accent underline">
-                  {profile.email}
-                </a>.
-              </p>
-            </div>
-          ) : (
-            <form
-              name="contact"
-              method="POST"
-              data-netlify="true"
-              netlify-honeypot="company"
-              onSubmit={handleSubmit}
-              className="border-t border-rule pt-6"
-            >
-              <input type="hidden" name="form-name" value="contact" />
-              <p className="hidden" aria-hidden="true">
-                <label>
-                  Company (leave blank): <input name="company" tabIndex={-1} autoComplete="off" />
-                </label>
-              </p>
-              <div className="grid gap-4">
-                <div>
-                  <label htmlFor="contact-name" className="font-mono text-xs uppercase tracking-label text-ink-3">
-                    Name
-                  </label>
-                  <p className="mt-1 text-xs text-ink-3">Your full name, so I know who&apos;s reaching out.</p>
-                  <input
-                    id="contact-name"
-                    name="name"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    placeholder="e.g. Priya Sharma"
-                    className="mt-2 min-h-11 w-full rounded-md border border-rule-strong bg-paper px-3 py-2 text-small"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="contact-email" className="font-mono text-xs uppercase tracking-label text-ink-3">
-                    Email
-                  </label>
-                  <p className="mt-1 text-xs text-ink-3">Where I should reply — I&apos;ll respond within a day.</p>
-                  <input
-                    id="contact-email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    placeholder="e.g. priya@company.com"
-                    className="mt-2 min-h-11 w-full rounded-md border border-rule-strong bg-paper px-3 py-2 text-small"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="contact-message" className="font-mono text-xs uppercase tracking-label text-ink-3">
-                    Message
-                  </label>
-                  <p className="mt-1 text-xs text-ink-3">
-                    What you&apos;re hiring for or building — role, stack, timeline, anything relevant.
-                  </p>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    required
-                    rows={5}
-                    placeholder="e.g. We're hiring a backend engineer (Java, Spring Boot) for a remote/hybrid role in Mumbai, starting next month..."
-                    className="mt-2 w-full rounded-md border border-rule-strong bg-paper px-3 py-2 text-small"
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary justify-center">
-                  Send message
-                </button>
-                <p className="font-mono text-xs leading-relaxed text-ink-3">
-                  Sent via Netlify Forms on Netlify. On static hosts like GitHub Pages, email me directly if preferred.
+            {submitted ? (
+              <div className="panel">
+                <h2 className="t-title">Thank you!</h2>
+                <p className="prose mt-3">
+                  Your message has been submitted. If you don&apos;t hear back soon, email me directly at{" "}
+                  <a href={`mailto:${profile.email}`}>{profile.email}</a>.
                 </p>
               </div>
-            </form>
-          )}
+            ) : (
+              <form
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                netlify-honeypot="company"
+                onSubmit={handleSubmit}
+                className="panel"
+              >
+                <input type="hidden" name="form-name" value="contact" />
+                <p className="hidden" aria-hidden="true">
+                  <label>
+                    Company (leave blank): <input name="company" tabIndex={-1} autoComplete="off" />
+                  </label>
+                </p>
+                <div className="grid gap-6">
+                  <div>
+                    <label htmlFor="contact-name" className="field-label">
+                      Name
+                    </label>
+                    <p className="mt-1 text-xs text-ink-3">Your full name, so I know who&apos;s reaching out.</p>
+                    <input
+                      id="contact-name"
+                      name="name"
+                      type="text"
+                      required
+                      autoComplete="name"
+                      placeholder="e.g. Priya Sharma"
+                      className="field"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact-email" className="field-label">
+                      Email
+                    </label>
+                    <p className="mt-1 text-xs text-ink-3">Where I should reply. I answer within a day.</p>
+                    <input
+                      id="contact-email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                      placeholder="e.g. priya@company.com"
+                      className="field"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact-message" className="field-label">
+                      Message
+                    </label>
+                    <p className="mt-1 text-xs text-ink-3">
+                      What you&apos;re hiring for or building: role, stack, timeline, anything relevant.
+                    </p>
+                    <textarea
+                      id="contact-message"
+                      name="message"
+                      required
+                      rows={5}
+                      placeholder="e.g. We're hiring a backend engineer (Java, Spring Boot) for a remote/hybrid role in Mumbai, starting next month..."
+                      className="field"
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary justify-center">
+                    Send message
+                  </button>
+                  <p className="font-mono text-xs leading-relaxed text-ink-3">
+                    Sent via Netlify Forms on Netlify. On static hosts like GitHub Pages, email me directly if you
+                    prefer.
+                  </p>
+                </div>
+              </form>
+            )}
           </RevealItem>
 
           <RevealItem>
-            <div className="border-t border-rule pt-6">
-              <h2 className="label">Channels</h2>
-              <ul className="ledger mt-6">
-                {profile.channels.map((c) => (
-                  <li key={c.id}>
-                    <span className="ledger-label">{c.label}</span>
-                    <span className="ledger-value">
-                      <a href={c.href} target={c.href.startsWith("mailto:") ? undefined : "_blank"} rel="noopener noreferrer">
-                        {c.value}
-                      </a>
-                    </span>
-                  </li>
-                ))}
-                <li>
-                  <span className="ledger-label">Location</span>
-                  <span className="ledger-value">{profile.postalAddress}</span>
+            <h2 className="t-title">Other ways to reach me</h2>
+            <ul className="ledger mt-6">
+              {profile.channels.map((c) => (
+                <li key={c.id}>
+                  <span className="ledger-label">{c.label}</span>
+                  <span className="ledger-value">
+                    <a
+                      href={c.href}
+                      target={c.href.startsWith("mailto:") ? undefined : "_blank"}
+                      rel="noopener noreferrer"
+                    >
+                      {c.value}
+                    </a>
+                  </span>
                 </li>
-              </ul>
-            </div>
+              ))}
+              <li>
+                <span className="ledger-label">Location</span>
+                <span className="ledger-value">{profile.postalAddress}</span>
+              </li>
+            </ul>
           </RevealItem>
         </Reveal>
 
-        <section aria-labelledby="what-to-send" className="mt-14 max-w-evidence border-t border-rule pt-6">
-          <h2 id="what-to-send" className="label">
+        <section aria-labelledby="what-to-send" className="mt-24">
+          <SectionHeading id="what-to-send" num="01">
             What to include in your message
-          </h2>
-          <p className="prose mt-4">
-            A few details let me answer properly on the first reply instead of
-            starting with questions.
+          </SectionHeading>
+          <p className="prose mt-6">
+            A few details let me answer properly on the first reply instead of starting with questions.
           </p>
-          <ul className="mt-4 max-w-prose list-disc pl-5 text-small leading-relaxed">
-            <li className="mt-1">The role and team: what the backend does and who it serves.</li>
-            <li className="mt-1">The stack: Java version, Spring Boot version, database, and how services are deployed.</li>
-            <li className="mt-1">Work mode: remote, hybrid or on-site, and the location if it is not remote.</li>
-            <li className="mt-1">Timeline: when you want someone to start and how long the process takes.</li>
-          </ul>
+          <Reveal className="mt-10 grid gap-x-12 gap-y-8 sm:grid-cols-2">
+            {[
+              ["The role and team", "What the backend does and who it serves."],
+              ["The stack", "Java version, Spring Boot version, database, and how services are deployed."],
+              ["Work mode", "Remote, hybrid or on-site, and the location if it is not remote."],
+              ["Timeline", "When you want someone to start and how long the process takes."],
+            ].map(([lead, body], i) => (
+              <RevealItem key={lead} className="border-t border-rule pt-4">
+                <p className="margin-num text-2xl" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <p className="mt-3 font-serif text-xl font-medium leading-snug">{lead}</p>
+                <p className="mt-1 text-small leading-relaxed text-ink-2">{body}</p>
+              </RevealItem>
+            ))}
+          </Reveal>
         </section>
 
-        <section aria-labelledby="what-i-do" className="mt-10 max-w-evidence">
-          <h2 id="what-i-do" className="label">
+        <section aria-labelledby="what-i-do" className="mt-24">
+          <SectionHeading id="what-i-do" num="02">
             What I can help with
-          </h2>
-          <p className="prose mt-4">
-            I&apos;m a {profile.titleLong} in {profile.location} with{" "}
-            {profile.experienceYears}+ years of experience across{" "}
-            {profile.domains.join(", ")}. I work on REST APIs, authentication
-            and authorization, database design, and query and transaction
-            performance. If your team needs that kind of work, the{" "}
-            <Link to="/projects/">case studies</Link> show how I approach it and
-            what I measured, and my <Link to="/resume/">résumé</Link> has the
-            full work history.
-          </p>
-          <p className="prose mt-4">
-            I&apos;m open to {profile.workModes.join(", ")} arrangements and
-            speak {profile.languages.join(" and ")}. Email is the quickest
-            channel; LinkedIn, WhatsApp and Telegram work too, and I reply
-            within a day.
-          </p>
+          </SectionHeading>
+          <div className="mt-10 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+            <div>
+              <p className="prose">
+                I work on REST APIs, authentication and authorization, database design, and query and transaction
+                performance. If your team needs that kind of work, the <Link to="/projects/">case studies</Link>{" "}
+                show how I approach it and what I measured, and my <Link to="/resume/">résumé</Link> has the full
+                work history.
+              </p>
+              <p className="prose mt-4">
+                Email is the quickest channel. LinkedIn, WhatsApp and Telegram work too, and I reply within a day.
+              </p>
+            </div>
+            <dl className="ledger">
+              <div>
+                <dt>Role</dt>
+                <dd>{profile.titleLong}</dd>
+              </div>
+              <div>
+                <dt>Based in</dt>
+                <dd>{profile.location}</dd>
+              </div>
+              <div>
+                <dt>Experience</dt>
+                <dd>{profile.experienceYears}+ years</dd>
+              </div>
+              <div>
+                <dt>Domains</dt>
+                <dd>{profile.domains.join(", ")}</dd>
+              </div>
+              <div>
+                <dt>Work mode</dt>
+                <dd>{profile.workModes.join(", ")}</dd>
+              </div>
+              <div>
+                <dt>Languages</dt>
+                <dd>{profile.languages.join(", ")}</dd>
+              </div>
+            </dl>
+          </div>
         </section>
       </div>
     </>

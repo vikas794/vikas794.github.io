@@ -2,8 +2,10 @@ import Seo from "../seo/Seo";
 import { experiences } from "../content/experience";
 import { breadcrumbJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
+import HeadlineReveal from "../components/HeadlineReveal";
 
-// Editorial rail: sticky mono metadata left, grouped bullets right.
+// A timeline: the period hangs in the margin in oversized type (sticky on
+// desktop), a rust rule and dot run down the content column.
 export default function ExperiencePage() {
   return (
     <>
@@ -20,34 +22,43 @@ export default function ExperiencePage() {
           ])
         )}
       </script>
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14">
-        <h1 className="max-w-[20ch] font-serif text-4xl leading-display tracking-tight md:text-5xl">
-          Four years of backends in production.
-        </h1>
+      <div className="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-24">
+        <HeadlineReveal
+          id="experience-h1"
+          text="Four years of backends in production."
+          highlight="in production"
+          className="t-display max-w-[16ch]"
+        />
 
-        <Reveal className="mt-12 flex flex-col gap-14">
+        <Reveal className="mt-20 flex flex-col gap-24">
           {experiences.map((e) => (
             <RevealItem key={e.company}>
-              <article className="rail border-t border-rule pt-8">
+              <article className="rail pt-2">
                 <div className="rail-meta">
-                  <p>{e.period}</p>
-                  <p className="mt-2">{e.company}</p>
+                  <p className="font-serif text-2xl leading-tight text-accent lg:text-3xl">{e.period}</p>
+                  <p className="mt-3">{e.company}</p>
                   <p className="mt-2">{e.tech.slice(0, 4).join(" · ")}</p>
                 </div>
-                <div className="min-w-0">
-                  <h2 className="font-serif text-2xl tracking-tight md:text-3xl">
+                <div className="relative min-w-0 border-l-2 border-accent pl-6 md:pl-10">
+                  <span
+                    className="absolute -left-[0.45rem] top-2 h-3 w-3 rounded-full bg-accent"
+                    aria-hidden="true"
+                  />
+                  <h2 className="t-title">
                     {e.role}
                     {e.current && (
-                      <span className="ml-3 inline-block h-2 w-2 rounded-full bg-accent align-middle" role="img" aria-label="Current role" />
+                      <span
+                        className="ml-3 inline-block h-2.5 w-2.5 rounded-full bg-accent align-middle"
+                        role="img"
+                        aria-label="Current role"
+                      />
                     )}
                   </h2>
                   <p className="prose mt-4">{e.productContext}</p>
                   {e.groups.map((g) => (
-                    <section key={g.label} aria-label={g.label} className="mt-6">
-                      <p className="font-mono text-xs font-medium uppercase tracking-label text-ink-3">
-                        {g.label}
-                      </p>
-                      <ul className="mt-3 max-w-prose list-disc pl-5 text-small leading-relaxed">
+                    <section key={g.label} aria-label={g.label} className="mt-8">
+                      <p className="label">{g.label}</p>
+                      <ul className="mt-3 max-w-prose list-disc pl-5 text-small leading-relaxed marker:text-accent">
                         {g.items.map((item) => (
                           <li key={item} className="mt-2">
                             {item}
