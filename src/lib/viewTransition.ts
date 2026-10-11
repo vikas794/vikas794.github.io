@@ -7,7 +7,11 @@ import { flushSync } from "react-dom";
 // Rapid clicks: skip the in-flight transition so animations never stack.
 let activeTransition: ViewTransition | null = null;
 
-export function runViewTransition(kind: "theme" | "route", mutate: () => void) {
+export function runViewTransition(
+  kind: "theme" | "route",
+  mutate: () => void,
+  direction: "forward" | "back" = "forward",
+) {
   const prefersReduced =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -25,6 +29,7 @@ export function runViewTransition(kind: "theme" | "route", mutate: () => void) {
   // sets of keyframes fighting over the same pseudo-elements.
   root.classList.remove("vt-theme", "vt-route");
   root.classList.add(`vt-${kind}`);
+  if (kind === "route") root.dataset.vtDir = direction;
   const transition = document.startViewTransition(() => flushSync(mutate));
   activeTransition = transition;
   transition.finished.finally(() => {
@@ -32,5 +37,6 @@ export function runViewTransition(kind: "theme" | "route", mutate: () => void) {
     if (activeTransition !== transition) return;
     activeTransition = null;
     root.classList.remove(`vt-${kind}`);
+    delete root.dataset.vtDir;
   });
 }

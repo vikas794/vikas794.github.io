@@ -569,24 +569,38 @@ li a:hover {
     mix-blend-mode: normal;
   }
 
+  /* Directional slide (sliding-panel feel): both pages move at once, the
+     old one out and the new one in from the opposite side. --vt-shift is
+     signed by data-vt-dir (set in viewTransition.ts): forward enters from
+     the right, back from the left. Short travel keeps the header/footer
+     frame intact; the fade hides the seam. */
+  html.vt-route {
+    --vt-shift: 8%;
+  }
+
+  html.vt-route[data-vt-dir="back"] {
+    --vt-shift: -8%;
+  }
+
   html.vt-route::view-transition-old(root) {
-    animation: route-old-out var(--dur-1) ease-in both;
+    animation: route-old-out 220ms var(--ease-out) both;
   }
 
   html.vt-route::view-transition-new(root) {
-    animation: route-new-in var(--dur-route) var(--ease-out) var(--dur-1) both;
+    animation: route-new-in 260ms var(--ease-out) both;
   }
 
   @keyframes route-old-out {
     to {
       opacity: 0;
+      transform: translateX(calc(var(--vt-shift) * -1));
     }
   }
 
   @keyframes route-new-in {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateX(var(--vt-shift));
     }
   }
 }
