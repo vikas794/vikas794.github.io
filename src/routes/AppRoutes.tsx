@@ -4,6 +4,7 @@ import AppShell from "../components/AppShell";
 import ErrorBoundary from "../components/ErrorBoundary";
 import { routes } from "./manifest";
 import { runViewTransition } from "../lib/viewTransition";
+import { routeDirection } from "../lib/routeDirection";
 
 // Single route tree shared by the client (BrowserRouter) and the
 // prerender entry (StaticRouter) — they cannot drift apart.
@@ -26,7 +27,11 @@ export default function AppRoutes() {
       setDisplayedLocation(location);
       return;
     }
-    runViewTransition("route", () => setDisplayedLocation(location));
+    runViewTransition(
+      "route",
+      () => setDisplayedLocation(location),
+      routeDirection(displayedLocation.pathname, location.pathname),
+    );
   }, [location, displayedLocation.pathname]);
 
   return (
