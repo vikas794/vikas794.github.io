@@ -10,6 +10,8 @@ import HeroSpotlight from "./HeroSpotlight";
 import ErrorBoundary from "./ErrorBoundary";
 import SmoothScroll from "../motion/SmoothScroll";
 import RequestWire from "./RequestWire";
+import ToastHost from "./Toast";
+import Enhancements from "../motion/Enhancements";
 
 // Route changes move focus to <main>, scroll to top, and announce via a
 // polite live region. <main id="main" tabindex="-1"> — no redundant role=main.
@@ -44,6 +46,8 @@ export default function AppShell() {
         Skip to content
       </a>
       <RequestWire />
+      <Enhancements />
+      <ToastHost />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main id="main" tabIndex={-1} ref={mainRef} className="relative isolate">
         <HeroSpotlight />

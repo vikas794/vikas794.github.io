@@ -1,3 +1,4 @@
+import Roll from "../components/Roll";
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router";
 import Seo from "../seo/Seo";
@@ -85,6 +86,12 @@ export default function ContactPage() {
                 data-netlify="true"
                 netlify-honeypot="company"
                 onSubmit={handleSubmit}
+                onInvalidCapture={(e) => {
+                  const el = e.target as HTMLElement;
+                  el.classList.remove("shake");
+                  void el.offsetWidth;
+                  el.classList.add("shake");
+                }}
                 className="panel"
               >
                 <input type="hidden" name="form-name" value="contact" />
@@ -141,7 +148,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <button type="submit" className="btn btn-primary justify-center">
-                    Send message
+                    <Roll>Send message</Roll>
                   </button>
                   <p className="font-mono text-xs leading-relaxed text-ink-3">
                     Sent via Netlify Forms on Netlify. On static hosts like GitHub Pages, email me directly if you

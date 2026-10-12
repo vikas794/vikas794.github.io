@@ -6,6 +6,7 @@ import { proofStrip } from "../../content/projects";
 import Reveal, { RevealItem } from "../Reveal";
 import HeadlineReveal from "../HeadlineReveal";
 import Magnetic from "../Magnetic";
+import Roll from "../Roll";
 import HeroFlowDiagram from "../../diagrams/HeroFlowDiagram";
 
 // The flagship proof point, promoted out of ProofStrip into the hero itself
@@ -45,7 +46,7 @@ export default function Hero() {
             <RevealItem>
               <Magnetic>
                 <Link to="/projects/" className="btn btn-primary group no-underline">
-                  Read the case studies
+                  <Roll>Read the case studies</Roll>
                   <ArrowRight
                     size={16}
                     aria-hidden="true"

@@ -67,6 +67,7 @@ export function PinnedTrack({ heading }: { heading: ReactNode }) {
         <div className="mx-auto w-full max-w-6xl px-5 md:px-8">{heading}</div>
         <div
           className="case-pin-viewport"
+          data-cursor="Scroll"
           onKeyDown={onKeyDown}
           onFocusCapture={(e) => {
             const card = (e.target as HTMLElement).closest(".case-card");

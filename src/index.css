@@ -1704,3 +1704,343 @@ svg[data-draw="done"] text {
 @keyframes diagram-text-in {
   from { opacity: 0; }
 }
+
+/* ---------------- Phase 4: craft layer ---------------- */
+
+/* Buttons: a fill wipes up on hover, label rolls, press scales, focus glows. */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-wipe, color-mix(in srgb, var(--accent) 80%, black));
+  transform: translateY(101%);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.btn-ghost::before {
+  background: var(--paper-2);
+  transform: translateX(-101%);
+}
+
+.btn-ghost[data-from="right"]::before {
+  transform: translateX(101%);
+}
+
+@media (hover: hover) {
+  .btn-primary:hover::before {
+    transform: translateY(0);
+  }
+
+  .btn-ghost:hover::before {
+    transform: translateX(0);
+  }
+}
+
+.btn:active {
+  transform: scale(0.97);
+  transition-duration: 90ms;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.roll-a,
+.roll-b {
+  display: block;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.roll-b {
+  position: absolute;
+  inset: 0;
+  transform: translateY(110%);
+}
+
+@media (hover: hover) {
+  .btn:hover .roll-a {
+    transform: translateY(-110%);
+  }
+
+  .btn:hover .roll-b {
+    transform: translateY(0);
+  }
+}
+
+/* Toast */
+.toast-host {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 70;
+  pointer-events: none;
+}
+
+.toast {
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  animation: toast-in 240ms var(--ease-out) both;
+}
+
+.toast-prompt {
+  margin-right: 0.5rem;
+  color: var(--accent-soft);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+/* Cursor ring (pointerEffects.ts) */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+}
+
+.cursor-dot[data-on="true"],
+.cursor-ring[data-on="true"] {
+  opacity: 1;
+}
+
+.cursor-dot::before,
+.cursor-ring::before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cursor-dot::before {
+  width: 6px;
+  height: 6px;
+  left: -3px;
+  top: -3px;
+  background: var(--accent);
+}
+
+.cursor-ring::before {
+  width: 36px;
+  height: 36px;
+  left: -18px;
+  top: -18px;
+  border: 1px solid var(--ink-3);
+  transition: width 240ms var(--ease-out), height 240ms var(--ease-out), left 240ms var(--ease-out),
+    top 240ms var(--ease-out), background-color 240ms var(--ease-out), border-color 240ms var(--ease-out);
+}
+
+.cursor-ring[data-state="link"]::before {
+  width: 56px;
+  height: 56px;
+  left: -28px;
+  top: -28px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: var(--accent);
+}
+
+.cursor-ring[data-state="label"]::before {
+  width: 72px;
+  height: 72px;
+  left: -36px;
+  top: -36px;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.cursor-ring[data-state="text"]::before {
+  width: 2px;
+  height: 22px;
+  left: -1px;
+  top: -11px;
+  border-radius: 1px;
+  background: var(--ink-3);
+}
+
+.cursor-ring {
+  display: grid;
+  place-items: center;
+  width: 0;
+  height: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--on-accent, var(--paper));
+  white-space: nowrap;
+}
+
+/* Tilt cards: specular highlight follows the cursor. */
+[data-tilt] {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+[data-tilt]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at var(--hx, 50%) var(--hy, 50%), rgb(255 255 255 / 0.18), transparent 55%);
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+[data-tilt]:hover::after {
+  opacity: 1;
+}
+
+/* Skill tabs */
+.skill-track {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
+.skill-tab {
+  position: relative;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: var(--text-small, 0.875rem);
+  color: var(--ink-2);
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+.skill-tab[aria-selected="true"] {
+  color: var(--on-accent, var(--paper));
+}
+
+.skill-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.skill-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.skill-tab-label {
+  position: relative;
+}
+
+.skill-panel-wrap {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-2);
+  font-size: 0.875rem;
+  transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--ink-3);
+}
+
+/* Timeline: rule draws down the block, dot fills when the rule arrives. */
+.draw-line {
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.rail-body[data-draw="on"] {
+  border-left-color: var(--rule-strong);
+}
+
+.rail-body[data-draw="on"] .rail-dot {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--rule-strong);
+  transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+
+.rail-body[data-draw="on"][data-drawn="true"] .rail-dot {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* Section titles thicken as they cross the middle of the screen. */
+.title-scrub {
+  -webkit-text-stroke: var(--ts, 0px) currentColor;
+}
+
+/* Invalid field shake */
+.shake {
+  animation: field-shake 360ms var(--ease-in-out);
+}
+
+@keyframes field-shake {
+  0%, 100% { transform: translateX(0); }
+  17%, 50%, 83% { transform: translateX(-6px); }
+  33%, 66% { transform: translateX(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::before,
+  .roll-b {
+    display: none;
+  }
+
+  .btn:active {
+    transform: none;
+  }
+
+  .shake {
+    animation: none;
+    outline: 2px solid var(--accent);
+  }
+}

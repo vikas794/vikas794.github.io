@@ -48,6 +48,7 @@ export default function DotField() {
     let last = 0;
     let slowMs = 0;
     let frames = 0;
+    const ripples: { x: number; y: number; t0: number }[] = [];
     let colors = { dot: "#d9d4ca", accent: "#b03a16", paper: "#f6f3ec" };
 
     const readColors = () => {
@@ -83,6 +84,47 @@ export default function DotField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
+      // Ripples from the mouse-shake egg: a ring of displaced dots spreading out.
+      for (let k = ripples.length - 1; k >= 0; k--) if (now - ripples[k].t0 > 1100) ripples.splice(k, 1);
+      if (ripples.length) {
+        const origin = host.getBoundingClientRect();
+        const ox = origin.left + SPACING / 2;
+        const oy = origin.top + SPACING / 2;
+        const i0 = Math.floor((0 - ox) / SPACING);
+        const i1 = Math.ceil((w - ox) / SPACING);
+        const j0 = Math.floor((0 - oy) / SPACING);
+        const j1 = Math.ceil((h - oy) / SPACING);
+        for (const rp of ripples) {
+          const age = now - rp.t0;
+          const front = age * 0.7;
+          const fade = 1 - age / 1100;
+          for (let j = j0; j <= j1; j++) {
+            for (let i = i0; i <= i1; i++) {
+              const x = ox + i * SPACING;
+              const y = oy + j * SPACING;
+              const dx = x - rp.x;
+              const dy = y - rp.y;
+              const d = Math.hypot(dx, dy);
+              const band = Math.abs(d - front);
+              if (band > 36) continue;
+              const t = (1 - band / 36) * fade;
+              const push = (9 * t) / (d || 1);
+              ctx.globalAlpha = Math.min(1, t * 2);
+              ctx.fillStyle = colors.paper;
+              ctx.beginPath();
+              ctx.arc(x, y, 2.2, 0, 6.2832);
+              ctx.fill();
+              ctx.globalAlpha = 0.4 + 0.5 * t;
+              ctx.fillStyle = colors.accent;
+              ctx.beginPath();
+              ctx.arc(x + dx * push, y + dy * push, 1.4 + t * 0.8, 0, 6.2832);
+              ctx.fill();
+            }
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+
       if (energy > 0.01) {
         const origin = host.getBoundingClientRect();
         const ox = origin.left + SPACING / 2;
@@ -117,6 +159,9 @@ export default function DotField() {
         }
         ctx.globalAlpha = 1;
         raf = requestAnimationFrame(draw);
+      } else if (ripples.length) {
+        energy = 0;
+        raf = requestAnimationFrame(draw);
       } else {
         energy = 0;
         last = 0;
@@ -143,6 +188,13 @@ export default function DotField() {
       inside = false;
       kick();
     };
+    const onRipple = (e: Event) => {
+      const d = (e as CustomEvent<{ x: number; y: number }>).detail;
+      readColors();
+      ripples.push({ x: d.x, y: d.y, t0: performance.now() });
+      kick();
+    };
+    window.addEventListener("dotfield:ripple", onRipple);
     function stop(degrade: boolean) {
       cancelAnimationFrame(raf);
       raf = 0;
@@ -157,6 +209,7 @@ export default function DotField() {
     return () => {
       stop(false);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("dotfield:ripple", onRipple);
       delete bg.dataset.canvas;
     };
   }, [motionOk, fine]);

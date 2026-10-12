@@ -3,6 +3,7 @@ import { experiences } from "../content/experience";
 import { breadcrumbJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
 import HeadlineReveal from "../components/HeadlineReveal";
+import { DrawLine, WipeLine } from "../motion/ScrollWipe";
 
 // A timeline: the period hangs in the margin in oversized type (sticky on
 // desktop), a rust rule and dot run down the content column.
@@ -39,9 +40,10 @@ export default function ExperiencePage() {
                   <p className="mt-3">{e.company}</p>
                   <p className="mt-2">{e.tech.slice(0, 4).join(" · ")}</p>
                 </div>
-                <div className="relative min-w-0 border-l-2 border-accent pl-6 md:pl-10">
+                <div className="rail-body relative min-w-0 border-l-2 border-accent pl-6 md:pl-10">
+                  <DrawLine />
                   <span
-                    className="absolute -left-[0.45rem] top-2 h-3 w-3 rounded-full bg-accent"
+                    className="rail-dot absolute -left-[0.45rem] top-2 h-3 w-3 rounded-full bg-accent"
                     aria-hidden="true"
                   />
                   <h2 className="t-title">
@@ -61,7 +63,7 @@ export default function ExperiencePage() {
                       <ul className="mt-3 max-w-prose list-disc pl-5 text-small leading-relaxed marker:text-accent">
                         {g.items.map((item) => (
                           <li key={item} className="mt-2">
-                            {item}
+                            <WipeLine>{item}</WipeLine>
                           </li>
                         ))}
                       </ul>

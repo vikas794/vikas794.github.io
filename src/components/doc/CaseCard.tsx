@@ -6,7 +6,7 @@ import type { CaseStudy } from "../../content/projects";
 // (CaseTrack). Same data and link as CaseRow, so the two never drift.
 export default function CaseCard({ study: c }: { study: CaseStudy }) {
   return (
-    <article className="case-card group">
+    <article className="case-card group" data-tilt data-cursor="Open">
       <p className="margin-num case-card-num" aria-hidden="true">
         {c.number}
       </p>
