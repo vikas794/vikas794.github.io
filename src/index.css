@@ -2137,27 +2137,34 @@ svg[data-draw="done"] text {
   }
 }
 
-/* Skills "All" view: each group under its own small heading. */
+/* Skills "All" view: each group under its own small heading, tightly ruled. */
 .skill-sections {
   display: grid;
-  gap: 1.75rem;
 }
 
-.skill-section + .skill-section {
-  padding-top: 1.75rem;
+.skill-section-titled {
+  padding-block: 1rem;
+}
+
+.skill-section-titled:first-child {
+  padding-top: 0;
+}
+
+.skill-section-titled + .skill-section-titled {
   border-top: 1px solid var(--rule);
 }
 
 .skill-section-title {
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.6rem;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 400;
   color: var(--ink-3);
 }
 
+/* Wide screens: heading in a left column, chips flowing across the rest. */
 @media (min-width: 768px) {
-  .skill-section {
+  .skill-section-titled {
     display: grid;
     grid-template-columns: 11rem minmax(0, 1fr);
     gap: 1.5rem;

@@ -69,7 +69,11 @@ export default function SkillTabs() {
           >
             <div className="skill-sections">
               {group.sections.map((sec, si) => (
-                <section key={sec.title} aria-label={sec.title} className="skill-section">
+                <section
+                  key={sec.title}
+                  aria-label={sec.title}
+                  className={active === 0 ? "skill-section skill-section-titled" : "skill-section"}
+                >
                   {active === 0 && <h3 className="skill-section-title">{sec.title}</h3>}
                   <ul className="skill-chips">
                     {sec.tags.map((t, i) => (
