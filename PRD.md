@@ -161,7 +161,7 @@ Nav order (header and route-direction): Home, About, Experience, **Work** (`/pro
 ### 5.1 Routing behaviours
 - **App shell on every route** (`AppShell`): skip link, scroll-progress bar, sticky header, `<main id="main" tabIndex=-1 class="relative isolate">` containing `<HeroSpotlight/>` and `<ErrorBoundary key={pathname}><Outlet/></ErrorBoundary>`, footer, back-to-top, live region.
 - On every pathname/hash change: scroll to top instantly (unless a hash is present), focus `<main>` with `preventScroll`, set live-region text `Navigated to {pathname}`.
-- Post-hydration, `prefetchResumeAssets()` runs once from idle time (`requestIdleCallback`, fallback `setTimeout(200)`): dynamically `import("react-pdf")` and append `<link rel="prefetch" as="fetch" href="/Vikas_Jaiswal_JavaBackendDeveloper.pdf" crossorigin="anonymous">`, so `/resume/` is instant.
+- Post-hydration, `prefetchResumeAssets()` waits for intent (the first `pointerover`, `focusin` or `touchstart` on a link to `/resume/`) and then dynamically `import("react-pdf")` and append `<link rel="prefetch" as="fetch" href="/Vikas_Jaiswal_JavaBackendDeveloper.pdf" crossorigin="anonymous">`, so `/resume/` is instant without every visitor downloading the viewer.
 - **Animated page transitions:** see DESIGN §9.9. `AppRoutes` holds `displayedLocation`; pathname changes run `runViewTransition("route", () => setDisplayedLocation(location), routeDirection(from, to))`; first render and hash/query-only changes sync immediately.
 - `ErrorBoundary` (class component) wraps both the route tree and each page (keyed by pathname so it resets on navigation); fallback = `ErrorPage` code 500, eyebrow "Error 500 · Application Error", title "Something went wrong.", message "An unexpected error occurred while rendering this page. You can try refreshing or heading back to the home page.", detail = `error.message`; logs via `console.error`.
 
@@ -232,7 +232,7 @@ Below: **01 What to include in your message** (intro + 4 numbered tips: The role
 | **Reveal/count-up/magnetic/headline** | See DESIGN §9. All degrade to static content. |
 | **View transitions** | Route + theme, with reduced-motion/unsupported fallbacks and in-flight skipping. |
 | **Accessibility** | Skip link, focus management, live region, focus rings, 44px targets, reduced-motion/contrast/transparency/forced-colors/print support (DESIGN §13). |
-| **Résumé prefetch** | Idle-time warm-up of react-pdf chunk + PDF binary. |
+| **Résumé prefetch** | On-intent warm-up (hover/focus/touch of a `/resume/` link) of the react-pdf chunk + PDF binary. |
 | **External links** | `target="_blank" rel="noopener noreferrer"` for social/credential links. |
 | **Analytics** | Cloudflare Web Analytics beacon (token above). |
 
@@ -320,7 +320,7 @@ Guarded so Vitest can import `robots()`/`llms()` without side effects.
 
 ## 11. Non-functional requirements
 
-- **Performance:** no first-load heavy JS; react-pdf is lazy and prefetched at idle; fonts self-hosted; no images on the main path (SVG/CSS only); animate only compositor-friendly properties.
+- **Performance:** no first-load heavy JS; react-pdf is lazy and prefetched on intent; fonts self-hosted; no images on the main path (SVG/CSS only); animate only compositor-friendly properties.
 - **Progressive enhancement:** full content with JS disabled; all enhancements gated on hydration/pointer/motion preferences.
 - **Browser support:** modern evergreen. View Transitions, `animation-timeline: view()`, `@property`, `color-mix`, `backdrop-filter`, `:focus-visible` are progressive enhancements with graceful fallbacks.
 - **Accessibility:** WCAG AA (DESIGN §13).
@@ -550,3 +550,20 @@ Build in this order; run `pnpm typecheck && pnpm lint && pnpm test && pnpm build
 - Contact form only works end-to-end on Netlify; on GitHub Pages the POST fails silently and the thank-you panel still appears (by design, with an email fallback sentence).
 - `docs/design-review.md` lists motion ideas (shared-element title morph, scroll-linked row reveals, ClosingCta gradient shift, ledger rule draws) that are **not** implemented.
 - The `.github/skills/impeccable` Windows `.exe` is gitignored/untracked design tooling.
+
+
+---
+
+## 16. Interaction layer requirements
+
+Full spec in `DESIGN.md` section 17. Requirements:
+
+| ID | Requirement |
+|---|---|
+| I1 | Prerendered HTML is the complete plain page. No enhancement (wire, pinned/swipe track, tabs, cursor, dot canvas) may appear in the prerender output. Guarded by `entry-server.test.ts` |
+| I2 | Home has six `data-hop` sections (`gateway auth services database queue response`) with matching ids; the request wire derives its nodes from them |
+| I3 | Every effect is gated on hydration + `prefers-reduced-motion: no-preference`; pointer effects also on `(hover: hover) and (pointer: fine)` and not forced colours. Touch never gets scroll hijacking, custom cursor or tilt |
+| I4 | The pinned track keeps every card reachable by keyboard (Tab and arrow keys move the page, never the stage) and falls back to rows (reduced motion) or a snap swipe row (<1024px) |
+| I5 | Skill tabs expose `tablist`/`tab`/`tabpanel`, one tab in the tab order, arrows/Home/End; the prerender keeps the plain ledger |
+| I6 | Budgets: first-load JS <= 180 KB gz and CSS <= 20 KB (`pnpm budget`); Lighthouse desktop home: performance >= 0.9, accessibility >= 0.95, SEO >= 0.95, LCP < 2s, CLS < 0.05 (CI job `lighthouse`) |
+| I7 | New dependency: `lenis` (lazy chunk, ~5.7 KB gz). No GSAP |

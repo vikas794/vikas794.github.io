@@ -45,7 +45,6 @@ export default function AppShell() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <RequestWire />
       <Enhancements />
       <ToastHost />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
@@ -57,6 +56,7 @@ export default function AppShell() {
       </main>
       <Footer />
       <BackToTop />
+      <RequestWire />
       <div ref={liveRef} className="sr-only" aria-live="polite" role="status" />
     </>
   );

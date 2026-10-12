@@ -461,3 +461,36 @@ An earlier DESIGN.md described intentions that the shipped code does not follow.
 | `.hero-stat` left-border style | Defined but unused (the filled `.stat-float` tile replaced it) |
 | `--tracking-label`, `--shadow-overlay/dialog`, `--radius-xl`, `--leading-display` | Defined as tokens, little or no use |
 | `docs/design-review.md` motion plan items (shared-element title morph, scroll-linked row reveals, ClosingCta gradient shift, SkillsLedger rule draws) | **Not implemented**; do not assume them |
+
+
+---
+
+## 17. Interaction layer ("The Request")
+
+Added on top of the system above without changing colour, type or content. Everything here is a progressive enhancement: the prerendered HTML is the complete plain page, and each effect switches on only after hydration, gated by `useMotionOk()` (no `prefers-reduced-motion`) and, for pointer effects, `useFinePointer()`.
+
+**Concept.** The home page is one request travelling through a system. A thin wire runs down the left edge; scrolling draws it in accent colour and a pulse rides its head. Sections are hops: `gateway` (hero), `auth` (proof band), `services` (selected work), `database` (work history), `queue` (stack), `response` (closing CTA). Scrolling up rewinds it.
+
+| Piece | File | Behaviour |
+|---|---|---|
+| Request wire | `components/RequestWire.tsx`, `.request-wire` | Fixed rail (20px, 56px from 1280px). Travelled stroke `scaleY` by scroll progress; pulse tail `24px + velocity*0.04` capped 140px, trails behind the direction of travel. Nodes come from `[data-hop]` sections, light when a section top crosses 60% of the viewport, pulse once (500ms), and are real `<a href="#id">` links. Other pages get the plain progress line. Rendered after the page in the DOM so its links are not tab stops before content. Replaces the old scroll-progress bar |
+| Shared scroll store | `motion/scrollState.ts` | One passive listener + rAF decay; gives `{y, velocity, direction}`. Everything scroll-linked subscribes here and writes to the DOM directly (no React re-render per frame) |
+| Smooth scroll | `motion/SmoothScroll.tsx`, `lenisInstance.ts` | Lenis (`lerp 0.09`, `wheelMultiplier 0.9`), lazy, fine pointer + motion-ok only; touch keeps native scroll. `scrollToTarget()` falls back to native smooth scroll. `html.lenis-active` turns off CSS `scroll-behavior` |
+| Hero headline | `HeadlineReveal` (`reactive`, `introOnce`) | Letters gain a `-webkit-text-stroke` (max 1.1px, radius 160px) near the cursor. A text-stroke is used instead of a weight change so the line never reflows. Touch: one sweep after the intro. Intro plays once per session (`sessionStorage intro-played`); click or key skips it |
+| Dot field | `components/DotField.tsx` | Canvas over the CSS dot grid; draws only dots within 140px of the cursor, pushes them up to 10px and tints them accent. The loop runs only while the pointer is active; it disables itself below ~50fps and falls back to the CSS spotlight. Listens for `dotfield:ripple` |
+| Project track | `doc/CaseRows.tsx`, `CaseTrack.tsx`, `CaseCard.tsx` | Rows are the prerendered/no-JS/reduced-motion form. After hydration: >=1024px a sticky-pinned horizontal track (wrapper height `100vh + travel`, `translateX` from scroll progress, number drifts at 0.85), progress bar and "n of 3"; arrow keys and focus move the page, never the stage. Below 1024px a native `scroll-snap` swipe row with 88% slots (next card peeks) and dots |
+| Ticker | `components/Ticker.tsx` | 40px/s (28px/s under 768px); speed `base + abs(v)*0.6`; scrolling up reverses; eased ~600ms; pauses on hover and off-screen. CSS drift is the fallback |
+| Header | `doc/SiteHeader.tsx` | Hides (`translateY(-120%)`, 280ms) after 80px of downward scroll, returns on any upward scroll; never hidden at the top, with the menu open, or while focus is inside. One sliding highlighter (`.nav-slider`) replaces the per-link active style once measured |
+| Skill tabs | `doc/SkillTabs.tsx` | `tablist` of the 7 `skillGroups`; pill slides via shared layout (spring); panel travels in the direction of the move (24px, 180ms); chips stagger 24ms capped 400ms; arrows/Home/End. Replaces the ledger after hydration only |
+| Timeline | `motion/ScrollWipe.tsx` | `DrawLine`: the rail draws down its block and the dot fills when it arrives. `WipeLine`: bullets reveal by `clip-path` wipe. Both reverse. `/experience/` only |
+| Title scrub | `motion/useTitleScrub.ts` | Section titles thicken (text-stroke up to 0.6px) as they cross the middle of the screen |
+| Buttons | `index.css` `.btn*`, `components/Roll.tsx` | Primary: darker fill wipes up on hover, label rolls (`Roll`), press `scale(.97)` 90ms, 3px accent focus glow. Ghost: fill enters from the side the cursor came from (`data-from`). Disabled 50% |
+| Toast | `components/Toast.tsx` | `showToast(text)`; mono, bottom right, `aria-live="polite"`, 2.4s |
+| Pointer effects | `motion/Enhancements.tsx` -> lazy `pointerEffects.ts` | Loaded at idle, mouse only, not under forced colours. Cursor dot + ring (states: idle, link, label, text; labels from `data-cursor`). Tilt (`data-tilt`, max 6deg, specular highlight). Decode (`data-decode`, 320ms, accessible name preserved). Ghost-fill direction. Mouse-shake egg: 5+ reversals in 700ms at >1200px/s, once per 10s, ripples the dot grid and toasts `429 Too Many Requests. Easy there.` |
+| Form | `pages/ContactPage.tsx` | An invalid field shakes (±6px, 3 cycles, 360ms) via `onInvalidCapture`; the native message still shows |
+| Diagram draw-in | `diagrams/FanoutDiagram.tsx` | Strokes draw (`pathLength=1`) the first time it is 25% visible, then stay |
+| Closing band | `doc/ClosingCta.tsx` | A small mono `200 OK` line above the headline (decorative, `aria-hidden`) |
+
+**Deviations from the original spec (deliberate).** The native cursor is never hidden (the ring only adds to it). The project track label says "Scroll", not "Drag". Hero reactivity is a text-stroke, not a font-weight change. Pinning uses CSS `position: sticky` + `motion`, not GSAP ScrollTrigger. Palette and fonts stay as in sections 3 and 4.
+
+**Budgets (enforced).** `pnpm budget` (`scripts/check-budget.mjs`) fails if first-load JS exceeds 180 KB gzipped or CSS exceeds 20 KB. CI also runs Lighthouse (desktop, home) and `scripts/check-lighthouse.mjs`: performance >= 0.9, accessibility >= 0.95, SEO >= 0.95, LCP < 2000ms, CLS < 0.05. Last local run: performance 0.99, accessibility 1.00, best-practices 0.96, SEO 1.00, LCP 0.8s, CLS 0.
