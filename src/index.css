@@ -1454,7 +1454,7 @@ body::before {
   100% { transform: scale(1); }
 }
 
-.wire-node[data-lit="true"] @media (min-width: 1280px) {
+@media (min-width: 1280px) {
   .request-wire {
     width: 56px;
   }
@@ -1462,7 +1462,9 @@ body::before {
   .wire-nodes {
     left: 27px;
   }
-  @media print {
+}
+
+@media print {
   .request-wire {
     display: none;
   }
@@ -2077,7 +2079,7 @@ svg[data-draw="done"] text {
   border-color: var(--paper);
 }
 
-.wire-invert /* Ghost buttons on the ink band: the hover fill must stay light-on-dark. */
+/* Ghost buttons on the ink band: the hover fill must stay light-on-dark. */
 .band-ink .btn-ghost::before {
   background: color-mix(in srgb, var(--paper) 16%, transparent);
 }

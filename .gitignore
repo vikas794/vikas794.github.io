@@ -12,3 +12,4 @@ coverage/
 task.md
 # Impeccable engine binaries (large; installed locally in .claude/)
 .github/skills/impeccable/scripts/bin/
+graphify-out
