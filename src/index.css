@@ -1112,6 +1112,33 @@ html.lenis-active {
   background: color-mix(in srgb, var(--paper) 92%, transparent);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+  transition: transform var(--dur-base) var(--ease-in-out);
+}
+
+.site-header[data-hidden="true"] {
+  transform: translateY(-120%);
+}
+
+/* Sliding highlighter (SiteHeader.tsx); replaces the per-link one once placed. */
+.nav-slider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--sw);
+  height: var(--sh);
+  background: var(--accent-soft);
+  transform: translate(var(--sx), var(--sy));
+  transition: transform 320ms var(--ease-in-out), width 320ms var(--ease-in-out);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.nav-primary[data-slider="on"] .nav-link[aria-current="page"]::after {
+  background: transparent;
+}
+
+.nav-primary .nav-link {
+  z-index: 1;
 }
 
 /* Ticker: a slow line of stack names. Decorative, aria-hidden. */
@@ -1133,6 +1160,12 @@ html.lenis-active {
 
 .ticker:hover .ticker-track {
   animation-play-state: paused;
+}
+
+/* JS drives the drift (Ticker.tsx); drop the CSS one. */
+.ticker[data-js="true"] .ticker-track {
+  animation: none;
+  will-change: transform;
 }
 
 .ticker-item {
@@ -1522,4 +1555,152 @@ body::before {
     animation: none;
     top: 0;
   }
+}
+
+/* ---------------- horizontal project track (CaseTrack.tsx) ---------------- */
+
+.case-pin {
+  position: relative;
+}
+
+.case-pin-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+  padding-top: 4.5rem;
+  padding-bottom: 2rem;
+  overflow: hidden;
+}
+
+.case-pin-viewport {
+  overflow: hidden;
+  padding-inline: max(2rem, calc((100vw - 72rem) / 2 + 2rem));
+}
+
+.case-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  will-change: transform;
+}
+
+.case-slot {
+  width: min(38rem, 62vw);
+  display: flex;
+}
+
+.case-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 26rem;
+  padding: 2rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-xl);
+  background: var(--paper-2);
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+
+.case-card:hover,
+.case-card:focus-within {
+  border-color: var(--ink-3);
+}
+
+.case-card-num {
+  translate: var(--num-x, 0px) 0;
+  margin-bottom: 1rem;
+}
+
+.case-card-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.case-pin-bar {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: var(--rule-strong);
+}
+
+.case-pin-bar-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+}
+
+/* Swipe row (below 1024px): native scroll, snap, next card peeks in. */
+.case-swipe {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 0 1.25rem 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.case-swipe::-webkit-scrollbar {
+  display: none;
+}
+
+.case-swipe-slot {
+  flex: 0 0 88%;
+  max-width: 28rem;
+  display: flex;
+  scroll-snap-align: start;
+}
+
+.case-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--rule-strong);
+  transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+
+.case-dot[data-on="true"] {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+/* ---------------- diagram draw-in (FanoutDiagram.tsx) ---------------- */
+
+svg[data-draw] rect,
+svg[data-draw] line,
+svg[data-draw] path {
+  stroke-dasharray: 1;
+}
+
+svg[data-draw="pending"] rect,
+svg[data-draw="pending"] line,
+svg[data-draw="pending"] path {
+  stroke-dashoffset: 1;
+}
+
+svg[data-draw="pending"] text {
+  opacity: 0;
+}
+
+svg[data-draw="done"] rect,
+svg[data-draw="done"] line,
+svg[data-draw="done"] path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 900ms var(--ease-in-out);
+}
+
+svg[data-draw="done"] text {
+  animation: diagram-text-in 500ms var(--ease-out) 500ms backwards;
+}
+
+@keyframes diagram-text-in {
+  from { opacity: 0; }
 }
