@@ -2,6 +2,11 @@ import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { skillGroups } from "../../content/skills";
 
+// "All" is the default view: every skill, once, in group order. The other
+// tabs filter down to a single group.
+const ALL_TAGS = Array.from(new Set(skillGroups.flatMap((g) => g.tags)));
+const GROUPS = [{ title: "All", tags: ALL_TAGS }, ...skillGroups];
+
 // Skills as tabs: a pill track with an indicator that slides under the
 // active tab, and panels that move in the direction you travelled. Rendered
 // only after hydration; the prerendered page shows the plain ledger instead,
@@ -17,7 +22,7 @@ export default function SkillTabs() {
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const last = skillGroups.length - 1;
+    const last = GROUPS.length - 1;
     let next = -1;
     if (e.key === "ArrowRight") next = active === last ? 0 : active + 1;
     else if (e.key === "ArrowLeft") next = active === 0 ? last : active - 1;
@@ -28,12 +33,12 @@ export default function SkillTabs() {
     select(next, true);
   };
 
-  const group = skillGroups[active];
+  const group = GROUPS[active];
 
   return (
     <div className="skill-tabs">
-      <div role="tablist" aria-label="Skill groups" className="skill-track" onKeyDown={onKeyDown}>
-        {skillGroups.map((g, i) => (
+      <div role="tablist" aria-label="Filter skills by group" className="skill-track" onKeyDown={onKeyDown}>
+        {GROUPS.map((g, i) => (
           <button
             key={g.title}
             ref={(el) => {

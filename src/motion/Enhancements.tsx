@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useHydrated } from "../hooks/useHydrated";
 import { useFinePointer, useMotionOk } from "./media";
 
-// Loads the pointer-only effects (cursor ring, card tilt, text decode,
+// Loads the pointer-only effects (cursor ring, card tilt,
 // button fill direction, mouse-shake egg) as a separate chunk once the page
 // is idle. Gated on a fine pointer, motion allowed and no forced colours, so
 // touch, reduced-motion and high-contrast visitors never download or run it.

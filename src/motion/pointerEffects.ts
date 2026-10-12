@@ -3,11 +3,8 @@ import { showToast } from "../components/Toast";
 // Pointer-only effects, all delegated from the document so no component has
 // to know about them. Opt in with attributes:
 //   data-tilt     card leans toward the cursor (max 6 degrees) with a highlight
-//   data-decode   text scrambles through mono characters, then settles
 //   data-cursor   label shown in the cursor ring ("Open", "Copy", "Scroll")
 // The native cursor is never hidden; the ring only adds to it.
-
-const GLYPHS = "01{}[]<>/=+*#%&";
 
 export function initPointerEffects(): () => void {
   const cleanups: (() => void)[] = [];
@@ -103,37 +100,6 @@ export function initPointerEffects(): () => void {
     document.removeEventListener("pointermove", onTilt);
     if (tilted) resetTilt(tilted);
   });
-
-  // ---------- text decode ----------
-  const decoding = new WeakSet<HTMLElement>();
-  const onDecode = (e: PointerEvent) => {
-    const el = (e.target as Element | null)?.closest<HTMLElement>("[data-decode]");
-    if (!el || decoding.has(el)) return;
-    // Only plain single-text-node elements; keep the real name for assistive tech.
-    const node = el.childNodes.length === 1 && el.firstChild?.nodeType === Node.TEXT_NODE ? el.firstChild : null;
-    const text = node?.textContent ?? "";
-    if (!node || !text.trim()) return;
-    decoding.add(el);
-    const hadLabel = el.hasAttribute("aria-label");
-    if (!hadLabel) el.setAttribute("aria-label", text);
-    const start = performance.now();
-    const step = (now: number) => {
-      const t = Math.min((now - start) / 320, 1);
-      const settled = Math.floor(t * text.length);
-      node.textContent = Array.from(text, (ch, i) =>
-        i < settled || ch === " " ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
-      ).join("");
-      if (t < 1) requestAnimationFrame(step);
-      else {
-        node.textContent = text;
-        if (!hadLabel) el.removeAttribute("aria-label");
-        decoding.delete(el);
-      }
-    };
-    requestAnimationFrame(step);
-  };
-  document.addEventListener("pointerover", onDecode, { passive: true });
-  cleanups.push(() => document.removeEventListener("pointerover", onDecode));
 
   // ---------- ghost-button fill enters from the side the cursor came from ----------
   const onBtn = (e: PointerEvent) => {

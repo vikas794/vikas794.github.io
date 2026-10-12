@@ -2044,3 +2044,72 @@ svg[data-draw="done"] text {
     outline: 2px solid var(--accent);
   }
 }
+
+/* ---------------- review fixes ---------------- */
+
+/* Nav: a small mono route hint appears above the link on hover (eyebrow). */
+.nav-link::before {
+  content: attr(data-hint);
+  position: absolute;
+  left: 0;
+  top: -0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1;
+  color: var(--ink-3);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  pointer-events: none;
+}
+
+.nav-link:hover::before,
+.nav-link:focus-visible::before {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Wire stays visible over the solid accent band: a paper halo around the
+   drawn stroke, the pulse and the nodes. Invisible on the paper background. */
+.wire-travelled,
+.wire-pulse {
+  box-shadow: 0 0 0 1.5px var(--paper);
+}
+
+.wire-node[data-lit="true"] {
+  box-shadow: 0 0 0 1.5px var(--paper);
+}
+
+/* Ghost buttons on the ink band: the hover fill must stay light-on-dark. */
+.band-ink .btn-ghost::before {
+  background: color-mix(in srgb, var(--paper) 16%, transparent);
+}
+
+.band-ink .btn-ghost:hover {
+  color: var(--paper);
+}
+
+/* Case-study contents: the section being read is highlighted. */
+.toc-link {
+  position: relative;
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+.toc-link[aria-current="location"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  /* The contents column is right-aligned; the marker sits on its inner edge. */
+  .toc-link[aria-current="location"]::after {
+    content: "";
+    position: absolute;
+    right: -1.25rem;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: 2px;
+    background: var(--accent);
+  }
+}

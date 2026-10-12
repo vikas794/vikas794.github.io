@@ -28,7 +28,7 @@ export default function ClosingCta() {
               <Magnetic>
                 <CopyEmail email={profile.email} />
               </Magnetic>
-              <a href={`mailto:${profile.email}`} className="btn btn-ghost no-underline" data-decode data-cursor="Open">
+              <a href={`mailto:${profile.email}`} className="btn btn-ghost no-underline" data-cursor="Open">
                 {profile.email}
               </a>
               <Link to="/contact/" className="btn btn-ghost group no-underline">

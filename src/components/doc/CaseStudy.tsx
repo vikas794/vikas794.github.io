@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { subscribeScroll } from "../../motion/scrollState";
 import type { CaseStudy } from "../../content/projects";
 import FanoutDiagram from "../../diagrams/FanoutDiagram";
 import OauthStrip from "../../diagrams/OauthStrip";
@@ -45,10 +47,34 @@ export function CaseStudyToc({
 }: {
   toc: { id: string; label: string }[];
 }) {
+  const [active, setActive] = useState<string | null>(null);
+
+  // Highlight the section being read: the last heading that has crossed
+  // 30% of the way down the viewport. Updates only when it changes.
+  useEffect(() => {
+    const ids = toc.map((t) => t.id);
+    const apply = () => {
+      const line = window.innerHeight * 0.3;
+      let current: string | null = null;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+      setActive((prev) => (prev === current ? prev : current));
+    };
+    apply();
+    return subscribeScroll(apply);
+  }, [toc]);
+
   return (
     <nav className="rail-meta" aria-label="On this page">
       {toc.map((t) => (
-        <a key={t.id} href={`#${t.id}`} className="block py-1 no-underline hover:text-accent hover:underline">
+        <a
+          key={t.id}
+          href={`#${t.id}`}
+          className="toc-link block py-1 no-underline hover:text-accent hover:underline"
+          aria-current={active === t.id ? "location" : undefined}
+        >
           {t.label}
         </a>
       ))}
