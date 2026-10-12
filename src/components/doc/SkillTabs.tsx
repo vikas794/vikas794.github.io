@@ -2,15 +2,10 @@ import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { skillGroups } from "../../content/skills";
 
-// "All" is the default view: every skill, once, in group order. The other
-// tabs filter down to a single group.
-const ALL_TAGS = Array.from(new Set(skillGroups.flatMap((g) => g.tags)));
-const GROUPS = [{ title: "All", tags: ALL_TAGS }, ...skillGroups];
+// "All" is the default view: every group, one below the other, each under
+// its own heading. The other tabs filter down to a single group.
+const GROUPS = [{ title: "All", sections: skillGroups }, ...skillGroups.map((g) => ({ title: g.title, sections: [g] }))];
 
-// Skills as tabs: a pill track with an indicator that slides under the
-// active tab, and panels that move in the direction you travelled. Rendered
-// only after hydration; the prerendered page shows the plain ledger instead,
-// so every skill is always readable text.
 export default function SkillTabs() {
   const base = useId();
   const [{ active, dir }, setState] = useState({ active: 0, dir: 1 });
@@ -72,19 +67,30 @@ export default function SkillTabs() {
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
             className="skill-panel"
           >
-            <ul className="skill-chips">
-              {group.tags.map((t, i) => (
-                <motion.li
-                  key={t}
-                  className="chip"
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: Math.min(i * 0.024, 0.4), duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {t}
-                </motion.li>
+            <div className="skill-sections">
+              {group.sections.map((sec, si) => (
+                <section key={sec.title} aria-label={sec.title} className="skill-section">
+                  {active === 0 && <h3 className="skill-section-title">{sec.title}</h3>}
+                  <ul className="skill-chips">
+                    {sec.tags.map((t, i) => (
+                      <motion.li
+                        key={t}
+                        className="chip"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          delay: Math.min((si * 3 + i) * 0.024, 0.4),
+                          duration: 0.24,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                      >
+                        {t}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </section>
               ))}
-            </ul>
+            </div>
           </motion.div>
         </AnimatePresence>
       </motion.div>

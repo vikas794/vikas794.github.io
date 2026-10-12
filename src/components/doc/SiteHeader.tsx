@@ -110,7 +110,6 @@ export default function SiteHeader({
               key={l.to}
               to={l.to}
               end={l.to === "/"}
-              data-hint={l.to === "/" ? "/" : l.to.replace(/\/$/, "")}
               className={({ isActive }) =>
                 `nav-link text-small no-underline hover:text-accent ${
                   isActive ? "text-accent" : "text-ink-2"

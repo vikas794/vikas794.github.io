@@ -2047,38 +2047,61 @@ svg[data-draw="done"] text {
 
 /* ---------------- review fixes ---------------- */
 
-/* Nav: a small mono route hint appears above the link on hover (eyebrow). */
-.nav-link::before {
-  content: attr(data-hint);
+/* Nav links: a simple 2px raise and colour change on hover/focus. */
+.nav-link {
+  transition: transform var(--dur-2) var(--ease-out), color var(--dur-1) var(--ease-out);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  transform: translateY(-2px);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(0);
+}
+
+.nav-link[aria-current="page"]:hover::after {
+  transform: scaleX(1);
+}
+
+/* Over the solid accent band the wire flips to the paper colour: a second,
+   decorative copy clipped to the band's on-screen extent (RequestWire.tsx). */
+.wire-invert {
   position: absolute;
-  left: 0;
-  top: -0.95rem;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  line-height: 1;
-  color: var(--ink-3);
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  inset: 0;
   pointer-events: none;
+  clip-path: inset(100% 0 0 0);
 }
 
-.nav-link:hover::before,
-.nav-link:focus-visible::before {
-  opacity: 1;
-  transform: translateY(0);
+.wire-invert .wire-line {
+  background: color-mix(in srgb, var(--paper) 35%, transparent);
 }
 
-/* Wire stays visible over the solid accent band: a paper halo around the
-   drawn stroke, the pulse and the nodes. Invisible on the paper background. */
-.wire-travelled,
-.wire-pulse {
-  box-shadow: 0 0 0 1.5px var(--paper);
+.wire-invert .wire-travelled {
+  background: var(--paper);
 }
 
-.wire-node[data-lit="true"] {
-  box-shadow: 0 0 0 1.5px var(--paper);
+.wire-invert .wire-pulse {
+  background: linear-gradient(to bottom, transparent, var(--paper));
+}
+
+.wire-invert .wire-pulse[data-dir="up"] {
+  background: linear-gradient(to top, transparent, var(--paper));
+}
+
+.wire-invert .wire-node {
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--paper) 55%, transparent);
+}
+
+.wire-invert .wire-node[data-lit="true"] {
+  background: var(--paper);
+  border-color: var(--paper);
+}
+
+.wire-invert .wire-label {
+  color: var(--paper);
 }
 
 /* Ghost buttons on the ink band: the hover fill must stay light-on-dark. */
@@ -2111,5 +2134,37 @@ svg[data-draw="done"] text {
     bottom: 0.3rem;
     width: 2px;
     background: var(--accent);
+  }
+}
+
+/* Skills "All" view: each group under its own small heading. */
+.skill-sections {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.skill-section + .skill-section {
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.skill-section-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+@media (min-width: 768px) {
+  .skill-section {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .skill-section-title {
+    margin: 0.45rem 0 0;
   }
 }
