@@ -161,7 +161,7 @@ Nav order (header and route-direction): Home, About, Experience, **Work** (`/pro
 ### 5.1 Routing behaviours
 - **App shell on every route** (`AppShell`): skip link, scroll-progress bar, sticky header, `<main id="main" tabIndex=-1 class="relative isolate">` containing `<HeroSpotlight/>` and `<ErrorBoundary key={pathname}><Outlet/></ErrorBoundary>`, footer, back-to-top, live region.
 - On every pathname/hash change: scroll to top instantly (unless a hash is present), focus `<main>` with `preventScroll`, set live-region text `Navigated to {pathname}`.
-- Post-hydration, `prefetchResumeAssets()` waits for intent (the first `pointerover`, `focusin` or `touchstart` on a link to `/resume/`) and then dynamically `import("react-pdf")` and append `<link rel="prefetch" as="fetch" href="/Vikas_Jaiswal_JavaBackendDeveloper.pdf" crossorigin="anonymous">`, so `/resume/` is instant without every visitor downloading the viewer.
+- Post-hydration, `prefetchResumeAssets()` runs once per tab: after the window `load` event and when the browser is idle it imports `react-pdf` and calls `loadResume(PDF_PATH)` (`src/lib/resumeStore.ts`). The store keeps one shared promise per URL (no second request on route changes), persists the bytes in Cache Storage (`resume-v1`, trusted for 24 hours, then re-fetched once so an updated PDF still reaches returning visitors), and falls back to memory only where Cache Storage is unavailable. `ResumePdfPreview` reads its bytes from the same store (a private copy each time, because pdf.js detaches the buffer) and falls back to the URL if the store fails.
 - **Animated page transitions:** see DESIGN §9.9. `AppRoutes` holds `displayedLocation`; pathname changes run `runViewTransition("route", () => setDisplayedLocation(location), routeDirection(from, to))`; first render and hash/query-only changes sync immediately.
 - `ErrorBoundary` (class component) wraps both the route tree and each page (keyed by pathname so it resets on navigation); fallback = `ErrorPage` code 500, eyebrow "Error 500 · Application Error", title "Something went wrong.", message "An unexpected error occurred while rendering this page. You can try refreshing or heading back to the home page.", detail = `error.message`; logs via `console.error`.
 
@@ -232,7 +232,7 @@ Below: **01 What to include in your message** (intro + 4 numbered tips: The role
 | **Reveal/count-up/magnetic/headline** | See DESIGN §9. All degrade to static content. |
 | **View transitions** | Route + theme, with reduced-motion/unsupported fallbacks and in-flight skipping. |
 | **Accessibility** | Skip link, focus management, live region, focus rings, 44px targets, reduced-motion/contrast/transparency/forced-colors/print support (DESIGN §13). |
-| **Résumé prefetch** | On-intent warm-up (hover/focus/touch of a `/resume/` link) of the react-pdf chunk + PDF binary. |
+| **Résumé prefetch** | After `load` + idle: react-pdf chunk fetched and PDF bytes stored in Cache Storage via `resumeStore.ts`; never re-fetched on route changes or within 24h. |
 | **External links** | `target="_blank" rel="noopener noreferrer"` for social/credential links. |
 | **Analytics** | Cloudflare Web Analytics beacon (token above). |
 
@@ -320,7 +320,7 @@ Guarded so Vitest can import `robots()`/`llms()` without side effects.
 
 ## 11. Non-functional requirements
 
-- **Performance:** no first-load heavy JS; react-pdf is lazy and prefetched on intent; fonts self-hosted; no images on the main path (SVG/CSS only); animate only compositor-friendly properties.
+- **Performance:** no first-load heavy JS; react-pdf is lazy and prefetched after load + idle, with the PDF kept in Cache Storage; fonts self-hosted; no images on the main path (SVG/CSS only); animate only compositor-friendly properties.
 - **Progressive enhancement:** full content with JS disabled; all enhancements gated on hydration/pointer/motion preferences.
 - **Browser support:** modern evergreen. View Transitions, `animation-timeline: view()`, `@property`, `color-mix`, `backdrop-filter`, `:focus-visible` are progressive enhancements with graceful fallbacks.
 - **Accessibility:** WCAG AA (DESIGN §13).

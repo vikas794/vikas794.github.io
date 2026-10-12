@@ -1,24 +1,45 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+const loadResume = vi.fn(() => Promise.resolve(new ArrayBuffer(4)));
+vi.mock("./resumeStore", () => ({ loadResume: (...a: unknown[]) => loadResume(...(a as [])) }));
+vi.mock("react-pdf", () => ({}));
+
+function setReadyState(state: "loading" | "complete") {
+  Object.defineProperty(document, "readyState", { value: state, configurable: true });
+}
 
 describe("prefetchResumeAssets", () => {
-  it("waits for intent on a résumé link before fetching anything", async () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+    setReadyState("complete");
+  });
+
+  it("waits for the page to finish loading, then fetches the résumé once when idle", async () => {
     vi.resetModules();
+    setReadyState("loading");
+    const idle = vi.fn((cb: () => void) => cb());
+    vi.stubGlobal("requestIdleCallback", idle);
+    window.requestIdleCallback = idle as unknown as typeof window.requestIdleCallback;
+
     const { prefetchResumeAssets } = await import("./prefetchResume");
-    const before = document.head.querySelectorAll('link[rel="prefetch"]').length;
     prefetchResumeAssets();
-    await new Promise((r) => setTimeout(r, 50));
-    expect(document.head.querySelectorAll('link[rel="prefetch"]').length).toBe(before);
+    expect(loadResume).not.toHaveBeenCalled();
 
-    const other = document.createElement("a");
-    other.href = "/about/";
-    document.body.append(other);
-    other.dispatchEvent(new Event("pointerover", { bubbles: true }));
-    expect(document.head.querySelectorAll('link[rel="prefetch"]').length).toBe(before);
+    window.dispatchEvent(new Event("load"));
+    expect(loadResume).toHaveBeenCalledTimes(1);
+    expect(loadResume).toHaveBeenCalledWith("/Vikas_Jaiswal_JavaBackendDeveloper.pdf");
+  });
 
-    const resume = document.createElement("a");
-    resume.setAttribute("href", "/resume/");
-    document.body.append(resume);
-    resume.dispatchEvent(new Event("pointerover", { bubbles: true }));
-    expect(document.head.querySelectorAll('link[rel="prefetch"]').length).toBe(before + 1);
+  it("runs only once per tab, however many times it is called (route changes)", async () => {
+    vi.resetModules();
+    setReadyState("complete");
+    const idle = vi.fn((cb: () => void) => cb());
+    window.requestIdleCallback = idle as unknown as typeof window.requestIdleCallback;
+
+    const { prefetchResumeAssets } = await import("./prefetchResume");
+    prefetchResumeAssets();
+    prefetchResumeAssets();
+    prefetchResumeAssets();
+    expect(loadResume).toHaveBeenCalledTimes(1);
   });
 });
