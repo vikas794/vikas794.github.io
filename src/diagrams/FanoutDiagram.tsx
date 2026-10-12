@@ -1,13 +1,44 @@
+import { useEffect, useRef } from "react";
+import { useHydrated } from "../hooks/useHydrated";
+import { useMotionOk } from "../motion/media";
+
 // Hand-authored inline SVG — not runtime Mermaid. currentColor +
 // var(--accent) only, so both themes work from one file. 9 nodes,
 // 9 edges, orthogonal routing, every edge labelled with its protocol,
 // exactly one element accented: the Broadcast Scheduler (the thing built).
 export default function FanoutDiagram() {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const hydrated = useHydrated();
+  const motionOk = useMotionOk();
+
+  // First time it scrolls into view the strokes draw in, then it stays
+  // drawn. Prerender, no-JS and reduced motion get the finished diagram.
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg || !hydrated || !motionOk) return;
+    svg.querySelectorAll("rect, line, path").forEach((el) => el.setAttribute("pathLength", "1"));
+    svg.dataset.draw = "pending";
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        svg.dataset.draw = "done";
+        io.disconnect();
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(svg);
+    return () => {
+      io.disconnect();
+      delete svg.dataset.draw;
+    };
+  }, [hydrated, motionOk]);
+
   const box = "fill-none stroke-current stroke-[1.5]";
   const label = "fill-current font-mono";
   return (
     <figure className="my-8 max-w-evidence">
       <svg
+        ref={svgRef}
         viewBox="0 0 680 460"
         role="img"
         aria-label="Market-tick fan-out architecture"

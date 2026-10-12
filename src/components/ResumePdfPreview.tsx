@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { DocumentProps, PageProps } from "react-pdf";
 import { useHydrated } from "../hooks/useHydrated";
+import { loadResumeCopy } from "../lib/resumeStore";
 
 type ReactPdfModule = typeof import("react-pdf");
 
@@ -31,6 +32,9 @@ export default function ResumePdfPreview({ file }: Props) {
   const [pdf, setPdf] = useState<ReactPdfModule | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState(false);
+  // The bytes come from the shared fetch-once store (cached across pages and
+  // visits); if that fails the viewer falls back to loading the URL itself.
+  const [source, setSource] = useState<string | { data: Uint8Array } | null>(null);
   const [width, setWidth] = useState<number>();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -55,6 +59,17 @@ export default function ResumePdfPreview({ file }: Props) {
   }, [hydrated]);
 
   useEffect(() => {
+    if (!hydrated) return;
+    let cancelled = false;
+    loadResumeCopy(file)
+      .then((data) => !cancelled && setSource({ data }))
+      .catch(() => !cancelled && setSource(file));
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated, file]);
+
+  useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
@@ -62,13 +77,13 @@ export default function ResumePdfPreview({ file }: Props) {
     return () => observer.disconnect();
     // The container div only mounts once `pdf` is loaded, so this effect
     // must re-run then to attach to the ref (it's null on the first pass).
-  }, [pdf]);
+  }, [pdf, source]);
 
   if (error) {
     return <FallbackMessage file={file} />;
   }
 
-  if (!pdf) {
+  if (!pdf || !source) {
     return <p className="p-6 text-small text-ink-2">{LOADING_TEXT}</p>;
   }
 
@@ -80,7 +95,7 @@ export default function ResumePdfPreview({ file }: Props) {
   return (
     <div ref={containerRef} className="w-full">
       <Document
-        file={file}
+        file={source}
         onLoadSuccess={({ numPages }) => setPageCount(numPages)}
         onLoadError={() => setError(true)}
         loading={<p className="p-6 text-small text-ink-2">{LOADING_TEXT}</p>}

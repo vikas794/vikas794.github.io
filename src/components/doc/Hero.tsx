@@ -1,10 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+import { useScroll } from "../../hooks/useScroll";
 import { profile } from "../../content/profile";
 import { proofStrip } from "../../content/projects";
 import Reveal, { RevealItem } from "../Reveal";
 import HeadlineReveal from "../HeadlineReveal";
 import Magnetic from "../Magnetic";
+import Roll from "../Roll";
 import HeroFlowDiagram from "../../diagrams/HeroFlowDiagram";
 
 // The flagship proof point, promoted out of ProofStrip into the hero itself
@@ -15,8 +17,9 @@ const heroStat = proofStrip[0];
 // and ledger on the right, level with the headline. Everything that matters
 // to a recruiter is visible without scrolling.
 export default function Hero() {
+  const scrolled = useScroll(120);
   return (
-    <section aria-labelledby="home-hero" className="relative border-b border-rule">
+    <section id="gateway" data-hop="gateway" aria-labelledby="home-hero" className="relative border-b border-rule">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-12 md:px-8 md:py-20 lg:grid-cols-12 lg:items-center lg:gap-10">
         <div className="lg:col-span-7">
           <p className="inline-flex items-center gap-2 font-mono text-xs text-ink-2">
@@ -29,6 +32,8 @@ export default function Hero() {
             text={profile.headline}
             highlight="money, data, and messages"
             className="t-mega mt-5"
+            reactive
+            introOnce
           />
 
           <p className="prose mt-6">
@@ -41,7 +46,7 @@ export default function Hero() {
             <RevealItem>
               <Magnetic>
                 <Link to="/projects/" className="btn btn-primary group no-underline">
-                  Read the case studies
+                  <Roll>Read the case studies</Roll>
                   <ArrowRight
                     size={16}
                     aria-hidden="true"
@@ -82,6 +87,11 @@ export default function Hero() {
           </Reveal>
         </aside>
       </div>
+      <span
+        aria-hidden="true"
+        className="scroll-cue absolute bottom-6 left-8 hidden md:block"
+        style={{ opacity: scrolled ? 0 : 1 }}
+      />
     </section>
   );
 }

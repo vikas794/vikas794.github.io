@@ -27,10 +27,14 @@
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   --dur-1: 140ms;
   --dur-2: 240ms;
   --dur-route: 320ms;
+  --dur-base: 280ms;
+  --dur-slow: 600ms;
 
   --radius-sm: 4px;
   --radius-md: 6px;
@@ -710,6 +714,11 @@ h3 em {
   }
 }
 
+/* Lenis drives scrolling itself; native smooth-scroll would fight it. */
+html.lenis-active {
+  scroll-behavior: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
@@ -889,16 +898,6 @@ h3 em {
 }
 
 /* Scroll progress: a 2px accent line under the header, scrubbed by scroll. */
-.scroll-progress {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 2px;
-  z-index: 60;
-  background: var(--accent);
-  transform-origin: left;
-  pointer-events: none;
-}
-
 
 /* ============================================================
    THE MARKED-UP SPEC — signature devices (DESIGN.md §2)
@@ -1113,6 +1112,33 @@ h3 em {
   background: color-mix(in srgb, var(--paper) 92%, transparent);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+  transition: transform var(--dur-base) var(--ease-in-out);
+}
+
+.site-header[data-hidden="true"] {
+  transform: translateY(-120%);
+}
+
+/* Sliding highlighter (SiteHeader.tsx); replaces the per-link one once placed. */
+.nav-slider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--sw);
+  height: var(--sh);
+  background: var(--accent-soft);
+  transform: translate(var(--sx), var(--sy));
+  transition: transform 320ms var(--ease-in-out), width 320ms var(--ease-in-out);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.nav-primary[data-slider="on"] .nav-link[aria-current="page"]::after {
+  background: transparent;
+}
+
+.nav-primary .nav-link {
+  z-index: 1;
 }
 
 /* Ticker: a slow line of stack names. Decorative, aria-hidden. */
@@ -1134,6 +1160,12 @@ h3 em {
 
 .ticker:hover .ticker-track {
   animation-play-state: paused;
+}
+
+/* JS drives the drift (Ticker.tsx); drop the CSS one. */
+.ticker[data-js="true"] .ticker-track {
+  animation: none;
+  will-change: transform;
 }
 
 .ticker-item {
@@ -1319,3 +1351,800 @@ body::before {
   opacity: 0.9;
 }
 
+
+/* ---------------- request wire (RequestWire.tsx) ---------------- */
+
+.request-wire {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 20px;
+  z-index: 35;
+  pointer-events: none;
+}
+
+.wire-track,
+.wire-nodes {
+  position: absolute;
+  top: 84px;
+  bottom: 28px;
+  left: 9px;
+  width: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wire-line,
+.wire-travelled {
+  position: absolute;
+  inset: 0;
+}
+
+.wire-line {
+  background: var(--rule-strong);
+}
+
+.wire-travelled {
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.wire-pulse {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 4px;
+  height: 24px;
+  opacity: 0;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, transparent, var(--accent));
+  will-change: transform, height;
+}
+
+.wire-pulse[data-dir="up"] {
+  background: linear-gradient(to top, transparent, var(--accent));
+}
+
+.wire-node-item {
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.wire-node {
+  pointer-events: auto;
+  position: absolute;
+  left: -5px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  border: 2px solid var(--rule-strong);
+  border-radius: 50%;
+  background: var(--paper);
+  transition: background-color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+
+/* Generous hit area; the wire sits in the page's side padding. */
+.wire-node::after {
+  content: "";
+  position: absolute;
+  inset: -16px;
+}
+
+.wire-node[data-lit="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.wire-node:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.wire-node-pulse {
+  animation: wire-node-pulse 500ms var(--ease-out);
+}
+
+@keyframes wire-node-pulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.6); }
+  100% { transform: scale(1); }
+}
+
+.wire-node[data-lit="true"] @media (min-width: 1280px) {
+  .request-wire {
+    width: 56px;
+  }
+  .wire-track,
+  .wire-nodes {
+    left: 27px;
+  }
+  @media print {
+  .request-wire {
+    display: none;
+  }
+}
+
+/* ---------------- hero headline: reactive letters ---------------- */
+
+.ch {
+  display: inline-block;
+  -webkit-text-stroke: var(--s, 0px) currentColor;
+  transition: -webkit-text-stroke-width 120ms linear;
+}
+
+.ch-sweep .ch {
+  animation: ch-sweep 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 18ms);
+}
+
+@keyframes ch-sweep {
+  0%, 100% { -webkit-text-stroke-width: 0px; }
+  45% { -webkit-text-stroke-width: 0.9px; }
+}
+
+/* ---------------- hero canvas dots (DotField.tsx) ---------------- */
+
+.dot-field {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.hero-bg[data-canvas="true"] .hero-dots-hot {
+  display: none;
+}
+
+/* ---------------- scroll cue ---------------- */
+
+.scroll-cue {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: var(--rule-strong);
+  overflow: hidden;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 1px;
+  height: 14px;
+  background: var(--accent);
+  animation: scroll-cue 1.6s var(--ease-in-out) infinite;
+}
+
+@keyframes scroll-cue {
+  to { transform: translateY(54px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue::after {
+    animation: none;
+    top: 0;
+  }
+}
+
+/* ---------------- horizontal project track (CaseTrack.tsx) ---------------- */
+
+.case-pin {
+  position: relative;
+}
+
+.case-pin-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+  padding-top: 4.5rem;
+  padding-bottom: 2rem;
+  overflow: hidden;
+}
+
+.case-pin-viewport {
+  overflow: hidden;
+  padding-inline: max(2rem, calc((100vw - 72rem) / 2 + 2rem));
+}
+
+.case-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  will-change: transform;
+}
+
+.case-slot {
+  width: min(38rem, 62vw);
+  display: flex;
+}
+
+.case-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 26rem;
+  padding: 2rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-xl);
+  background: var(--paper-2);
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+
+.case-card:hover,
+.case-card:focus-within {
+  border-color: var(--ink-3);
+}
+
+.case-card-num {
+  translate: var(--num-x, 0px) 0;
+  margin-bottom: 1rem;
+}
+
+.case-card-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.case-pin-bar {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: var(--rule-strong);
+}
+
+.case-pin-bar-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+}
+
+/* Swipe row (below 1024px): native scroll, snap, next card peeks in. */
+.case-swipe {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 0 1.25rem 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.case-swipe::-webkit-scrollbar {
+  display: none;
+}
+
+.case-swipe-slot {
+  flex: 0 0 88%;
+  max-width: 28rem;
+  display: flex;
+  scroll-snap-align: start;
+}
+
+.case-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--rule-strong);
+  transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+
+.case-dot[data-on="true"] {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+/* ---------------- diagram draw-in (FanoutDiagram.tsx) ---------------- */
+
+svg[data-draw] rect,
+svg[data-draw] line,
+svg[data-draw] path {
+  stroke-dasharray: 1;
+}
+
+svg[data-draw="pending"] rect,
+svg[data-draw="pending"] line,
+svg[data-draw="pending"] path {
+  stroke-dashoffset: 1;
+}
+
+svg[data-draw="pending"] text {
+  opacity: 0;
+}
+
+svg[data-draw="done"] rect,
+svg[data-draw="done"] line,
+svg[data-draw="done"] path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 900ms var(--ease-in-out);
+}
+
+svg[data-draw="done"] text {
+  animation: diagram-text-in 500ms var(--ease-out) 500ms backwards;
+}
+
+@keyframes diagram-text-in {
+  from { opacity: 0; }
+}
+
+/* ---------------- Phase 4: craft layer ---------------- */
+
+/* Buttons: a fill wipes up on hover, label rolls, press scales, focus glows. */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-wipe, color-mix(in srgb, var(--accent) 80%, black));
+  transform: translateY(101%);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.btn-ghost::before {
+  background: var(--paper-2);
+  transform: translateX(-101%);
+}
+
+.btn-ghost[data-from="right"]::before {
+  transform: translateX(101%);
+}
+
+@media (hover: hover) {
+  .btn-primary:hover::before {
+    transform: translateY(0);
+  }
+
+  .btn-ghost:hover::before {
+    transform: translateX(0);
+  }
+}
+
+.btn:active {
+  transform: scale(0.97);
+  transition-duration: 90ms;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.roll-a,
+.roll-b {
+  display: block;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.roll-b {
+  position: absolute;
+  inset: 0;
+  transform: translateY(110%);
+}
+
+@media (hover: hover) {
+  .btn:hover .roll-a {
+    transform: translateY(-110%);
+  }
+
+  .btn:hover .roll-b {
+    transform: translateY(0);
+  }
+}
+
+/* Toast */
+.toast-host {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 70;
+  pointer-events: none;
+}
+
+.toast {
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  animation: toast-in 240ms var(--ease-out) both;
+}
+
+.toast-prompt {
+  margin-right: 0.5rem;
+  color: var(--accent-soft);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+/* Cursor ring (pointerEffects.ts) */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+}
+
+.cursor-dot[data-on="true"],
+.cursor-ring[data-on="true"] {
+  opacity: 1;
+}
+
+.cursor-dot::before,
+.cursor-ring::before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cursor-dot::before {
+  width: 6px;
+  height: 6px;
+  left: -3px;
+  top: -3px;
+  background: var(--accent);
+}
+
+.cursor-ring::before {
+  width: 36px;
+  height: 36px;
+  left: -18px;
+  top: -18px;
+  border: 1px solid var(--ink-3);
+  transition: width 240ms var(--ease-out), height 240ms var(--ease-out), left 240ms var(--ease-out),
+    top 240ms var(--ease-out), background-color 240ms var(--ease-out), border-color 240ms var(--ease-out);
+}
+
+.cursor-ring[data-state="link"]::before {
+  width: 56px;
+  height: 56px;
+  left: -28px;
+  top: -28px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: var(--accent);
+}
+
+.cursor-ring[data-state="label"]::before {
+  width: 72px;
+  height: 72px;
+  left: -36px;
+  top: -36px;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.cursor-ring[data-state="text"]::before {
+  width: 2px;
+  height: 22px;
+  left: -1px;
+  top: -11px;
+  border-radius: 1px;
+  background: var(--ink-3);
+}
+
+.cursor-ring {
+  display: grid;
+  place-items: center;
+  width: 0;
+  height: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--on-accent, var(--paper));
+  white-space: nowrap;
+}
+
+/* Tilt cards: specular highlight follows the cursor. */
+[data-tilt] {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+[data-tilt]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at var(--hx, 50%) var(--hy, 50%), rgb(255 255 255 / 0.18), transparent 55%);
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+[data-tilt]:hover::after {
+  opacity: 1;
+}
+
+/* Skill tabs */
+.skill-track {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
+.skill-tab {
+  position: relative;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: var(--text-small, 0.875rem);
+  color: var(--ink-2);
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+.skill-tab[aria-selected="true"] {
+  color: var(--on-accent, var(--paper));
+}
+
+.skill-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.skill-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.skill-tab-label {
+  position: relative;
+}
+
+.skill-panel-wrap {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-2);
+  font-size: 0.875rem;
+  transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--ink-3);
+}
+
+/* Timeline: rule draws down the block, dot fills when the rule arrives. */
+.draw-line {
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.rail-body[data-draw="on"] {
+  border-left-color: var(--rule-strong);
+}
+
+.rail-body[data-draw="on"] .rail-dot {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--rule-strong);
+  transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+
+.rail-body[data-draw="on"][data-drawn="true"] .rail-dot {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* Section titles thicken as they cross the middle of the screen. */
+.title-scrub {
+  -webkit-text-stroke: var(--ts, 0px) currentColor;
+}
+
+/* Invalid field shake */
+.shake {
+  animation: field-shake 360ms var(--ease-in-out);
+}
+
+@keyframes field-shake {
+  0%, 100% { transform: translateX(0); }
+  17%, 50%, 83% { transform: translateX(-6px); }
+  33%, 66% { transform: translateX(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::before,
+  .roll-b {
+    display: none;
+  }
+
+  .btn:active {
+    transform: none;
+  }
+
+  .shake {
+    animation: none;
+    outline: 2px solid var(--accent);
+  }
+}
+
+/* ---------------- review fixes ---------------- */
+
+/* Nav links: a simple 2px raise and colour change on hover/focus. */
+.nav-link {
+  transition: transform var(--dur-2) var(--ease-out), color var(--dur-1) var(--ease-out);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  transform: translateY(-2px);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(0);
+}
+
+.nav-link[aria-current="page"]:hover::after {
+  transform: scaleX(1);
+}
+
+/* Over the solid accent band the wire flips to the paper colour: a second,
+   decorative copy clipped to the band's on-screen extent (RequestWire.tsx). */
+.wire-invert {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: inset(100% 0 0 0);
+}
+
+.wire-invert .wire-line {
+  background: color-mix(in srgb, var(--paper) 35%, transparent);
+}
+
+.wire-invert .wire-travelled {
+  background: var(--paper);
+}
+
+.wire-invert .wire-pulse {
+  background: linear-gradient(to bottom, transparent, var(--paper));
+}
+
+.wire-invert .wire-pulse[data-dir="up"] {
+  background: linear-gradient(to top, transparent, var(--paper));
+}
+
+.wire-invert .wire-node {
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--paper) 55%, transparent);
+}
+
+.wire-invert .wire-node[data-lit="true"] {
+  background: var(--paper);
+  border-color: var(--paper);
+}
+
+.wire-invert /* Ghost buttons on the ink band: the hover fill must stay light-on-dark. */
+.band-ink .btn-ghost::before {
+  background: color-mix(in srgb, var(--paper) 16%, transparent);
+}
+
+.band-ink .btn-ghost:hover {
+  color: var(--paper);
+}
+
+/* Case-study contents: the section being read is highlighted. */
+.toc-link {
+  position: relative;
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+.toc-link[aria-current="location"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  /* The contents column is right-aligned; the marker sits on its inner edge. */
+  .toc-link[aria-current="location"]::after {
+    content: "";
+    position: absolute;
+    right: -1.25rem;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: 2px;
+    background: var(--accent);
+  }
+}
+
+/* Skills "All" view: each group under its own small heading, tightly ruled. */
+.skill-sections {
+  display: grid;
+}
+
+.skill-section-titled {
+  padding-block: 1rem;
+}
+
+.skill-section-titled:first-child {
+  padding-top: 0;
+}
+
+.skill-section-titled + .skill-section-titled {
+  border-top: 1px solid var(--rule);
+}
+
+.skill-section-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+/* Wide screens: heading in a left column, chips flowing across the rest. */
+@media (min-width: 768px) {
+  .skill-section-titled {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .skill-section-title {
+    margin: 0.45rem 0 0;
+  }
+}

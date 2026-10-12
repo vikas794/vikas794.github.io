@@ -1,0 +1,52 @@
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it } from "vitest";
+import { skillGroups } from "../../content/skills";
+import SkillTabs from "./SkillTabs";
+
+describe("SkillTabs", () => {
+  it("exposes tab roles with exactly one selected tab and a labelled panel", () => {
+    render(<SkillTabs />);
+    expect(screen.getByRole("tablist", { name: "Filter skills by group" })).toBeInTheDocument();
+    const tabs = screen.getAllByRole("tab");
+    expect(tabs).toHaveLength(skillGroups.length + 1);
+    expect(tabs[0]).toHaveTextContent("All");
+    expect(tabs.filter((t) => t.getAttribute("aria-selected") === "true")).toHaveLength(1);
+    expect(screen.getByRole("tabpanel")).toHaveAccessibleName("All");
+    // Default view shows every skill from every group.
+    skillGroups.forEach((g) => g.tags.forEach((t) => expect(screen.getAllByText(t).length).toBeGreaterThan(0)));
+    // ...divided into one labelled section per group, in order.
+    const panel = screen.getByRole("tabpanel");
+    skillGroups.forEach((g) => expect(within(panel).getByRole("region", { name: g.title })).toBeInTheDocument());
+    expect(within(panel).getAllByRole("heading", { level: 3 })).toHaveLength(skillGroups.length);
+  });
+
+  it("moves with arrow keys, wraps, and shows the new group's skills", async () => {
+    const user = userEvent.setup();
+    render(<SkillTabs />);
+    const tabs = screen.getAllByRole("tab");
+    tabs[0].focus();
+    await user.keyboard("{ArrowRight}");
+    expect(tabs[1]).toHaveAttribute("aria-selected", "true");
+    expect(tabs[1]).toHaveFocus();
+    await user.keyboard("{ArrowLeft}{ArrowLeft}");
+    expect(tabs[tabs.length - 1]).toHaveAttribute("aria-selected", "true");
+    await user.keyboard("{Home}");
+    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("only the selected tab is in the tab order", () => {
+    render(<SkillTabs />);
+    const tabs = screen.getAllByRole("tab");
+    expect(tabs.filter((t) => t.tabIndex === 0)).toHaveLength(1);
+  });
+
+  it("a single group tab shows only that group, without section headings", async () => {
+    const user = userEvent.setup();
+    render(<SkillTabs />);
+    await user.click(screen.getByRole("tab", { name: skillGroups[1].title }));
+    const panel = await screen.findByRole("tabpanel", { name: skillGroups[1].title });
+    expect(within(panel).queryAllByRole("heading")).toHaveLength(0);
+    expect(within(panel).getAllByRole("listitem")).toHaveLength(skillGroups[1].tags.length);
+  });
+});

@@ -34,4 +34,24 @@ describe("entry-server", () => {
     expect(head).toMatch(/<title>This page doesn&#x27;t exist\. \(404\)/);
     expect(rootHtml).toContain("This page doesn&#x27;t exist.");
   });
+
+  // The enhanced experience (pinned track, tabs, wire, cursor) must only
+  // appear after hydration. The prerendered home page has to be the complete,
+  // plain version a crawler or a no-JS visitor gets.
+  it("prerenders the home page as the complete plain version", async () => {
+    const { rootHtml } = await render("/");
+    expect((rootHtml.match(/data-hop="/g) ?? []).length).toBe(6);
+    expect(rootHtml).toContain("case-row");
+    expect(rootHtml).toContain("ledger-label");
+    expect(rootHtml).toContain("Where I&#x27;ve worked");
+    for (const slug of ["market-ticks-fanout", "healthcare-backend-trust", "sql-injection-surface"]) {
+      expect(rootHtml).toContain(`/projects/${slug}/`);
+    }
+    expect(rootHtml).not.toContain("request-wire");
+    expect(rootHtml).not.toContain("case-pin");
+    expect(rootHtml).not.toContain("case-swipe");
+    expect(rootHtml).not.toContain('role="tab"');
+    expect(rootHtml).not.toContain("dot-field");
+    expect(rootHtml).not.toContain("cursor-ring");
+  });
 });

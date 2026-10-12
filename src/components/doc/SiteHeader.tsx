@@ -1,7 +1,11 @@
-import { useState, type MouseEvent } from "react";
-import { Link, NavLink } from "react-router";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { Link, NavLink, useLocation } from "react-router";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { runViewTransition } from "../../lib/viewTransition";
+import { useHydrated } from "../../hooks/useHydrated";
+import { useScroll } from "../../hooks/useScroll";
+import { useMotionOk } from "../../motion/media";
+import { useScrollDirection } from "../../motion/scrollState";
 
 const NAV_LINKS = [
   { to: "/", label: "Home" },
@@ -20,6 +24,42 @@ export default function SiteHeader({
   toggleTheme: () => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [focusWithin, setFocusWithin] = useState(false);
+  const [sliderReady, setSliderReady] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const { pathname } = useLocation();
+  const hydrated = useHydrated();
+  const motionOk = useMotionOk();
+  const pastTop = useScroll(80);
+  const direction = useScrollDirection();
+
+  // Hide on the way down, come back on any upward scroll. Always visible at
+  // the top, with the menu open, or while something inside has focus.
+  const hidden = hydrated && motionOk && pastTop && direction === "down" && !menuOpen && !focusWithin;
+
+  // One highlighter that slides to the active link instead of jumping.
+  // Until this runs, the per-link active style (CSS) is the fallback.
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav || !hydrated) return;
+    const place = () => {
+      const link = nav.querySelector<HTMLElement>('.nav-link[aria-current="page"]');
+      if (!link) {
+        setSliderReady(false);
+        return;
+      }
+      const h = parseFloat(getComputedStyle(link).fontSize) * 0.5;
+      nav.style.setProperty("--sx", `${link.offsetLeft}px`);
+      nav.style.setProperty("--sy", `${link.offsetTop + link.offsetHeight - h - 1}px`);
+      nav.style.setProperty("--sw", `${link.offsetWidth}px`);
+      nav.style.setProperty("--sh", `${h}px`);
+      setSliderReady(true);
+    };
+    place();
+    window.addEventListener("resize", place);
+    document.fonts?.ready.then(place);
+    return () => window.removeEventListener("resize", place);
+  }, [hydrated, pathname]);
 
   // Slow soft-edged circular reveal from the button, via the View Transitions API. Falls
   // back to an instant swap when the API is unsupported or the user has
@@ -43,7 +83,12 @@ export default function SiteHeader({
   }
 
   return (
-    <header className="vt-persist-header site-header border-b border-rule">
+    <header
+      className="vt-persist-header site-header border-b border-rule"
+      data-hidden={hidden ? "true" : "false"}
+      onFocus={() => setFocusWithin(true)}
+      onBlur={() => setFocusWithin(false)}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
         <Link
           to="/"
@@ -53,7 +98,13 @@ export default function SiteHeader({
           Vikas Jaiswal
           <span className="wordmark-dot" aria-hidden="true" />
         </Link>
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
+        <nav
+          ref={navRef}
+          className="nav-primary relative hidden items-center gap-6 md:flex"
+          aria-label="Primary"
+          data-slider={sliderReady ? "on" : "off"}
+        >
+          {sliderReady && <span className="nav-slider" aria-hidden="true" />}
           {NAV_LINKS.map((l) => (
             <NavLink
               key={l.to}

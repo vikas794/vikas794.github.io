@@ -10,11 +10,14 @@ import CopyEmail from "../CopyEmail";
 // one tap away and the headline says what I want.
 export default function ClosingCta() {
   return (
-    <section aria-labelledby="contact-cta" className="band-ink">
+    <section id="response" data-hop="response" aria-labelledby="contact-cta" className="band-ink">
       <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
         <Reveal>
           <RevealItem>
-            <h2 id="contact-cta" className="t-display max-w-[14ch]">
+            <p className="font-mono text-sm" aria-hidden="true">
+              200 OK
+            </p>
+            <h2 id="contact-cta" className="t-display mt-4 max-w-[14ch]">
               Hiring a backend engineer? <Mark scroll>Let&apos;s talk.</Mark>
             </h2>
             <p className="mt-8 max-w-[34rem] font-serif text-lg leading-snug md:text-xl">
@@ -25,7 +28,7 @@ export default function ClosingCta() {
               <Magnetic>
                 <CopyEmail email={profile.email} />
               </Magnetic>
-              <a href={`mailto:${profile.email}`} className="btn btn-ghost no-underline">
+              <a href={`mailto:${profile.email}`} className="btn btn-ghost no-underline" data-cursor="Open">
                 {profile.email}
               </a>
               <Link to="/contact/" className="btn btn-ghost group no-underline">
