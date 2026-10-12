@@ -9,6 +9,7 @@ import Footer from "./doc/SiteFooter";
 import BackToTop from "./doc/BackToTop";
 import HeroSpotlight from "./HeroSpotlight";
 import ErrorBoundary from "./ErrorBoundary";
+import SmoothScroll from "../motion/SmoothScroll";
 
 // Route changes move focus to <main>, scroll to top, and announce via a
 // polite live region. <main id="main" tabindex="-1"> — no redundant role=main.
@@ -41,6 +42,7 @@ export default function AppShell() {
 
   return (
     <>
+      <SmoothScroll />
       <a className="skip-link" href="#main">
         Skip to content
       </a>

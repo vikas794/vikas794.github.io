@@ -38,3 +38,21 @@ Object.defineProperty(global, 'ResizeObserver', {
   configurable: true,
   value: MockResizeObserver,
 });
+
+// jsdom has no matchMedia; default to "no match" so enhancements stay off.
+if (!window.matchMedia) {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }),
+  });
+}
