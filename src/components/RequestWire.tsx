@@ -171,9 +171,7 @@ export default function RequestWire() {
                   scrollToTarget(`#${hop.id}`);
                   history.replaceState(null, "", `#${hop.id}`);
                 }}
-              >
-                <span className="wire-label">{hop.label}</span>
-              </a>
+              />
             </li>
           ))}
         </ul>
@@ -186,9 +184,7 @@ export default function RequestWire() {
           <ul className="wire-nodes">
             {hops.map((hop, i) => (
               <li key={hop.id} className="wire-node-item" style={{ top: `${hop.at * 100}%` }}>
-                <span className="wire-node" data-i={i} data-lit="false">
-                  <span className="wire-label">{hop.label}</span>
-                </span>
+                <span className="wire-node" data-i={i} data-lit="false" />
               </li>
             ))}
           </ul>

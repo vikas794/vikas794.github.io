@@ -1454,25 +1454,7 @@ body::before {
   100% { transform: scale(1); }
 }
 
-.wire-label {
-  position: absolute;
-  left: 26px;
-  top: 50%;
-  translate: 0 -50%;
-  display: none;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  color: var(--ink-3);
-  opacity: 0;
-  transition: opacity 240ms var(--ease-out);
-  white-space: nowrap;
-}
-
-.wire-node[data-lit="true"] .wire-label {
-  opacity: 1;
-}
-
-@media (min-width: 1280px) {
+.wire-node[data-lit="true"] @media (min-width: 1280px) {
   .request-wire {
     width: 56px;
   }
@@ -1480,12 +1462,7 @@ body::before {
   .wire-nodes {
     left: 27px;
   }
-  .wire-label {
-    display: block;
-  }
-}
-
-@media print {
+  @media print {
   .request-wire {
     display: none;
   }
@@ -2100,11 +2077,7 @@ svg[data-draw="done"] text {
   border-color: var(--paper);
 }
 
-.wire-invert .wire-label {
-  color: var(--paper);
-}
-
-/* Ghost buttons on the ink band: the hover fill must stay light-on-dark. */
+.wire-invert /* Ghost buttons on the ink band: the hover fill must stay light-on-dark. */
 .band-ink .btn-ghost::before {
   background: color-mix(in srgb, var(--paper) 16%, transparent);
 }
