@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router";
-import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { useTheme } from "../hooks/useTheme";
 import { useHydrated } from "../hooks/useHydrated";
 import { prefetchResumeAssets } from "../lib/prefetchResume";
@@ -10,6 +9,7 @@ import BackToTop from "./doc/BackToTop";
 import HeroSpotlight from "./HeroSpotlight";
 import ErrorBoundary from "./ErrorBoundary";
 import SmoothScroll from "../motion/SmoothScroll";
+import RequestWire from "./RequestWire";
 
 // Route changes move focus to <main>, scroll to top, and announce via a
 // polite live region. <main id="main" tabindex="-1"> — no redundant role=main.
@@ -19,9 +19,6 @@ export default function AppShell() {
   const mainRef = useRef<HTMLElement>(null);
   const liveRef = useRef<HTMLDivElement>(null);
   const hydrated = useHydrated();
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
 
   useEffect(() => {
     if (hydrated) prefetchResumeAssets();
@@ -46,7 +43,7 @@ export default function AppShell() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      {hydrated && !reduce && <motion.div aria-hidden="true" className="scroll-progress" style={{ scaleX: progress }} />}
+      <RequestWire />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main id="main" tabIndex={-1} ref={mainRef} className="relative isolate">
         <HeroSpotlight />

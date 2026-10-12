@@ -8,7 +8,7 @@ import CountUp from "../CountUp";
 // links to the case study that substantiates it, and states its method.
 export default function ProofStrip() {
   return (
-    <section aria-labelledby="proof" className="band-accent">
+    <section id="auth" data-hop="auth" aria-labelledby="proof" className="band-accent">
       <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
         <SectionHeading id="proof" num="01">
           Results, measured

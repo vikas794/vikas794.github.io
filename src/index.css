@@ -898,16 +898,6 @@ html.lenis-active {
 }
 
 /* Scroll progress: a 2px accent line under the header, scrubbed by scroll. */
-.scroll-progress {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 2px;
-  z-index: 60;
-  background: var(--accent);
-  transform-origin: left;
-  pointer-events: none;
-}
-
 
 /* ============================================================
    THE MARKED-UP SPEC — signature devices (DESIGN.md §2)
@@ -1328,3 +1318,208 @@ body::before {
   opacity: 0.9;
 }
 
+
+/* ---------------- request wire (RequestWire.tsx) ---------------- */
+
+.request-wire {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 20px;
+  z-index: 35;
+  pointer-events: none;
+}
+
+.wire-track,
+.wire-nodes {
+  position: absolute;
+  top: 84px;
+  bottom: 28px;
+  left: 9px;
+  width: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wire-line,
+.wire-travelled {
+  position: absolute;
+  inset: 0;
+}
+
+.wire-line {
+  background: var(--rule-strong);
+}
+
+.wire-travelled {
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.wire-pulse {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 4px;
+  height: 24px;
+  opacity: 0;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, transparent, var(--accent));
+  will-change: transform, height;
+}
+
+.wire-pulse[data-dir="up"] {
+  background: linear-gradient(to top, transparent, var(--accent));
+}
+
+.wire-node-item {
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.wire-node {
+  pointer-events: auto;
+  position: absolute;
+  left: -5px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  border: 2px solid var(--rule-strong);
+  border-radius: 50%;
+  background: var(--paper);
+  transition: background-color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+
+/* Generous hit area; the wire sits in the page's side padding. */
+.wire-node::after {
+  content: "";
+  position: absolute;
+  inset: -16px;
+}
+
+.wire-node[data-lit="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.wire-node:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.wire-node-pulse {
+  animation: wire-node-pulse 500ms var(--ease-out);
+}
+
+@keyframes wire-node-pulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.6); }
+  100% { transform: scale(1); }
+}
+
+.wire-label {
+  position: absolute;
+  left: 26px;
+  top: 50%;
+  translate: 0 -50%;
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--ink-3);
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+  white-space: nowrap;
+}
+
+.wire-node[data-lit="true"] .wire-label {
+  opacity: 1;
+}
+
+@media (min-width: 1280px) {
+  .request-wire {
+    width: 56px;
+  }
+  .wire-track,
+  .wire-nodes {
+    left: 27px;
+  }
+  .wire-label {
+    display: block;
+  }
+}
+
+@media print {
+  .request-wire {
+    display: none;
+  }
+}
+
+/* ---------------- hero headline: reactive letters ---------------- */
+
+.ch {
+  display: inline-block;
+  -webkit-text-stroke: var(--s, 0px) currentColor;
+  transition: -webkit-text-stroke-width 120ms linear;
+}
+
+.ch-sweep .ch {
+  animation: ch-sweep 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 18ms);
+}
+
+@keyframes ch-sweep {
+  0%, 100% { -webkit-text-stroke-width: 0px; }
+  45% { -webkit-text-stroke-width: 0.9px; }
+}
+
+/* ---------------- hero canvas dots (DotField.tsx) ---------------- */
+
+.dot-field {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.hero-bg[data-canvas="true"] .hero-dots-hot {
+  display: none;
+}
+
+/* ---------------- scroll cue ---------------- */
+
+.scroll-cue {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: var(--rule-strong);
+  overflow: hidden;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 1px;
+  height: 14px;
+  background: var(--accent);
+  animation: scroll-cue 1.6s var(--ease-in-out) infinite;
+}
+
+@keyframes scroll-cue {
+  to { transform: translateY(54px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue::after {
+    animation: none;
+    top: 0;
+  }
+}

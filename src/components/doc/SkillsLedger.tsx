@@ -8,7 +8,7 @@ const TICKER = skillGroups.flatMap((g) => g.accentTags);
 
 export default function SkillsLedger() {
   return (
-    <section aria-labelledby="stack" className="border-b border-rule">
+    <section id="queue" data-hop="queue" aria-labelledby="stack" className="border-b border-rule">
       <div className="mx-auto max-w-6xl px-5 pt-16 md:px-8 md:pt-24">
         <SectionHeading id="stack" num="04">
           What I work with

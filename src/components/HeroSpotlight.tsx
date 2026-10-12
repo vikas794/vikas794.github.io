@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "motion/react";
+import DotField from "./DotField";
 
 // Background for the hero: a faint dot grid (pure CSS, so it is in the
 // prerendered page) plus, on pointer devices only, a layer of accent dots
@@ -42,6 +43,7 @@ export default function HeroSpotlight() {
     <div ref={ref} aria-hidden="true" className="hero-bg" data-active="false">
       <div className="hero-dots" />
       <div className="hero-dots hero-dots-hot" />
+      <DotField />
     </div>
   );
 }

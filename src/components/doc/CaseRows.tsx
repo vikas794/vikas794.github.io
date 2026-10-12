@@ -9,7 +9,7 @@ import CaseRow from "./CaseRow";
 // was hard.
 export default function CaseRows() {
   return (
-    <section aria-labelledby="selected-work" className="border-b border-rule">
+    <section id="services" data-hop="services" aria-labelledby="selected-work" className="border-b border-rule">
       <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
         <SectionHeading
           id="selected-work"
