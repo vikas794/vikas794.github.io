@@ -293,6 +293,7 @@ Emits: `<title>`, `description`, `author`, `canonical` (trailing slash), `og:sit
 | File | Content |
 |---|---|
 | `sitemap.xml` | One `<url>` per `expandRoutes()` path with `<loc>` canonical and `<lastmod>` from the **last git commit** touching content (`git log -1 --format=%cs -- src/content src/pages src/components`; case studies use `src/content/projects.ts` + `ProjectDetailPage.tsx`); fallback to hand-set `updated` fields; **never the build date** |
+| `sitemap.txt` | Plain-text sitemap: one canonical URL per `expandRoutes()` path, one per line (Search Console parses it faster than XML); also listed in `robots.txt` |
 | `robots.txt` | Explicit `Allow: /` blocks for GPTBot, ChatGPT-User, Google-Extended, ClaudeBot, anthropic-ai, PerplexityBot, CCBot, Bingbot, then `User-agent: * Allow: /` and `Sitemap:` line |
 | `llms.txt` | Markdown summary: name/title, headline blurb, contact bullets, Pages list, Key Summary, Credentials, Experience, Case studies with outcomes (`before → after (measured: method)`), Also shipped, Skills, Education, FAQ (AEO), machine-reader notes |
 | `llms-full.txt` | `llms.txt` + skill group detail + case-study trade-offs (problem, constraints, decisions, retrospective, updated) |
@@ -526,7 +527,7 @@ Build in this order; run `pnpm typecheck && pnpm lint && pnpm test && pnpm build
 12. **Verify** against the acceptance checklist below. Do **not** add anything from DESIGN §9.12 or §15.
 
 ### 14.1 Acceptance checklist
-- [ ] `pnpm build` produces `dist/{index,about,experience,projects,resume,contact}/index.html`, the 3 case-study pages, `404.html` (+400/401/403/500/502/503), `sitemap.xml`, `robots.txt`, `llms*.txt`, `feed.xml`, `ai/*.json`, `ai.txt`.
+- [ ] `pnpm build` produces `dist/{index,about,experience,projects,resume,contact}/index.html`, the 3 case-study pages, `404.html` (+400/401/403/500/502/503), `sitemap.xml`, `sitemap.txt`, `robots.txt`, `llms*.txt`, `feed.xml`, `ai/*.json`, `ai.txt`.
 - [ ] Each HTML file has `<title>`, canonical, OG/Twitter tags, JSON-LD; no `data-msg=`; sitemap count == pages.
 - [ ] With JavaScript disabled every page shows its complete content, the marker highlight draws (CSS), and the final metric values are visible.
 - [ ] Hydrates without console warnings; theme restores from storage with no flash; toggling shows the soft circular reveal from the button.

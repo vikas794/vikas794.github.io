@@ -66,6 +66,12 @@ function sitemap(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
+// Plain-text sitemap: one canonical URL per line. Search Console processes
+// these faster than XML on GitHub Pages.
+export function sitemapTxt(): string {
+  return expandRoutes().map(canonicalUrl).join("\n") + "\n";
+}
+
 // AI-answer-engine crawlers get their own explicit Allow blocks (in addition
 // to the wildcard below) so the invitation is unambiguous for AEO purposes.
 const AI_CRAWLERS = [
@@ -81,7 +87,7 @@ const AI_CRAWLERS = [
 
 export function robots(): string {
   const aiBlocks = AI_CRAWLERS.map((ua) => `User-agent: ${ua}\nAllow: /\n`).join("\n");
-  return `${aiBlocks}\nUser-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+  return `${aiBlocks}\nUser-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\nSitemap: ${SITE_URL}/sitemap.txt\n`;
 }
 
 export function llms(): string {
@@ -238,6 +244,7 @@ Contact: ${profile.email}
 // module's import also writing to dist/ as a side effect.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await writeFile(join(dist, "sitemap.xml"), sitemap());
+  await writeFile(join(dist, "sitemap.txt"), sitemapTxt());
   await writeFile(join(dist, "robots.txt"), robots());
   await writeFile(join(dist, "llms.txt"), llms());
   await writeFile(join(dist, "llms-full.txt"), llmsFull());
@@ -246,5 +253,5 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await writeFile(join(dist, "ai", "summary.json"), JSON.stringify(aiSummary(), null, 2));
   await writeFile(join(dist, "ai", "faq.json"), JSON.stringify(aiFaq(), null, 2));
   await writeFile(join(dist, "ai.txt"), aiTxt());
-  console.log("seo: wrote sitemap, robots, llms*, feed.xml, ai/*.json, ai.txt from src/content");
+  console.log("seo: wrote sitemap.xml/txt, robots, llms*, feed.xml, ai/*.json, ai.txt from src/content");
 }

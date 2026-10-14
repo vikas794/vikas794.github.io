@@ -24,7 +24,7 @@ metadata, JSON-LD, and an `llms.txt` for AI/AEO crawlers.
 - **Type**: self-hosted variable fonts via `@fontsource` — Newsreader (serif, headings/prose), IBM Plex Sans (body), IBM Plex Mono (labels/code)
 - **Motion**: [Motion](https://motion.dev/) (Framer Motion's successor), used through one shared primitive (`src/components/Reveal.tsx`) for scroll-triggered entrances; theme toggle and route transitions use the native View Transitions API instead (`src/lib/viewTransition.ts`)
 - **Rendering**: full SSR (`src/entry-server.tsx`) + static prerendering (`scripts/prerender.mjs`) — every route is written to disk as real HTML at build time
-- **SEO**: generated at build time (`src/seo/generate.ts`) — `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`, plus per-page `<title>`/description/canonical/OG/Twitter tags and JSON-LD (Person, WebSite, ProfilePage, ItemList, Breadcrumb)
+- **SEO**: generated at build time (`src/seo/generate.ts`) — `sitemap.xml`, `sitemap.txt`, `robots.txt`, `llms.txt`, `llms-full.txt`, plus per-page `<title>`/description/canonical/OG/Twitter tags and JSON-LD (Person, WebSite, ProfilePage, ItemList, Breadcrumb)
 - **Content**: a single typed content layer (`src/content/*.ts`) feeds routes, page bodies, sitemap, and `llms.txt` — no data duplicated across the app
 - **Testing**: [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)
 - **Deployment**: [Netlify](https://www.netlify.com/) (`netlify.toml`)

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { robots, llms, rss, aiFaq, aiSummary } from "./generate";
+import { robots, llms, rss, aiFaq, aiSummary, sitemapTxt } from "./generate";
 import { faqs } from "../content/faq";
 
 describe("generated SEO files", () => {
@@ -10,6 +10,15 @@ describe("generated SEO files", () => {
     }
     expect(out).toContain("User-agent: *");
     expect(out).toContain("Sitemap: https://vikas794.github.io/sitemap.xml");
+  });
+
+  it("sitemap.txt lists one canonical URL per line and robots references it", () => {
+    const out = sitemapTxt();
+    expect(out.endsWith("\n")).toBe(true);
+    const lines = out.trimEnd().split("\n");
+    expect(lines.length).toBeGreaterThanOrEqual(9);
+    for (const l of lines) expect(l).toMatch(/^https:\/\/vikas794\.github\.io\/\S*$/);
+    expect(robots()).toContain("Sitemap: https://vikas794.github.io/sitemap.txt");
   });
 
   it("llms.txt FAQ section stays in sync with src/content/faq.ts", () => {

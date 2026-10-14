@@ -70,6 +70,9 @@ jobs:
           # every prerendered page must be in the sitemap
           pages="$(find dist -name index.html -not -path 'dist/index.html' -not -path 'dist/error/*' | wc -l)"
           test "$actual" -eq "$((pages + 1))" || (echo "sitemap ($actual) != prerendered pages ($((pages + 1)))" && exit 1)
+          test -f dist/sitemap.txt || (echo "missing dist/sitemap.txt" && exit 1)
+          txt="$(grep -c '^https://' dist/sitemap.txt)"
+          test "$txt" -eq "$actual" || (echo "sitemap.txt ($txt) != sitemap.xml ($actual)" && exit 1)
           grep -q "https://vikas794.github.io/sitemap.xml" dist/robots.txt || (echo "robots missing sitemap ref" && exit 1)
           test -f dist/llms.txt || (echo "missing dist/llms.txt" && exit 1)
           test -f dist/llms-full.txt || (echo "missing dist/llms-full.txt" && exit 1)

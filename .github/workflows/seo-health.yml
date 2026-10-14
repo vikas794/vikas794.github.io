@@ -25,7 +25,7 @@ jobs:
         run: |
           set -u
           fail=0
-          for p in "" sitemap.xml robots.txt llms.txt feed.xml about/ projects/ contact/; do
+          for p in "" sitemap.xml sitemap.txt robots.txt llms.txt feed.xml about/ projects/ contact/; do
             code=$(curl -s -o /dev/null -w '%{http_code}' -L "$SITE/$p")
             [ "$code" = "200" ] || { echo "::error::$SITE/$p returned $code"; fail=1; }
           done
