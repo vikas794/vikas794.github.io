@@ -10,6 +10,15 @@ import { subscribeScroll } from "./scrollState";
 
 const clamp = (n: number) => Math.min(Math.max(n, 0), 1);
 
+// Content at the very end of a page can never scroll up to the usual
+// trigger line, so as the last 40% of a viewport of scroll runs out the
+// trigger line slides down to the bottom edge: whatever is on screen at the
+// end of the page is always fully revealed.
+function endSlack(vh: number): number {
+  const left = document.documentElement.scrollHeight - vh - window.scrollY;
+  return Math.max(0, vh * 0.4 - Math.max(left, 0));
+}
+
 /** Text line revealed left to right by a clip-path wipe as it enters. */
 export function WipeLine({ as: Tag = "span", children, className }: { as?: ElementType; children: ReactNode; className?: string }) {
   const ref = useRef<HTMLElement>(null);
@@ -23,7 +32,7 @@ export function WipeLine({ as: Tag = "span", children, className }: { as?: Eleme
     const apply = () => {
       const top = el.getBoundingClientRect().top;
       const vh = window.innerHeight;
-      const p = Math.round(clamp((vh * 0.92 - top) / (vh * 0.3)) * 100);
+      const p = Math.round(clamp((vh * 0.92 + endSlack(vh) - top) / (vh * 0.3)) * 100);
       if (p === last) return;
       last = p;
       el.style.clipPath = p >= 100 ? "" : `inset(0 ${100 - p}% 0 0)`;
@@ -57,7 +66,7 @@ export function DrawLine({ className }: { className?: string }) {
     let last = -1;
     const apply = () => {
       const r = host.getBoundingClientRect();
-      const p = clamp((window.innerHeight * 0.6 - r.top) / Math.max(r.height, 1));
+      const p = clamp((window.innerHeight * 0.6 + endSlack(window.innerHeight) - r.top) / Math.max(r.height, 1));
       const q = Math.round(p * 1000) / 1000;
       if (q === last) return;
       last = q;

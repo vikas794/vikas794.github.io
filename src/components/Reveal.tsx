@@ -6,7 +6,8 @@ import { useHydrated } from "../hooks/useHydrated";
 // section entrances are opacity + y:28 via variants with staggerChildren
 // .06, never delay: i*0.1 (which grows unboundedly with list length).
 // Reduced motion resolves to {opacity:1, y:0}: content PRESENT, not
-// fast-faded. Content must never depend on an animation firing to become
+// fast-faded. The trigger is "any part visible" (a fraction of a tall
+// container can exceed a phone's viewport and never fire). Content must never depend on an animation firing to become
 // visible — this component never truncates its children.
 const staggerParent: Variants = {
   hidden: {},
@@ -44,7 +45,7 @@ export default function Reveal({
       variants={staggerParent}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.15 }}
+      viewport={{ once: true, amount: "some", margin: "0px 0px -8% 0px" }}
     >
       {children}
     </motion.div>

@@ -14,28 +14,59 @@ export default function HeroSpotlight() {
     const el = ref.current;
     const host = el?.parentElement;
     if (!el || !host || reduce) return;
-    if (!window.matchMedia?.("(hover: hover) and (pointer: fine)").matches) return;
 
     let frame = 0;
-    const onMove = (e: PointerEvent) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const r = host.getBoundingClientRect();
-        el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        el.style.setProperty("--my", `${e.clientY - r.top}px`);
-        el.dataset.active = "true";
-      });
+    let px = 0;
+    let py = 0;
+    let on = false;
+    const paint = () => {
+      frame = 0;
+      const r = host.getBoundingClientRect();
+      // Scrolling moves the host under a still pointer: re-test containment.
+      const inside = on && px >= r.left && px <= r.right && py >= r.top && py <= r.bottom;
+      if (inside) {
+        el.style.setProperty("--mx", `${px - r.left}px`);
+        el.style.setProperty("--my", `${py - r.top}px`);
+      }
+      el.dataset.active = inside ? "true" : "false";
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(paint);
+    };
+    const at = (x: number, y: number) => {
+      px = x;
+      py = y;
+      on = true;
+      schedule();
+    };
+    const onMove = (e: PointerEvent) => at(e.clientX, e.clientY);
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) at(t.clientX, t.clientY);
     };
     const onLeave = () => {
-      cancelAnimationFrame(frame);
-      el.dataset.active = "false";
+      on = false;
+      schedule();
+    };
+    const onScroll = () => {
+      if (on) schedule();
     };
     host.addEventListener("pointermove", onMove);
     host.addEventListener("pointerleave", onLeave);
+    host.addEventListener("touchstart", onTouch, { passive: true });
+    host.addEventListener("touchmove", onTouch, { passive: true });
+    host.addEventListener("touchend", onLeave, { passive: true });
+    host.addEventListener("touchcancel", onLeave, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       cancelAnimationFrame(frame);
       host.removeEventListener("pointermove", onMove);
       host.removeEventListener("pointerleave", onLeave);
+      host.removeEventListener("touchstart", onTouch);
+      host.removeEventListener("touchmove", onTouch);
+      host.removeEventListener("touchend", onLeave);
+      host.removeEventListener("touchcancel", onLeave);
+      window.removeEventListener("scroll", onScroll);
     };
   }, [reduce]);
 

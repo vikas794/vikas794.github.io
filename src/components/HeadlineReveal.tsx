@@ -86,7 +86,7 @@ export default function HeadlineReveal({
   // Cursor proximity: thicken letters near the pointer.
   useEffect(() => {
     const h1 = ref.current;
-    if (!reactive || !enhanced || !motionOk || !fine || !h1) return;
+    if (!reactive || !enhanced || !motionOk || !h1) return;
     const chars = Array.from(h1.querySelectorAll<HTMLElement>(".ch"));
     let frame = 0;
     let px = 0;
@@ -112,15 +112,37 @@ export default function HeadlineReveal({
       active = false;
       if (!frame) frame = requestAnimationFrame(paint);
     };
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (!t) return;
+      px = t.clientX;
+      py = t.clientY;
+      active = true;
+      if (!frame) frame = requestAnimationFrame(paint);
+    };
+    // The headline moves under a still pointer while scrolling.
+    const onScroll = () => {
+      if (active && !frame) frame = requestAnimationFrame(paint);
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("touchstart", onTouch, { passive: true });
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    window.addEventListener("touchend", onLeave, { passive: true });
+    window.addEventListener("touchcancel", onLeave, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onLeave);
+      window.removeEventListener("touchcancel", onLeave);
+      window.removeEventListener("scroll", onScroll);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       chars.forEach((el) => el.style.removeProperty("--s"));
     };
-  }, [reactive, enhanced, motionOk, fine, skipped]);
+  }, [reactive, enhanced, motionOk, skipped]);
 
   // Touch: one sweep across the letters once the intro has settled.
   useEffect(() => {

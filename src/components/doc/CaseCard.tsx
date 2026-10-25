@@ -12,11 +12,11 @@ export default function CaseCard({ study: c }: { study: CaseStudy }) {
       </p>
       <h3 className="t-title md:text-[1.75rem]">
         <Link to={`/projects/${c.slug}/`} className="case-card-link inline-flex items-start gap-3 text-ink no-underline">
-          <span className="decoration-accent decoration-2 underline-offset-8 group-hover:underline">{c.title}</span>
+          <span className="decoration-accent decoration-2 underline-offset-8 group-hover:underline group-data-[hover=true]:underline">{c.title}</span>
           <ArrowRight
             size={22}
             aria-hidden="true"
-            className="mt-2 shrink-0 -translate-x-2 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100"
+            className="mt-2 shrink-0 -translate-x-2 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100 group-data-[hover=true]:translate-x-0 group-data-[hover=true]:opacity-100"
           />
         </Link>
       </h3>

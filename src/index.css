@@ -1586,6 +1586,7 @@ body::before {
 }
 
 .case-card:hover,
+.case-card[data-hover="true"],
 .case-card:focus-within {
   border-color: var(--ink-3);
 }
@@ -1892,7 +1893,8 @@ svg[data-draw="done"] text {
   transition: opacity var(--dur-base) var(--ease-out);
 }
 
-[data-tilt]:hover::after {
+[data-tilt]:hover::after,
+[data-tilt][data-hover="true"]::after {
   opacity: 1;
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useFinePointer, useMotionOk } from "../motion/media";
+import { useMotionOk } from "../motion/media";
 
 // Canvas layer over the CSS dot grid. Only the dots near the cursor are
 // drawn: they are pushed away and tinted accent, then ease home when the
@@ -14,13 +14,12 @@ const PUSH = 10;
 export default function DotField() {
   const ref = useRef<HTMLCanvasElement>(null);
   const motionOk = useMotionOk();
-  const fine = useFinePointer();
 
   useEffect(() => {
     const canvas = ref.current;
     const bg = canvas?.parentElement;
     const host = bg?.parentElement;
-    if (!canvas || !bg || !host || !motionOk || !fine) return;
+    if (!canvas || !bg || !host || !motionOk) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -173,20 +172,33 @@ export default function DotField() {
     const kick = () => {
       if (!raf) raf = requestAnimationFrame(draw);
     };
-    const onMove = (e: PointerEvent) => {
+    const at = (x: number, y: number) => {
       if (!inside) {
-        cx = e.clientX;
-        cy = e.clientY;
+        cx = x;
+        cy = y;
         readColors();
       }
-      tx = e.clientX;
-      ty = e.clientY;
+      tx = x;
+      ty = y;
       inside = true;
       kick();
+    };
+    const onMove = (e: PointerEvent) => at(e.clientX, e.clientY);
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) at(t.clientX, t.clientY);
     };
     const onLeave = () => {
       inside = false;
       kick();
+    };
+    // Scrolling moves the hero under a still pointer without any pointer
+    // event: drop the field once the pointer is no longer over the hero.
+    const onScroll = () => {
+      if (!inside) return;
+      const r = host.getBoundingClientRect();
+      if (tx < r.left || tx > r.right || ty < r.top || ty > r.bottom) onLeave();
+      else kick();
     };
     const onRipple = (e: Event) => {
       const d = (e as CustomEvent<{ x: number; y: number }>).detail;
@@ -201,19 +213,29 @@ export default function DotField() {
       ctx?.clearRect(0, 0, w, h);
       host?.removeEventListener("pointermove", onMove);
       host?.removeEventListener("pointerleave", onLeave);
+      host?.removeEventListener("touchstart", onTouch);
+      host?.removeEventListener("touchmove", onTouch);
+      host?.removeEventListener("touchend", onLeave);
+      host?.removeEventListener("touchcancel", onLeave);
+      window.removeEventListener("scroll", onScroll);
       if (degrade && bg) bg.dataset.canvas = "false";
     }
 
     host.addEventListener("pointermove", onMove);
     host.addEventListener("pointerleave", onLeave);
+    host.addEventListener("touchstart", onTouch, { passive: true });
+    host.addEventListener("touchmove", onTouch, { passive: true });
+    host.addEventListener("touchend", onLeave, { passive: true });
+    host.addEventListener("touchcancel", onLeave, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       stop(false);
       window.removeEventListener("resize", resize);
       window.removeEventListener("dotfield:ripple", onRipple);
       delete bg.dataset.canvas;
     };
-  }, [motionOk, fine]);
+  }, [motionOk]);
 
-  if (!motionOk || !fine) return null;
+  if (!motionOk) return null;
   return <canvas ref={ref} className="dot-field" aria-hidden="true" />;
 }

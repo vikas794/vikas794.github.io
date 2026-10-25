@@ -6,10 +6,17 @@ import { showToast } from "../components/Toast";
 //   data-cursor   label shown in the cursor ring ("Open", "Copy", "Scroll")
 // The native cursor is never hidden; the ring only adds to it.
 
-export function initPointerEffects(): () => void {
+export function initPointerEffects(fine = true): () => void {
   const cleanups: (() => void)[] = [];
+  // Last known mouse position. Scrolling moves content under a still cursor
+  // without firing pointermove, so scroll re-runs the effects from here.
+  let mouseX = -1;
+  let mouseY = -1;
+  let haveMouse = false;
+  let setRing: (target: EventTarget | null) => void = () => {};
 
-  // ---------- cursor ring ----------
+  // ---------- cursor ring (mouse only) ----------
+  if (fine) {
   const dot = document.createElement("div");
   const ring = document.createElement("div");
   dot.className = "cursor-dot";
@@ -33,7 +40,7 @@ export function initPointerEffects(): () => void {
     raf = Math.abs(tx - rx) + Math.abs(ty - ry) > 0.3 ? requestAnimationFrame(loop) : 0;
   };
 
-  const setRing = (target: EventTarget | null) => {
+  setRing = (target) => {
     const el = target instanceof Element ? target : null;
     const labelled = el?.closest<HTMLElement>("[data-cursor]");
     const interactive = el?.closest("a, button, [role='tab'], summary");
@@ -45,6 +52,9 @@ export function initPointerEffects(): () => void {
 
   const onMove = (e: PointerEvent) => {
     if (e.pointerType !== "mouse") return;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    haveMouse = true;
     tx = e.clientX;
     ty = e.clientY;
     if (!shown) {
@@ -72,6 +82,7 @@ export function initPointerEffects(): () => void {
     dot.remove();
     ring.remove();
   });
+  }
 
   // ---------- tilt + specular highlight ----------
   let tilted: HTMLElement | null = null;
@@ -81,24 +92,78 @@ export function initPointerEffects(): () => void {
     el.style.removeProperty("--hx");
     el.style.removeProperty("--hy");
   };
-  const onTilt = (e: PointerEvent) => {
-    if (e.pointerType !== "mouse") return;
-    const el = (e.target as Element | null)?.closest<HTMLElement>("[data-tilt]") ?? null;
-    if (tilted && tilted !== el) resetTilt(tilted);
+  const tiltAt = (target: Element | null, x: number, y: number) => {
+    const el = target?.closest<HTMLElement>("[data-tilt]") ?? null;
+    if (tilted && tilted !== el) {
+      resetTilt(tilted);
+      delete tilted.dataset.hover;
+    }
     tilted = el;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width;
-    const py = (e.clientY - r.top) / r.height;
+    const px = (x - r.left) / r.width;
+    const py = (y - r.top) / r.height;
     el.style.transition = "transform 80ms linear";
     el.style.transform = `perspective(900px) rotateX(${((0.5 - py) * 12).toFixed(2)}deg) rotateY(${((px - 0.5) * 12).toFixed(2)}deg)`;
     el.style.setProperty("--hx", `${(px * 100).toFixed(1)}%`);
     el.style.setProperty("--hy", `${(py * 100).toFixed(1)}%`);
+    // Touch has no :hover, so the hover look is driven by this attribute.
+    el.dataset.hover = "true";
+  };
+  const onTilt = (e: PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    tiltAt(e.target as Element | null, e.clientX, e.clientY);
   };
   document.addEventListener("pointermove", onTilt, { passive: true });
+
+  // Touch: the card under the finger leans and shows its hover state until
+  // the finger lifts. Touch events keep firing while the page scrolls.
+  let releaseTimer = 0;
+  const onTouch = (e: TouchEvent) => {
+    const t = e.touches[0];
+    if (!t) return;
+    window.clearTimeout(releaseTimer);
+    tiltAt(document.elementFromPoint(t.clientX, t.clientY), t.clientX, t.clientY);
+  };
+  const onTouchEnd = () => {
+    window.clearTimeout(releaseTimer);
+    releaseTimer = window.setTimeout(() => {
+      if (!tilted) return;
+      resetTilt(tilted);
+      delete tilted.dataset.hover;
+      tilted = null;
+    }, 350);
+  };
+  document.addEventListener("touchstart", onTouch, { passive: true });
+  document.addEventListener("touchmove", onTouch, { passive: true });
+  document.addEventListener("touchend", onTouchEnd, { passive: true });
+  document.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+  // Mouse + scroll: re-resolve what is under the stationary cursor.
+  let scrollFrame = 0;
+  const onScroll = () => {
+    if (!fine || !haveMouse || scrollFrame) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = 0;
+      const el = document.elementFromPoint(mouseX, mouseY);
+      setRing(el);
+      tiltAt(el, mouseX, mouseY);
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
   cleanups.push(() => {
+    cancelAnimationFrame(scrollFrame);
+    window.clearTimeout(releaseTimer);
+    window.removeEventListener("scroll", onScroll);
     document.removeEventListener("pointermove", onTilt);
-    if (tilted) resetTilt(tilted);
+    document.removeEventListener("touchstart", onTouch);
+    document.removeEventListener("touchmove", onTouch);
+    document.removeEventListener("touchend", onTouchEnd);
+    document.removeEventListener("touchcancel", onTouchEnd);
+    if (tilted) {
+      resetTilt(tilted);
+      delete tilted.dataset.hover;
+    }
   });
 
   // ---------- ghost-button fill enters from the side the cursor came from ----------
