@@ -1,5 +1,5 @@
 import Roll from "../components/Roll";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router";
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
@@ -9,29 +9,100 @@ import HeadlineReveal from "../components/HeadlineReveal";
 import SectionHeading from "../components/SectionHeading";
 import CopyEmail from "../components/CopyEmail";
 import Magnetic from "../components/Magnetic";
+import {
+  LIMITS,
+  MIN_FILL_MS,
+  REQUEST_TIMEOUT_MS,
+  clean,
+  rateLimitMessage,
+  recordSend,
+  validate,
+  type ContactErrors,
+} from "../lib/contactForm";
+
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xaeeqrjg";
 
 // The highest-conversion block on the site: role wanted, stack, work mode,
-// availability, all explicit. Netlify Forms where hosted on Netlify,
-// degrading to direct email everywhere else. No map: Mumbai is a word.
+// availability, all explicit. The form posts to Formspree, which works on any
+// static host; if it fails the visitor sees the error and the direct email.
+// No map: Mumbai is a word.
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<ContactErrors>({});
+  const shownAt = useRef(0);
+
+  useEffect(() => {
+    shownAt.current = Date.now();
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    if (status === "sending") return;
+    const data = new FormData(e.currentTarget);
 
-    try {
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
-      });
-    } catch {
-      // Ignore network failure (e.g. on pure static hosting like GitHub Pages)
+    // Bots: a filled honeypot or an instant submit gets a silent "sent" and
+    // nothing leaves the browser.
+    if (String(data.get("_gotcha") ?? "") !== "" || Date.now() - shownAt.current < MIN_FILL_MS) {
+      setStatus("sent");
+      return;
     }
 
-    setSubmitted(true);
+    const values = clean({
+      name: String(data.get("name") ?? ""),
+      email: String(data.get("email") ?? ""),
+      message: String(data.get("message") ?? ""),
+    });
+    const invalid = validate(values);
+    setFieldErrors(invalid);
+    if (Object.keys(invalid).length > 0) {
+      setError("");
+      setStatus("idle");
+      return;
+    }
+
+    const limited = rateLimitMessage();
+    if (limited) {
+      setError(limited);
+      setStatus("error");
+      return;
+    }
+
+    setStatus("sending");
+    setError("");
+    const body = new FormData();
+    for (const [k, v] of Object.entries(values)) body.set(k, v);
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body,
+        signal: controller.signal,
+      });
+      if (res.ok) {
+        recordSend();
+        setStatus("sent");
+        return;
+      }
+      if (res.status === 429) {
+        setError("Too many requests right now.");
+      } else {
+        const json = (await res.json().catch(() => null)) as { errors?: { message: string }[] } | null;
+        setError(json?.errors?.map((x) => x.message).join(", ") || "The message could not be sent.");
+      }
+    } catch (err) {
+      setError(
+        err instanceof DOMException && err.name === "AbortError"
+          ? "The request timed out: the message could not be sent."
+          : "Network error: the message could not be sent."
+      );
+    } finally {
+      window.clearTimeout(timer);
+    }
+    setStatus("error");
   };
 
   return (
@@ -71,7 +142,7 @@ export default function ContactPage() {
 
         <Reveal className="mt-16 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
           <RevealItem>
-            {submitted ? (
+            {status === "sent" ? (
               <div className="panel">
                 <h2 className="t-title">Thank you!</h2>
                 <p className="prose mt-3">
@@ -81,10 +152,8 @@ export default function ContactPage() {
               </div>
             ) : (
               <form
-                name="contact"
+                action={FORMSPREE_ENDPOINT}
                 method="POST"
-                data-netlify="true"
-                netlify-honeypot="company"
                 onSubmit={handleSubmit}
                 onInvalidCapture={(e) => {
                   const el = e.target as HTMLElement;
@@ -94,10 +163,9 @@ export default function ContactPage() {
                 }}
                 className="panel"
               >
-                <input type="hidden" name="form-name" value="contact" />
                 <p className="hidden" aria-hidden="true">
                   <label>
-                    Company (leave blank): <input name="company" tabIndex={-1} autoComplete="off" />
+                    Company (leave blank): <input name="_gotcha" tabIndex={-1} autoComplete="off" />
                   </label>
                 </p>
                 <div className="grid gap-6">
@@ -111,10 +179,18 @@ export default function ContactPage() {
                       name="name"
                       type="text"
                       required
+                      maxLength={LIMITS.name.max}
+                      aria-invalid={fieldErrors.name ? true : undefined}
+                      aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
                       autoComplete="name"
                       placeholder="e.g. Priya Sharma"
                       className="field"
                     />
+                    {fieldErrors.name && (
+                      <p id="contact-name-error" role="alert" className="mt-1 text-xs text-accent">
+                        {fieldErrors.name}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="contact-email" className="field-label">
@@ -126,10 +202,18 @@ export default function ContactPage() {
                       name="email"
                       type="email"
                       required
+                      maxLength={LIMITS.email.max}
+                      aria-invalid={fieldErrors.email ? true : undefined}
+                      aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
                       autoComplete="email"
                       placeholder="e.g. priya@company.com"
                       className="field"
                     />
+                    {fieldErrors.email && (
+                      <p id="contact-email-error" role="alert" className="mt-1 text-xs text-accent">
+                        {fieldErrors.email}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="contact-message" className="field-label">
@@ -142,17 +226,33 @@ export default function ContactPage() {
                       id="contact-message"
                       name="message"
                       required
+                      maxLength={LIMITS.message.max}
+                      aria-invalid={fieldErrors.message ? true : undefined}
+                      aria-describedby={fieldErrors.message ? "contact-message-error" : undefined}
                       rows={5}
                       placeholder="e.g. We're hiring a backend engineer (Java, Spring Boot) for a remote/hybrid role in Mumbai, starting next month..."
                       className="field"
                     />
+                    <p className="mt-1 text-right font-mono text-xs text-ink-3" aria-hidden="true">
+                      Up to {LIMITS.message.max} characters
+                    </p>
+                    {fieldErrors.message && (
+                      <p id="contact-message-error" role="alert" className="mt-1 text-xs text-accent">
+                        {fieldErrors.message}
+                      </p>
+                    )}
                   </div>
-                  <button type="submit" className="btn btn-primary justify-center">
-                    <Roll>Send message</Roll>
+                  <button type="submit" className="btn btn-primary justify-center" disabled={status === "sending"}>
+                    <Roll>{status === "sending" ? "Sending…" : "Send message"}</Roll>
                   </button>
+                  {status === "error" && (
+                    <p role="alert" className="text-small text-accent">
+                      {error} Please try again, or email me directly at{" "}
+                      <a href={`mailto:${profile.email}`}>{profile.email}</a>.
+                    </p>
+                  )}
                   <p className="font-mono text-xs leading-relaxed text-ink-3">
-                    Sent via Netlify Forms on Netlify. On static hosts like GitHub Pages, email me directly if you
-                    prefer.
+                    Sent via Formspree. If you prefer, email me directly.
                   </p>
                 </div>
               </form>
