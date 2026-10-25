@@ -566,6 +566,15 @@ h3 em {
   initial-value: 0px;
 }
 
+/* While a transition runs the browser lays a ::view-transition overlay over
+   the page, and it eats pointer input: a second click on the theme button
+   (or any link) during the animation was swallowed. Let input fall through
+   to the live page underneath. */
+html.vt-theme::view-transition,
+html.vt-route::view-transition {
+  pointer-events: none;
+}
+
 /* Both animated transitions on the site (theme toggle, route change) run
    through the View Transitions API — see src/lib/viewTransition.ts. Each
    call tags <html> with vt-theme or vt-route for the duration, so the two
@@ -1139,6 +1148,12 @@ html.lenis-active {
 
 .nav-primary .nav-link {
   z-index: 1;
+}
+
+/* Résumé preview in dark mode: the PDF pages are white, so invert the page
+   (background included) and rotate hue back to keep colours recognisable. */
+html.dark .react-pdf__Page {
+  filter: invert(0.92) hue-rotate(180deg);
 }
 
 /* Ticker: a slow line of stack names. Decorative, aria-hidden. */

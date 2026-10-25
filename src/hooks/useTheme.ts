@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-// SSR-safe theme: light is the default — server, first client render, and
-// no-JS all agree. The pre-paint blocking script in index.html <head> adds
-// .dark before paint for stored/OS opt-ins, so no FOUC. We sync from the DOM
-// class in useEffect (never during render) to avoid hydration mismatch.
+// SSR-safe theme: dark is the default — the <html> element ships with
+// class="dark", so server, first client render, and no-JS all agree. The
+// pre-paint blocking script in index.html <head> removes it before paint only
+// for a stored "light" choice, so no FOUC. We sync from the DOM class in
+// useEffect (never during render) to avoid hydration mismatch.
 export function useTheme() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
     const root = document.documentElement;
@@ -19,6 +20,7 @@ export function useTheme() {
     if (stored === "light" || stored === "dark") {
       // Syncing from an external source (localStorage/DOM) on mount, not
       // deriving state from props — the documented SSR-safe pattern above.
+      root.classList.toggle("dark", stored === "dark");
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(stored);
       return;
@@ -26,11 +28,11 @@ export function useTheme() {
     setTheme(root.classList.contains("dark") ? "dark" : "light");
   }, []);
 
-  // Skip the very first run: at mount, `theme` is still the transitional
-  // "light" default (the sync effect above hasn't corrected it yet), and
-  // writing that to localStorage/the DOM class here would race ahead of —
-  // and clobber — whatever the real stored/pre-paint value was.
-  const isFirstRun = useRef(true);
+  // Only an explicit toggle is written to localStorage or the DOM class. A
+  // first visit stores nothing and stays on the dark default; a saved choice
+  // is applied by the pre-paint script and the sync effect above, and is never
+  // overwritten by mount-time state (or a StrictMode double run).
+  const userChose = useRef(false);
 
   // Layout effect, not a passive one: the theme-toggle click drives this
   // through flushSync inside document.startViewTransition, which only
@@ -39,10 +41,7 @@ export function useTheme() {
   // snapshotted the "new" frame, and the circular reveal would just
   // flash between two identical (pre-toggle) frames.
   useLayoutEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      return;
-    }
+    if (!userChose.current) return;
     const root = document.documentElement;
     if (theme === "dark") {
       root.classList.add("dark");
@@ -57,6 +56,7 @@ export function useTheme() {
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
+    userChose.current = true;
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   }, []);
 

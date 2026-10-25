@@ -1,8 +1,7 @@
 import Seo from "../seo/Seo";
 import { profile } from "../content/profile";
 import { certifications } from "../content/certifications";
-import { faqs } from "../content/faq";
-import { breadcrumbJsonLd, faqPageJsonLd } from "../seo/jsonld";
+import { breadcrumbJsonLd } from "../seo/jsonld";
 import Reveal, { RevealItem } from "../components/Reveal";
 import HeadlineReveal from "../components/HeadlineReveal";
 import SectionHeading from "../components/SectionHeading";
@@ -45,7 +44,6 @@ export default function AboutPage() {
           ])
         )}
       </script>
-      <script type="application/ld+json">{JSON.stringify(faqPageJsonLd(faqs))}</script>
       <div className="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-24">
         <HeadlineReveal
           id="about-h1"
@@ -93,24 +91,6 @@ export default function AboutPage() {
                     {c.name}
                   </a>
                 </span>
-              </RevealItem>
-            ))}
-          </Reveal>
-        </section>
-
-        <section aria-labelledby="faq" className="mt-28">
-          <SectionHeading id="faq" num="03">
-            Frequently asked questions
-          </SectionHeading>
-          <Reveal className="mt-8 max-w-evidence divide-y divide-rule border-t border-rule">
-            {faqs.map((f) => (
-              <RevealItem key={f.question}>
-                <details className="facts group py-5">
-                  <summary className="cursor-pointer font-serif text-xl text-ink marker:content-none">
-                    {f.question}
-                  </summary>
-                  <p className="prose mt-3 text-small text-ink-2">{f.answer}</p>
-                </details>
               </RevealItem>
             ))}
           </Reveal>

@@ -2,7 +2,7 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { useTheme } from './useTheme';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-// SSR-safe contract: first render is always "light" (matches server snapshot
+// SSR-safe contract: first render is always "dark" (matches server snapshot
 // and the no-JS default). The stored value / pre-paint DOM class syncs via effect.
 describe('useTheme', () => {
   let originalMatchMedia: typeof window.matchMedia;

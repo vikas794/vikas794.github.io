@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,18 +24,13 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <script>
-      // Pre-paint theme: light is the default (also the SSR snapshot).
-      // Adds .dark before first paint only for a stored opt-in or the
-      // OS preference — no FOUC, no hydration mismatch.
+      // Pre-paint theme: dark is the default (the <html> element ships with
+      // class="dark", so the prerendered page and no-JS agree). Only an
+      // explicit stored "light" choice removes it, before first paint.
       (function () {
         try {
-          var saved = localStorage.getItem("theme");
-          if (saved === "dark") { document.documentElement.classList.add("dark"); return; }
-          if (saved === "light") { document.documentElement.classList.remove("dark"); return; }
+          if (localStorage.getItem("theme") === "light") document.documentElement.classList.remove("dark");
         } catch (e) {}
-        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          document.documentElement.classList.add("dark");
-        }
       })();
     </script>
 
