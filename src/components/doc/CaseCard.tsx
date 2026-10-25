@@ -1,12 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import type { CaseStudy } from "../../content/projects";
+import { GlowCard } from "../ui/spotlight-card";
 
-// The card form of a case study, used only inside the horizontal track
+// The card form of a case study (a GlowCard: the spotlight follows the
+// pointer), used only inside the horizontal track
 // (CaseTrack). Same data and link as CaseRow, so the two never drift.
 export default function CaseCard({ study: c }: { study: CaseStudy }) {
   return (
-    <article className="case-card group" data-tilt data-cursor="Open">
+    <GlowCard role="article" className="case-card group" data-cursor="Open">
       <p className="margin-num case-card-num" aria-hidden="true">
         {c.number}
       </p>
@@ -26,6 +28,6 @@ export default function CaseCard({ study: c }: { study: CaseStudy }) {
         <span className="metric-label">{c.outcomes[0].metric}</span>
       </p>
       <p className="mt-auto pt-6 font-mono text-xs leading-relaxed text-ink-3">{c.stack}</p>
-    </article>
+    </GlowCard>
   );
 }

@@ -1591,6 +1591,88 @@ body::before {
   border-color: var(--ink-3);
 }
 
+/* Spotlight card (components/ui/spotlight-card.tsx): a soft spot follows the
+   pointer and the border lights near it. --x/--y are px from the card's own
+   top-left, so it works under transforms. Off-screen until the first event. */
+[data-glow] {
+  --radius: 14;
+  --border-size: 2px;
+  --spot: 220px;
+  --hue: calc(var(--base, 12) + (var(--xp, 0) * var(--spread, 0)));
+}
+
+.glow-card {
+  position: relative;
+}
+
+.glow-card::before,
+.glow-card::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--border-size) * -1);
+  border: var(--border-size) solid transparent;
+  border-radius: inherit;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.glow-card::before {
+  background-image: radial-gradient(
+    calc(var(--spot) * 0.9) calc(var(--spot) * 0.9) at calc(var(--x, -999) * 1px + var(--border-size)) calc(var(--y, -999) * 1px + var(--border-size)),
+    hsl(var(--hue) 100% 55%), transparent 100%
+  );
+}
+
+.glow-card::after {
+  background-image: radial-gradient(
+    calc(var(--spot) * 0.5) calc(var(--spot) * 0.5) at calc(var(--x, -999) * 1px + var(--border-size)) calc(var(--y, -999) * 1px + var(--border-size)),
+    hsl(0 0% 100% / 0.9), transparent 100%
+  );
+}
+
+/* Soft spot inside the card, under the content. */
+.glow-card > [data-glow] {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    var(--spot) var(--spot) at calc(var(--x, -999) * 1px) calc(var(--y, -999) * 1px),
+    hsl(var(--hue) 90% 55% / 0.14), transparent 100%
+  );
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .glow-card:hover::before,
+  .glow-card:hover::after,
+  .glow-card:hover > [data-glow] {
+    opacity: 1;
+  }
+}
+
+.glow-card[data-hover="true"]::before,
+.glow-card[data-hover="true"]::after,
+.glow-card[data-hover="true"] > [data-glow],
+.glow-card:focus-within::before,
+.glow-card:focus-within > [data-glow] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-card::before,
+  .glow-card::after,
+  .glow-card > [data-glow] {
+    display: none;
+  }
+}
+
 .case-card-num {
   translate: var(--num-x, 0px) 0;
   margin-bottom: 1rem;
