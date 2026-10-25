@@ -225,6 +225,7 @@ export default function ContactPage() {
                     <textarea
                       id="contact-message"
                       name="message"
+                      data-lenis-prevent
                       required
                       maxLength={LIMITS.message.max}
                       aria-invalid={fieldErrors.message ? true : undefined}

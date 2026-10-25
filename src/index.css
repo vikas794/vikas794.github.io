@@ -1257,6 +1257,15 @@ html.dark .react-pdf__Page {
   transition: border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
 }
 
+/* Long messages scroll inside the box (smooth-scroll is told to leave it
+   alone via data-lenis-prevent) and the box can be pulled taller. */
+textarea.field {
+  overflow-y: auto;
+  resize: vertical;
+  max-height: 24rem;
+  overscroll-behavior: contain;
+}
+
 .field:focus-visible {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
