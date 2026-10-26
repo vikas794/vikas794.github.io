@@ -9,7 +9,7 @@ export default function BackToTop() {
 
   return (
     <button
-      className="vt-persist-fab fixed bottom-6 right-6 z-40 inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-rule-strong bg-paper text-ink"
+      className="vt-persist-fab fixed bottom-4 right-3 z-40 opacity-90 md:bottom-6 md:right-6 inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-rule-strong bg-paper text-ink"
       onClick={() => scrollToTarget(0, Math.min(1.4, 0.5 + window.scrollY / 4000))}
       aria-label="Back to top"
     >

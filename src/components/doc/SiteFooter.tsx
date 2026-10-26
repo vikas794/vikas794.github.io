@@ -9,19 +9,31 @@ export default function SiteFooter() {
         <p className="font-mono text-xs tracking-wide text-ink-3">
           {profile.name} · {profile.titleLong} · {profile.location}
         </p>
-        <ul className="flex flex-wrap gap-x-5 gap-y-1 text-small">
+        <ul className="flex flex-wrap gap-x-5 text-small">
           <li>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+            <a
+              className="inline-flex min-h-11 items-center"
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               LinkedIn
             </a>
           </li>
           <li>
-            <a href={profile.github} target="_blank" rel="noopener noreferrer">
+            <a
+              className="inline-flex min-h-11 items-center"
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               GitHub
             </a>
           </li>
           <li>
-            <a href={`mailto:${profile.email}`}>Email</a>
+            <a className="inline-flex min-h-11 items-center" href={`mailto:${profile.email}`}>
+              Email
+            </a>
           </li>
         </ul>
       </div>
