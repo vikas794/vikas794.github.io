@@ -143,7 +143,7 @@ export default function ContactPage() {
         <Reveal className="mt-16 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
           <RevealItem>
             {status === "sent" ? (
-              <div className="panel">
+              <div className="panel panel-enter">
                 <h2 className="t-title">Thank you!</h2>
                 <p className="prose mt-3">
                   Your message has been submitted. If you don&apos;t hear back soon, email me directly at{" "}

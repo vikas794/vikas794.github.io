@@ -16,19 +16,32 @@ export function showToast(text: string, ms = 2400) {
 
 export default function ToastHost() {
   const [msg, setMsg] = useState<{ id: number; text: string } | null>(null);
+  const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    listener = setMsg;
+    let exitTimer: ReturnType<typeof setTimeout> | undefined;
+    // On dismiss the toast plays a short exit before it unmounts.
+    listener = (next) => {
+      clearTimeout(exitTimer);
+      if (next) {
+        setLeaving(false);
+        setMsg(next);
+      } else {
+        setLeaving(true);
+        exitTimer = setTimeout(() => setMsg(null), 160);
+      }
+    };
     return () => {
       listener = null;
       clearTimeout(clearTimer);
+      clearTimeout(exitTimer);
     };
   }, []);
 
   return (
     <div className="toast-host" aria-live="polite" role="status">
       {msg && (
-        <p key={msg.id} className="toast">
+        <p key={msg.id} className="toast" data-leaving={leaving ? "true" : undefined}>
           <span className="toast-prompt" aria-hidden="true">
             &gt;
           </span>
