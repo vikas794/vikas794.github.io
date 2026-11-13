@@ -1896,25 +1896,15 @@ svg[data-draw="done"] text {
   color: var(--paper);
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  animation: toast-in 240ms var(--ease-out) both;
+  /* Entrance, exit and the swipe-down dismiss are driven by Motion (Toast.tsx). */
+  pointer-events: auto;
+  touch-action: pan-x;
+  user-select: none;
 }
 
 .toast-prompt {
   margin-right: 0.5rem;
   color: var(--accent-soft);
-}
-
-@keyframes toast-in {
-  from { opacity: 0; transform: translateY(16px); }
-}
-
-/* Exit is faster than the entrance and drifts back down. */
-.toast[data-leaving="true"] {
-  animation: toast-out 160ms var(--ease-out) forwards;
-}
-
-@keyframes toast-out {
-  to { opacity: 0; transform: translateY(8px); }
 }
 
 /* Contact form: inline errors and the "sent" panel arrive instead of popping. */
@@ -1928,10 +1918,6 @@ svg[data-draw="done"] text {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .toast[data-leaving="true"] {
-    animation: toast-out 120ms linear forwards;
-  }
-
   [role="alert"].text-accent,
   .panel-enter {
     animation: msg-fade 160ms linear both;
