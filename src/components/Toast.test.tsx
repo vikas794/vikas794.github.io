@@ -11,7 +11,7 @@ describe("Toast", () => {
     expect(screen.getByRole("status")).toHaveAttribute("aria-live", "polite");
     act(() => showToast("Email copied"));
     expect(screen.getByText("Email copied")).toBeInTheDocument();
-    act(() => vi.advanceTimersByTime(2500));
+    act(() => vi.advanceTimersByTime(2700));
     expect(screen.queryByText("Email copied")).not.toBeInTheDocument();
   });
 

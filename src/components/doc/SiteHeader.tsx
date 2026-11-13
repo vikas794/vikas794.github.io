@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { Menu, Moon, Sun, X } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { runViewTransition } from "../../lib/viewTransition";
 import { useHydrated } from "../../hooks/useHydrated";
 import { useScroll } from "../../hooks/useScroll";
@@ -30,6 +31,7 @@ export default function SiteHeader({
   const { pathname } = useLocation();
   const hydrated = useHydrated();
   const motionOk = useMotionOk();
+  const reduce = useReducedMotion();
   const pastTop = useScroll(80);
   const direction = useScrollDirection();
 
@@ -158,7 +160,14 @@ export default function SiteHeader({
         </div>
       </div>
       {menuOpen && (
-        <nav className="border-t border-rule px-5 py-3 md:hidden" aria-label="Mobile">
+        // One entrance for the panel; the links are simply there (no per-item stagger on a menu).
+        <motion.nav
+          className="border-t border-rule px-5 py-3 md:hidden"
+          aria-label="Mobile"
+          initial={{ opacity: 0, y: reduce ? 0 : -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        >
           <ul className="flex flex-col">
             {NAV_LINKS.map((l) => (
               <li key={l.to} className="border-b border-rule last:border-0">
@@ -175,7 +184,7 @@ export default function SiteHeader({
               </li>
             ))}
           </ul>
-        </nav>
+        </motion.nav>
       )}
     </header>
   );

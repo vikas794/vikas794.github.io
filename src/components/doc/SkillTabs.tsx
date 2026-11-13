@@ -68,7 +68,7 @@ export default function SkillTabs() {
             className="skill-panel"
           >
             <div className="skill-sections">
-              {group.sections.map((sec, si) => (
+              {group.sections.map((sec) => (
                 <section
                   key={sec.title}
                   aria-label={sec.title}
@@ -76,20 +76,11 @@ export default function SkillTabs() {
                 >
                   {active === 0 && <h3 className="skill-section-title">{sec.title}</h3>}
                   <ul className="skill-chips">
-                    {sec.tags.map((t, i) => (
-                      <motion.li
-                        key={t}
-                        className="chip"
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          delay: Math.min((si * 3 + i) * 0.024, 0.4),
-                          duration: 0.24,
-                          ease: [0.16, 1, 0.3, 1],
-                        }}
-                      >
+                    {/* No per-chip entrance: the panel's slide already carries them (one entrance per container). */}
+                    {sec.tags.map((t) => (
+                      <li key={t} className="chip">
                         {t}
-                      </motion.li>
+                      </li>
                     ))}
                   </ul>
                 </section>

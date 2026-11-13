@@ -5,6 +5,15 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 // pre-paint blocking script in index.html <head> removes it before paint only
 // for a stored "light" choice, so no FOUC. We sync from the DOM class in
 // useEffect (never during render) to avoid hydration mismatch.
+// The browser chrome / status bar follows the page's top colour (the paper
+// tone), not the brand accent, and tracks the in-app toggle (class-based, so
+// a prefers-color-scheme media pair of meta tags would not).
+const THEME_COLOR = { light: "#fbfaf8", dark: "#161310" } as const;
+
+function applyThemeColor(theme: "light" | "dark") {
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", THEME_COLOR[theme]);
+}
+
 export function useTheme() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
@@ -23,6 +32,7 @@ export function useTheme() {
       root.classList.toggle("dark", stored === "dark");
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(stored);
+      applyThemeColor(stored);
       return;
     }
     setTheme(root.classList.contains("dark") ? "dark" : "light");
@@ -48,6 +58,7 @@ export function useTheme() {
     } else {
       root.classList.remove("dark");
     }
+    applyThemeColor(theme);
     try {
       localStorage.setItem("theme", theme);
     } catch {
