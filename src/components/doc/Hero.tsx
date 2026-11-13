@@ -20,7 +20,11 @@ export default function Hero() {
   const scrolled = useScroll(120);
   return (
     <section id="gateway" data-hop="gateway" aria-labelledby="home-hero" className="relative border-b border-rule">
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-12 md:px-8 md:py-20 lg:grid-cols-12 lg:items-center lg:gap-10">
+      {/* One Reveal for the whole hero: the CTAs, stat and diagram arrive as a single wave. */}
+      <Reveal
+        step={0.08}
+        className="mx-auto grid max-w-6xl gap-12 px-5 py-12 md:px-8 md:py-20 lg:grid-cols-12 lg:items-center lg:gap-10"
+      >
         <div className="lg:col-span-7">
           <p className="inline-flex items-center gap-2 font-mono text-xs text-ink-2">
             <span className="inline-block h-2 w-2 rounded-full bg-positive" aria-hidden="true" />
@@ -42,8 +46,8 @@ export default function Hero() {
             {profile.domains.join(", ").toLowerCase()}, and I measure what I ship.
           </p>
 
-          <Reveal className="mt-8 flex flex-wrap items-center gap-4">
-            <RevealItem>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <RevealItem rise={16}>
               <Magnetic>
                 <Link to="/projects/" className="btn btn-primary group no-underline">
                   <Roll>Read the case studies</Roll>
@@ -55,23 +59,24 @@ export default function Hero() {
                 </Link>
               </Magnetic>
             </RevealItem>
-            <RevealItem>
+            <RevealItem rise={12}>
               <Link to="/resume/" className="btn btn-ghost no-underline">
                 Résumé
               </Link>
             </RevealItem>
-          </Reveal>
+          </div>
         </div>
 
         <aside aria-label="At a glance" className="lg:col-span-5">
-          <Reveal>
-            <RevealItem>
+          <div>
+            {/* The stat is the lead on this side and travels furthest; the diagram follows lighter. */}
+            <RevealItem rise={28}>
               <Link to={`/projects/${heroStat.slug}/`} className="stat-float group no-underline">
                 <span className="hero-stat-num block tabular">{heroStat.value}</span>
                 <span className="hero-stat-label mt-2 block">{heroStat.label}</span>
               </Link>
             </RevealItem>
-            <RevealItem className="mt-5">
+            <RevealItem className="mt-5" rise={14}>
               <Link to={`/projects/${heroStat.slug}/`} className="hero-diagram group block no-underline">
                 <HeroFlowDiagram />
                 <span className="mt-3 flex items-center gap-1 text-small text-ink-2 group-hover:text-accent">
@@ -84,9 +89,9 @@ export default function Hero() {
                 </span>
               </Link>
             </RevealItem>
-          </Reveal>
+          </div>
         </aside>
-      </div>
+      </Reveal>
       <span
         aria-hidden="true"
         className="scroll-cue absolute bottom-6 left-8 hidden md:block"
