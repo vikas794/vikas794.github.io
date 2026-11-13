@@ -439,7 +439,7 @@ h3 em {
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--paper);
+  color: var(--on-accent);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -789,7 +789,7 @@ html.lenis-active {
   }
 
   html.dark {
-    --rule-interactive: #8b9098;
+    --rule-interactive: #968d85;
   }
 
   p a,

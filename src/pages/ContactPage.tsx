@@ -187,7 +187,8 @@ export default function ContactPage() {
                       className="field"
                     />
                     {fieldErrors.name && (
-                      <p id="contact-name-error" role="alert" className="mt-1 text-xs text-accent">
+                      <p id="contact-name-error" role="alert" className="mt-1 text-xs text-negative">
+                        <span className="font-medium">Error: </span>
                         {fieldErrors.name}
                       </p>
                     )}
@@ -210,7 +211,8 @@ export default function ContactPage() {
                       className="field"
                     />
                     {fieldErrors.email && (
-                      <p id="contact-email-error" role="alert" className="mt-1 text-xs text-accent">
+                      <p id="contact-email-error" role="alert" className="mt-1 text-xs text-negative">
+                        <span className="font-medium">Error: </span>
                         {fieldErrors.email}
                       </p>
                     )}
@@ -238,7 +240,8 @@ export default function ContactPage() {
                       Up to {LIMITS.message.max} characters
                     </p>
                     {fieldErrors.message && (
-                      <p id="contact-message-error" role="alert" className="mt-1 text-xs text-accent">
+                      <p id="contact-message-error" role="alert" className="mt-1 text-xs text-negative">
+                        <span className="font-medium">Error: </span>
                         {fieldErrors.message}
                       </p>
                     )}
@@ -247,7 +250,8 @@ export default function ContactPage() {
                     <Roll>{status === "sending" ? "Sending…" : "Send message"}</Roll>
                   </button>
                   {status === "error" && (
-                    <p role="alert" className="text-small text-accent">
+                    <p role="alert" className="text-small text-negative">
+                      <span className="font-medium">Error: </span>
                       {error} Please try again, or email me directly at{" "}
                       <a href={`mailto:${profile.email}`}>{profile.email}</a>.
                     </p>

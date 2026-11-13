@@ -48,7 +48,7 @@ export default function DotField() {
     let slowMs = 0;
     let frames = 0;
     const ripples: { x: number; y: number; t0: number }[] = [];
-    let colors = { dot: "#d9d4ca", accent: "#b03a16", paper: "#f6f3ec" };
+    let colors = { dot: "#d9d4ca", accent: "#b03a16", paper: "#fbfaf8" };
 
     const readColors = () => {
       const cs = getComputedStyle(document.documentElement);

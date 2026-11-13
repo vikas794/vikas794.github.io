@@ -63,6 +63,15 @@ Other root variables: `--prose-max: 34rem`, `--evidence-max: 55rem`, `color-sche
 
 **Browser chrome:** `<meta name="theme-color" content="#b03a16">`, `<meta name="color-scheme" content="light dark">`.
 
+**60-30-10 contract** (after Vision accessible-palette guidance)
+- **60 — base:** `--paper` (page background).
+- **30 — structure:** `--paper-2` surfaces, `--ink` / `--ink-2` / `--ink-3` text, `--rule` / `--rule-interactive` borders.
+- **10 — accent:** `--accent` / `--accent-soft`, reserved for interactive or key elements (links, primary button, focus ring, active nav, key numbers, the single accent band). Never decorative filler.
+- Errors use `--negative` plus the word "Error:", never accent. Colour is never the only cue.
+- Same proportions in dark mode and `prefers-contrast: more`; any new token value is re-checked at ≥ 4.5:1 text, ≥ 3:1 UI.
+- One solid-accent band per screen; `.stat-float` must not sit beside it.
+- Documented exception: `.glow-card` hover spotlight uses `hsl(var(--hue) …)` (base hue 12 ≈ accent) for a saturated pointer glow.
+
 **Rules**
 - Accent coverage ≈ 10–15% of a viewport at the loudest point (the home accent band), under 3% elsewhere.
 - Text on accent uses `--on-accent`. Text on `--accent-soft` uses `--ink`. Contrast ≥ 4.5:1 text, ≥ 3:1 large text/UI, in both themes.
