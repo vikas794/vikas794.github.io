@@ -62,7 +62,7 @@ export function PinnedTrack({ heading }: { heading: ReactNode }) {
   };
 
   return (
-    <div ref={wrapRef} className="case-pin" style={{ height: `calc(100vh + ${dist}px)` }}>
+    <div ref={wrapRef} className="case-pin" style={{ height: `calc(100svh + ${dist}px)` }}>
       <div className="case-pin-stage">
         <div className="mx-auto w-full max-w-6xl px-5 md:px-8">{heading}</div>
         <div

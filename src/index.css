@@ -112,6 +112,28 @@ html.dark {
 
 html {
   font-size: 100%;
+  /* Mobile: no gray flash on tap (press states carry the feedback) and no
+     font inflation in landscape. */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Controls respond to the first tap (no double-tap-zoom wait) and their labels
+   are not selectable on long-press. Body text and links stay selectable. */
+button,
+[role="button"],
+[role="tab"],
+summary {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+a,
+.btn {
+  touch-action: manipulation;
 }
 
 body {
@@ -382,8 +404,10 @@ h3 em {
   transition: border-color var(--dur-1) var(--ease-out);
 }
 
-.hero-diagram:hover {
-  border-color: var(--rule-interactive);
+@media (hover: hover) and (pointer: fine) {
+  .hero-diagram:hover {
+    border-color: var(--rule-interactive);
+  }
 }
 
 .hero-diagram figure {
@@ -418,13 +442,15 @@ h3 em {
   color: var(--paper);
 }
 
-.btn-primary:hover,
-.btn-ghost:hover {
-  transform: translateY(-1px);
-}
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover,
+  .btn-ghost:hover {
+    transform: translateY(-1px);
+  }
 
-.btn-primary:hover {
-  filter: brightness(1.08);
+  .btn-primary:hover {
+    filter: brightness(1.08);
+  }
 }
 
 .btn-ghost {
@@ -432,8 +458,10 @@ h3 em {
   color: var(--ink);
 }
 
-.btn-ghost:hover {
-  background: var(--paper-2);
+@media (hover: hover) and (pointer: fine) {
+  .btn-ghost:hover {
+    background: var(--paper-2);
+  }
 }
 
 /* Primary nav: an underline that extends left-to-right on hover/focus, like
@@ -455,9 +483,14 @@ h3 em {
   transition: transform var(--dur-2) var(--ease-out);
 }
 
-.nav-link:hover::after,
 .nav-link:focus-visible::after {
   transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 /* ---------------- entry grids (replaces arbitrary grid-cols) ---------------- */
@@ -1054,8 +1087,10 @@ html.lenis-active {
   border-color: color-mix(in srgb, var(--paper) 55%, transparent);
 }
 
-.band-ink .btn-ghost:hover {
-  background: color-mix(in srgb, var(--paper) 14%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .band-ink .btn-ghost:hover {
+    background: color-mix(in srgb, var(--paper) 14%, transparent);
+  }
 }
 
 .band-ink .btn-primary:focus-visible {
@@ -1179,8 +1214,10 @@ html.dark .react-pdf__Page {
   animation: ticker 52s linear infinite;
 }
 
-.ticker:hover .ticker-track {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
 }
 
 /* JS drives the drift (Ticker.tsx); drop the CSS one. */
@@ -1525,6 +1562,7 @@ body::before {
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   pointer-events: none;
 }
 
@@ -1576,6 +1614,7 @@ body::before {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1615,10 +1654,15 @@ body::before {
   transition: border-color var(--dur-2) var(--ease-out);
 }
 
-.case-card:hover,
 .case-card[data-hover="true"],
 .case-card:focus-within {
   border-color: var(--ink-3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case-card:hover {
+    border-color: var(--ink-3);
+  }
 }
 
 /* Spotlight card (components/ui/spotlight-card.tsx): a soft spot follows the
@@ -2025,9 +2069,14 @@ svg[data-draw="done"] text {
   transition: opacity var(--dur-base) var(--ease-out);
 }
 
-[data-tilt]:hover::after,
 [data-tilt][data-hover="true"]::after {
   opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-tilt]:hover::after {
+    opacity: 1;
+  }
 }
 
 /* Skill tabs */
@@ -2094,9 +2143,11 @@ svg[data-draw="done"] text {
   transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
 }
 
-.chip:hover {
-  transform: translateY(-2px);
-  border-color: var(--ink-3);
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover {
+    transform: translateY(-2px);
+    border-color: var(--ink-3);
+  }
 }
 
 /* Timeline: rule draws down the block, dot fills when the rule arrives. */
@@ -2165,17 +2216,22 @@ svg[data-draw="done"] text {
   transition: transform var(--dur-2) var(--ease-out), color var(--dur-1) var(--ease-out);
 }
 
-.nav-link:hover,
 .nav-link:focus-visible {
   transform: translateY(-2px);
 }
 
-.nav-link:hover::after {
-  transform: scaleX(0);
-}
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover {
+    transform: translateY(-2px);
+  }
 
-.nav-link[aria-current="page"]:hover::after {
-  transform: scaleX(1);
+  .nav-link:hover::after {
+    transform: scaleX(0);
+  }
+
+  .nav-link[aria-current="page"]:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 /* Over the solid accent band the wire flips to the paper colour: a second,
@@ -2218,8 +2274,10 @@ svg[data-draw="done"] text {
   background: color-mix(in srgb, var(--paper) 16%, transparent);
 }
 
-.band-ink .btn-ghost:hover {
-  color: var(--paper);
+@media (hover: hover) and (pointer: fine) {
+  .band-ink .btn-ghost:hover {
+    color: var(--paper);
+  }
 }
 
 /* Case-study contents: the section being read is highlighted. */
@@ -2282,5 +2340,41 @@ svg[data-draw="done"] text {
 
   .skill-section-title {
     margin: 0.45rem 0 0;
+  }
+}
+
+/* ---------------- mobile: native feel ---------------- */
+
+/* iOS zooms the page when an input under 16px takes focus and never zooms
+   back. Fix the size, never the zoom. */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select,
+  .field {
+    font-size: 16px;
+  }
+}
+
+/* The viewport covers the notch / home-indicator zones (viewport-fit=cover in
+   index.html); fixed chrome pads itself back out of them. */
+.site-header {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.toast-host {
+  right: max(1.25rem, env(safe-area-inset-right, 0px));
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+}
+
+.vt-persist-fab {
+  right: max(0.75rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  .vt-persist-fab {
+    right: max(1.5rem, env(safe-area-inset-right, 0px));
+    bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
   }
 }
